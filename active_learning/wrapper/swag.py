@@ -1,9 +1,9 @@
 import numpy as np
-from . import BayesianModel, ModelType, Mode
+from . import Model, ModelType, Mode
 
 
 
-class SWAG(BayesianModel):
+class SWAG(Model):
 
     # https://github.com/DD2412-Final-Projects/swag-reproduced/blob/master/train_swag.py
 

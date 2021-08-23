@@ -167,7 +167,7 @@ class ExperimentSuitMetrics:
         return json.loads(content)
 
     
-    def write_line(self, experiment_name, values, filter_keys=None):
+    def write_line(self, experiment_name, values, filter_keys=None, filter_nan=True):
         """
             Writes a new line into one of the experiment files. 
             Creating the experiment file if it not already exists.
@@ -178,7 +178,13 @@ class ExperimentSuitMetrics:
                 filter_keys (list(str)): A list of str keys to filter keys of given values dictionary.
         """
 
-        # Filter keys of values
+        # Filter out empty values
+        if filter_nan and isinstance(values, dict):
+            values = dict(filter(lambda elem: elem[1] is not None, values.items()))
+
+        values = self._resolve_dict(values)
+        
+        # Filter specific keys
         if filter_keys is not None and isinstance(filter_keys, str):
             values = {key: values[key] for key in filter_keys}
 
@@ -272,6 +278,34 @@ class ExperimentSuitMetrics:
     # Utilities
     # --------------------
     
+    def _resolve_dict(self, values, prefix=None):
+        """
+            Resolves a dictionary into a flat pandas dataframe like structure.
+            Nested dictionaries are getting prefixed with parent key.
+
+            Parameters:
+                values (dict): A dictionary of keys. Can include dictionaries with single level nesting.
+
+            Returns:
+                (dict) a flattened dictionary.
+        """
+        
+        flattened_dict = {}
+        for key, value in values.items():
+        
+            # Copy flat values into flattened dictionary
+            prefixed_key = key if prefix is None else (prefix + "_" + key)
+            if not isinstance(values[key], dict):
+                flattened_dict[prefixed_key] = value
+                continue
+            
+            resolved = self._resolve_dict(values[key], prefix=prefixed_key)
+            flattened_dict.update(resolved)
+
+        return flattened_dict
+
+
+
     def _add_extension(self, filename, ext):
         """
             Adds an extension to a filename.
@@ -321,7 +355,6 @@ class ExperimentSuitMetrics:
     # ------------------
 
     def __get_mode(self, experiment_name):
-        
         default_mode = "a"
         if experiment_name not in self.experiment_files:
             return default_mode
@@ -361,6 +394,7 @@ class ExperimentSuitMetrics:
         
         meta = self.read_meta()
         return meta.get("dataset", None)
+
 
     def get_experiment_meta(self, experiment_name):
         """

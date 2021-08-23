@@ -1,15 +1,16 @@
 import os, sys, importlib
 import numpy as np
 
-from . import BayesModel, ModelType, Mode
+from . import Model, ModelType, Mode
 
-# Needed to create package for MomentPropagation model creation
 # import mp.MomentPropagation as mp
-import tensorflow as tf
+# import tensorflow as tf
 
+# -----------------------
+# Dependent on external package MomentPropagation !!!!!!!
+# -----------------------
 
-
-# class MomentPropagation(BayesModel):
+# class MomentPropagation(Model):
 #     """
 #         Takes a regular MC Dropout model as input, that is used for fitting.
 #         For evaluation a moment propagation model is created an used 
@@ -18,12 +19,31 @@ import tensorflow as tf
 
 #     def __init__(self, model, config=None, **kwargs):
 #         model_type = ModelType.MOMENT_PROPAGATION
-#         mp_model = self.__create_mp_model(model)
-#         super(MomentPropagation, self).__init__(mp_model, config, model_type=model_type, **kwargs)
+
+#         super(MomentPropagation, self).__init__(model, config, model_type=model_type, **kwargs)
+
+#         self.__mp_model = self._create_mp_model(model)
+#         self.__compile_params = None
 
 
 #     def __call__(self, inputs, **kwargs):
-#         return self._model.predict(inputs, **kwargs)
+#         return self.__mp_model.predict(inputs, **kwargs)
+
+    
+#     def fit(self, *args, **kwargs):
+#         history = super().fit(*args, **kwargs)
+#         self.__mp_model = self._create_mp_model(self._model)
+#         return history
+
+
+#     def compile(self, **kwargs):
+
+#         if kwargs is not None and len(kwargs.keys()) > 0:
+#             print("Set compile params")
+#             self.__compile_params = kwargs
+
+#         self._model.compile(**self.__compile_params)
+#         # self.__base_model.compile(**self.__compile_params)
 
 
 #     def evaluate(self, inputs, targets, **kwargs):
@@ -43,8 +63,9 @@ import tensorflow as tf
 #         self.logger.info("Evaluate kwargs: {}".format(kwargs))
 
 #         self.set_mode(Mode.EVAL)
-#         exp, var = self._model.predict(inputs, **kwargs)
-#         return self.__evaluate(exp, targets)
+#         exp, var = self.__mp_model.predict(inputs, **kwargs)
+#         loss, acc = self.__evaluate(exp, targets)
+#         return {"loss": loss, "accuracy": acc}
 
 
 #     def __evaluate(self, prediction, targets):
@@ -80,7 +101,7 @@ import tensorflow as tf
 #         return dict(zip(metric_names, values))
 
 
-#     def __create_mp_model(self, model):
+#     def _create_mp_model(self, model):
 #         """
 #             Transforms the set base model into an moment propagation model.
 
@@ -88,7 +109,7 @@ import tensorflow as tf
 #                 (tf.Model) as a moment propagation model.
 #         """
 #         _mp = mp.MP()
-#         return _mp.create_MP_Model(model=model, use_mp=False, verbose=True)
+#         return _mp.create_MP_Model(model=model, use_mp=True, verbose=True)
 
 
 #     def variance(self, predictions):
@@ -103,6 +124,20 @@ import tensorflow as tf
         
 #         expectation = self.extend_binary_predictions(expectation)
 #         return self.__cast_tensor_to_numpy(expectation) 
+
+
+#     # --------
+#     # Weights loading
+#     # ------------------
+
+#     # def load_weights(self):
+#     #     path = self._checkpoints.PATH
+#     #     self.__base_model.load_weights(path)
+
+#     # def save_weights(self):
+
+#     #     path = self._checkpoints.PATH
+#     #     self.__base_model.save_weights(path)
 
 
 #     # --------
@@ -174,7 +209,7 @@ import tensorflow as tf
 #     def __max_entropy(self, data, **kwargs):
 #         # Expectation and variance of form (batch_size, num_classes)
 #         # Expectation equals the prediction
-#         predictions = self._model.predict(x=data)
+#         predictions = self.__mp_model.predict(x=data)
 
 #         # Need to scaled values because zeros
 #         class_probs = self.expectation(predictions)
@@ -187,7 +222,7 @@ import tensorflow as tf
 #         """
 #             [ ] Check if information about variance is needed here. Compare to mc dropout bald.
 #         """
-#         predictions = self._model.predict(x=data)
+#         predictions = self.__mp_model.predict(x=data)
 #         expectation = self.expectation(predictions)
 #         variance = self.variance(predictions)
 
@@ -198,7 +233,7 @@ import tensorflow as tf
 
 
 #     def __max_var_ratio(self, data, **kwargs):
-#         predictions = self._model.predict(x=data)
+#         predictions = self.__mp_model.predict(x=data)
 #         expectation = self.expectation(predictions)
 
 #         col_max_indices = np.argmax(expectation, axis=1)        
@@ -208,7 +243,7 @@ import tensorflow as tf
 
     
 #     def __std_mean(self, data, **kwargs):
-#         predictions = self._model.predict(data, **kwargs)
+#         predictions = self.__mp_model.predict(data, **kwargs)
 #         variance = self.variance(predictions)
 #         std = np.square(variance)
 #         return np.mean(std, axis=-1)

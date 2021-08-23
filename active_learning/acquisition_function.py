@@ -1,9 +1,10 @@
 import os, sys, importlib
+import math
 import time
 import logging
 import numpy as np
 from enum import Enum
-# from utils import setup_logger
+from .utils import setup_logger
 
 
 class AcquisitionFunction:
@@ -30,50 +31,27 @@ class AcquisitionFunction:
     """
 
     def __init__(self, fn_name, batch_size=None, verbose=False):
-        self.setup_logger(verbose)
+        self.logger = setup_logger(verbose, "Acquisition Function Logger")
 
         self.name = fn_name
         self.fn = None
         self.batch_size = batch_size
 
-
-    def setup_logger(self, propagate):
-        """
-            Setup a logger for the active learning loop
-        """
-
-        logger = logging.Logger("AcqLogger")
-        log_level = logging.DEBUG if propagate else logging.CRITICAL
-
-        logger.handler = logging.StreamHandler(sys.stdout)
-        logger.handler.setLevel(log_level)
-        
-        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-        logger.handler.setFormatter(formatter)
-        logger.addHandler(logger.handler)
-
-        current_dir = os.path.dirname(os.path.realpath(__file__))
-        log_path = os.path.join(current_dir, "..", "logs", "acf.log")
-        
-        fh = logging.FileHandler(log_path)
-        fh.setLevel(log_level)
-        fh.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-        logger.addHandler(fh)
-
-        self.logger = logger
-
-
-    def __call__(self, model, pool, num=20, **kwargs):
+    def __call__(self, model, pool, step_size=20, **kwargs):
         """
             
             Parameter:
-                model (BayesModel): The model to use for the computation of acquistion functions.
+                model (Model): The model to use for the computation of acquistion functions.
                 pool (Pool): The pool of unlabeled data.
-                num (int): Number of datapoints to collect.
+                step_size (int): Number of datapoints to collect for next active learning iteration.
 
             Returns:
                 (numpy.ndarray) Indices
         """
+
+        self.logger.info("Parameters ----")
+        self.logger.info("Step-size: {}".format(step_size))
+        self.logger.info(kwargs)
 
         # Set initial acquistion function
         if self.fn is None:
@@ -86,7 +64,8 @@ class AcquisitionFunction:
         # Select values randomly? 
         # No need for batch processing
         if self.name == "random":
-            return self.fn(indices, data, num=num, **kwargs)            
+            self.logger.info("Random function")
+            return self.fn(indices, data, step_size=step_size, **kwargs)            
 
         # Iterate throug batches of data
         results = None
@@ -103,7 +82,7 @@ class AcquisitionFunction:
         if self.batch_size is None:
             self.batch_size = len(data)
 
-        num_batches = num_datapoints/self.batch_size
+        num_batches = math.ceil(num_datapoints/self.batch_size)
         batches = np.array_split(data, num_batches, axis=0)
         results = []
         for batch in batches:
@@ -114,7 +93,7 @@ class AcquisitionFunction:
 
         stacked = np.hstack(results)
         self.logger.info("Stacked shaped: {}".format(stacked.shape))
-        num_of_elements_to_select = self._adapt_selection_num(len(stacked), num)
+        num_of_elements_to_select = self._adapt_selection_num(len(stacked), step_size)
         return self.__select_first(stacked, indices, num_of_elements_to_select)
 
 
@@ -153,10 +132,12 @@ class AcquisitionFunction:
             return query_fn
     
 
-    def _random(self, indices, data, num=5, **kwargs):
+    def _random(self, indices, data, step_size=5, **kwargs):
         """
             Randomly select a number of datapoints from the dataset.
             Baseline for comparison purposes.
+
+            FIX: Random selection is wrong!!!
 
             Parameters:
                 model (BayesianModel): The model to perform active learning on.
@@ -166,10 +147,11 @@ class AcquisitionFunction:
             Returns:
                 (numpy.ndarray): Randomly selected indices for next training.
         """
+        self.logger.info("----------Random-------------")
 
         available_indices = np.linspace(0, len(data)-1, len(data), dtype=int)
-        num = self._adapt_selection_num(len(available_indices), num)
-        selected = np.random.choice(available_indices, num, replace=False).astype(int)
+        step_size = self._adapt_selection_num(len(available_indices), step_size)
+        selected = np.random.choice(available_indices, step_size, replace=False).astype(int)
 
         self.logger.info("Indices selected: {}".format(selected))
         return indices[selected], data[selected]

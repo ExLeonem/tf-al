@@ -15,7 +15,7 @@ class OracleMode(Enum):
 class Oracle:
     """
         Oracle handles the labeling process for input values.
-
+        
         Parameters:
             callback (Callback): Function to call for user input for input values. Function receives (pool, indices)
             pseudo_mode (bool): Active learning environment in pseudo mode?

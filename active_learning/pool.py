@@ -3,7 +3,7 @@ from copy import deepcopy
 import numpy as np
 
 
-class DataPool:
+class Pool:
     """
         Pool that holds information about labeled and unlabeld inputs.
         The attribute 'indices' holds information about the labeled inputs.
@@ -195,7 +195,25 @@ class DataPool:
     # -------------------
 
     def get_indices(self):
+        """
+            Returns the current labeling state.
+
+            Returns:
+                (numpy.ndarray) the indices state. (-1) indicating a labeled input.
+        """
+        
         return self.__indices
+
+    def get_labeled_indices(self):
+        """
+            
+
+            Returns:
+                (numpy.ndarray) of datapoints that already has been labeled.
+        """
+        selector = self.__indices == -1
+        indices = np.linspace(0, len(self.__inputs)-1, len(self.__inputs), dtype=int)
+        return indices[selector]
 
 
     def get_unlabeled_indices(self):

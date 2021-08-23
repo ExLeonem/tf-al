@@ -3,7 +3,9 @@ import logging
 import numpy as np
 from abc import ABC, abstractmethod
 from enum import Enum
+
 from . import Checkpoint
+from ..utils import setup_logger
 
 
 class Mode(Enum):
@@ -21,7 +23,7 @@ class ModelType(Enum):
     SWAG=3
 
 
-class BayesModel:
+class Model:
     """
         Base class for encapsulation of a bayesian deep learning model. 
 
@@ -42,18 +44,25 @@ class BayesModel:
         model_type=None, 
         classification=True, 
         is_binary=False,
+        checkpoint=None,
         verbose=False,
+        checkpoint_path=None,
         **kwargs
     ):
 
-        self.setup_logger(verbose)
+        self.logger = setup_logger(verbose, "Model Logger")
         self._model = model
         self._config = config
         self._mode = mode
         self._model_type = model_type
         self._name = name
 
-        self._checkpoints = Checkpoint()
+        # Checkpoints path set?
+        self.__checkpoints = None
+        if checkpoint is None:
+            self.__checkpoints = 
+
+        self._checkpoints = Checkpoint() if checkpoint is None else checkpoint
 
         self.__classification = classification
         if not self.__classification:
@@ -89,7 +98,8 @@ class BayesModel:
             Returns:
                 (list) A list with two values. [loss, accuracy]  
         """
-        return self._model.evaluate(inputs, targets, **kwargs)
+        loss, accuracy = self._model.evaluate(inputs, targets, **kwargs)
+        return {"loss": loss, "accuracy": accuracy}
 
 
     def fit(self, *args, **kwargs):
@@ -102,7 +112,7 @@ class BayesModel:
                 batch_size (int): The size of each individual batch
 
             Returns:
-
+                () a record of the trianing procedure
         """
 
         if self._config is not None and "fit" in self._config and isinstance(self._config["fit"], dict):
@@ -173,7 +183,7 @@ class BayesModel:
     # Model runtime configurations
     # -----------------------------
 
-    def reset(self):
+    def reset(self, pool, dataset):
         """
             Use to reset states, weights and other stuff during each active learning loop iteration.
         """
@@ -190,34 +200,6 @@ class BayesModel:
     # ----------------------
     # Utilities
     # ------------------------------
-
-    def setup_logger(self, debug):
-        """
-            Setup a logger for the active learning loop
-
-            Parameters:
-                propagate (bool): activate logging output in console?
-        """
-
-        logger = logging.Logger("Runner")
-        log_level = logging.DEBUG if debug else logging.CRITICAL
-
-        logger.handler = logging.StreamHandler(sys.stdout)
-        logger.handler.setLevel(log_level)
-        
-        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-        logger.handler.setFormatter(formatter)
-        logger.addHandler(logger.handler)
-
-        dir_name = os.path.dirname(os.path.realpath(__file__))
-        log_path = os.path.join(dir_name, "..", "logs", "model.log")
-
-        fh = logging.FileHandler(log_path)
-        fh.setLevel(log_level)
-        fh.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-        logger.addHandler(fh)
-        self.logger = logger
-
 
     def batch_prediction(self, inputs, batch_size=1, **kwargs):
         """
@@ -324,17 +306,29 @@ class BayesModel:
     # ----------------------------
 
     def get_fit_config(self):
-        if (self._config is not None) and hasattr(self._config, "fit"):
+        if (self._config is not None) and "fit" in self._config:
             return self._config["fit"]
         
         return {}
 
 
     def get_query_config(self):
-        if (self._config is not None) and hasattr(self._config, "query"):
+        if (self._config is not None) and "query" in self._config:
             return self._config["query"]
 
         return {}
+
+
+    def get_eval_config(self):
+        if (self._config is not None) and "eval" in self._config:
+            return self._config["eval"]
+        
+        return {}
+
+
+    def get_config(self):
+        return self._config.kwargs
+
 
 
     # --------------
@@ -401,7 +395,7 @@ class BayesModel:
         # 
         if not (self._name is None): 
             if not (model_type is None) and prefix:
-                return model_type + "_" + sel._name
+                return model_type + "_" + self._name
 
             return self._name
 

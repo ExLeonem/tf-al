@@ -1,7 +1,7 @@
-import time
+import os, time
 from copy import copy, deepcopy
 from tqdm import tqdm
-from . import AcquisitionFunction, Pool, UnlabeledPool, Oracle, ExperimentSuitMetrics
+from . import AcquisitionFunction, Pool, Oracle, ExperimentSuitMetrics
 
 
 class ActiveLearningLoop:
@@ -21,9 +21,8 @@ class ActiveLearningLoop:
                     do_something()
                     progress_bar.update(1) # update progress
 
-
         Parameters:
-            model (BayesianModel): A model wrapped into a BayesianModel type object.
+            model (Model): A model wrapped into a Model type object.
             dataset (Dataset): The dataset to use (inputs, targets)
             query_fn (list(str)|str): The query function to use.
 
@@ -43,15 +42,18 @@ class ActiveLearningLoop:
         dataset,
         query_fn,
         step_size=1,
-        limit=None,
+        max_rounds=None,
         pseudo=True,
+        verbose=False,
         **kwargs
     ):
         
+        self.verbose = verbose
+
         # Data and pools
         self.dataset = dataset
         x_train, y_train = dataset.get_train_split()
-        self.initial_size = initial_pool_size  = dataset.get_init_size()
+        self.initial_size = initial_pool_size = dataset.get_init_size()
 
         self.pool = Pool(x_train, y_train)
         if dataset.is_pseudo() and initial_pool_size > 0:
@@ -59,14 +61,17 @@ class ActiveLearningLoop:
         
         # Loop parameters
         self.step_size = step_size
-        self.iteration_user_limit = limit
-        self.iteration_max = self.pool.get_length_unlabeled()
+        self.iteration_user_limit = max_rounds
+        self.iteration_max = int(self.pool.get_length_unlabeled())
         self.i = 0
 
         # Active learning components
         self.model = model
         self.oracle = Oracle(pseudo_mode=pseudo)
         self.query_fn = self.__init_acquisition_fn(query_fn)
+
+        self.query_config = self.model.get_query_config()
+        self.query_config.update({"step_size": step_size})
 
 
     def __len__(self):
@@ -119,7 +124,7 @@ class ActiveLearningLoop:
             raise StopIteration
 
         # Load previous checkpoints/recreate model
-        self.model.reset()
+        self.model.reset(self.pool, self.dataset)
 
         # Optimiize model params
         optim_metrics, optim_time = self.__optim_model_params()
@@ -128,8 +133,9 @@ class ActiveLearningLoop:
         train_metrics, train_time = self.__fit_model()
 
         # Update pools
-        query_config = self.model.get_query_config()
-        indices, _pred = self.query_fn(self.model, self.pool, step_size=self.step_size)
+        acq_start = time.time()
+        indices, _pred = self.query_fn(self.model, self.pool, **self.query_config)
+        acq_time = time.time() - acq_start
         self.oracle.annotate(self.pool, indices)
 
         # Evaluate model
@@ -140,10 +146,12 @@ class ActiveLearningLoop:
         return {
             "train": train_metrics,
             "train_time": train_time,
+            "query_time": acq_time,
             "optim": optim_metrics,
             "optim_time": optim_time,
             "eval": eval_metrics,
-            "eval_time": eval_time
+            "eval_time": eval_time,
+            "indices_selected": indices.tolist()
         }
 
 
@@ -172,10 +180,18 @@ class ActiveLearningLoop:
         """
         history = None
         duration = None
+
         if self.pool.get_length_labeled() > 0:
             inputs, targets = self.pool.get_labeled_data()
             start = time.time()
-            h = self.model.fit(inputs, targets, verbose=False)
+
+            h = None
+            if self.dataset.has_eval_set():
+                x_eval, y_eval = self.dataset.get_eval_split()
+                h = self.model.fit(inputs, targets, verbose=self.verbose, validation_data=(x_eval, y_eval))
+            else:
+                h = self.model.fit(inputs, targets, verbose=self.verbose)
+
             duration = time.time() - start
             history = h.history
 
@@ -191,10 +207,14 @@ class ActiveLearningLoop:
         """
         metrics = None
         duration = None
+        config = self.model.get_eval_config()
+
+        # print("Config: {}".format(self.model.get_config()))
+
         if self.dataset.has_test_set():
             x_test, y_test = self.dataset.get_test_split()
             start = time.time()
-            metrics = self.model.evaluate(x_test, y_test)
+            metrics = self.model.evaluate(x_test, y_test, **config)
             duration = time.time() - start
         
         return metrics, duration
@@ -224,16 +244,21 @@ class ActiveLearningLoop:
             params = self.collect_meta_params()
             metrics_handler.add_experiment_meta(experiment_name, model_name, query_fn, params)
 
+        iteration = 0
         with tqdm(total=self.__len__()) as pbar:
             for metrics in self:
+                iteration += 1
                 pbar.update(1)
 
-                print(metrics)
+                metrics.update({
+                    "iteration": iteration,
+                    "labeled_pool_size": self.pool.get_length_labeled()-self.step_size,
+                    "unlabeled_pool_size": self.pool.get_length_unlabeled()
+                })
 
                 # Write metrics to file
                 if metrics_handler is not None \
                 and isinstance(metrics_handler, ExperimentSuitMetrics):
-                    experiment_name = self.get_experiment_name()
                     metrics_handler.write_line(experiment_name, metrics)
 
 
@@ -290,11 +315,16 @@ class ActiveLearningLoop:
             iterations = self.iteration_user_limit
 
         # fitting_params = model.get_compile_params()
+        initial_indices = []
+        if self.pool.has_labeled():
+            initial_indices = self.pool.get_labeled_indices().tolist()
+
 
         return {
             "iterations": iterations,
             "step_size": self.step_size,
-            "initial_size": self.initial_size
+            "initial_size": self.initial_size,
+            "initial_indices": initial_indices
         }
 
     

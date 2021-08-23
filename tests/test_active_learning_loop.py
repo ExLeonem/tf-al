@@ -5,7 +5,7 @@ from tensorflow.keras.layers import Dense
 import pytest
 
 from active_learning import ActiveLearningLoop, Pool, Dataset
-from active_learning.model import BayesModel
+from active_learning.wrapper import Model
 from active_learning.utils import setup_growth
 
 
@@ -18,7 +18,6 @@ class MockModel:
 
     def __init__(self, output_shape):
         self.output_shape = output_shape
-
 
     def __call__(self, *args, **kwargs):
         return np.random.randn(self.output_shape) 
@@ -39,7 +38,7 @@ class TestActiveLearningLoopIteration:
         inputs = np.random.randn(10)
         targets = np.random.choice([0, 1, 2], 10)
 
-        mock_model = BayesModel(MockModel(10), None)
+        mock_model = Model(MockModel(10), None)
         dataset = Dataset(inputs, targets)
         loop = ActiveLearningLoop(mock_model, dataset, "random")
 

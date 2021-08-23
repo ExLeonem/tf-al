@@ -1,5 +1,5 @@
+import os
 import tensorflow as tf
-
 
 def setup_growth():
     gpus = tf.config.experimental.list_physical_devices("GPU")
@@ -24,3 +24,10 @@ def setup_growth():
             print(e)
             
     tfk = tf.keras
+
+
+def set_tf_log_level(level="2"):
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = level
+
+def disable_tf_logs():
+    set_tf_log_level()

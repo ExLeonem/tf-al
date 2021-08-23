@@ -5,7 +5,7 @@ from .oracle import Oracle
 from .acquisition_function import AcquisitionFunction
 
 from .config import Config, TrainConfig
-from .pool import DataPool
+from .pool import Pool
 
 from .dataset import Dataset
 from .active_learning_loop import ActiveLearningLoop

@@ -1,6 +1,9 @@
 import os, sys, select
+import numpy as np
+import tensorflow as tf
+
 from . import ActiveLearningLoop, AcquisitionFunction, ExperimentSuitMetrics
-from .model import BayesModel
+# from .wrapper import Model
 from .utils import setup_logger
 
 class ExperimentSuit:
@@ -9,10 +12,10 @@ class ExperimentSuit:
     Iterating over given models and methods.
 
     Parameters:
-        models (list(BayesianModel)): The models to iterate over.
+        models (list(Model)): The models to iterate over.
         query_fns (list(str)|list(AcquisitionFunction)|str|AcquisitionFunction): A list of query functions to use
         dataset (Dataset): A dataset for experiment execution.
-        limit (int): iteration limit per experiment.
+        max_rounds (int): The max. number of rounds to query for datapoints per experiment run. If not set, perform query operation as long as there is data.
         acceptance_timeout (int): Timeout in seconds in which experiment can be proceeded or aborted, after successfull (model,query function) iteration. Setting None will automatically proceed. (default: None)
         metrics_handler (ExperimentSuitMetrics): A configured metrics handler to use.
         verbose (bool): Printing log messages?
@@ -24,21 +27,33 @@ class ExperimentSuit:
         query_fns,
         dataset,
         step_size=1,
-        limit=None,
+        max_rounds=None,
+        runs=1,
+        seed=None,
+        no_save_state=False,
         acceptance_timeout=None,
         metrics_handler=None,
         verbose=False
-    ):
+    ): 
+        
+        # if seed is not None and isinstance(seed, int):
+        #     np.random.seed(seed)
+        #     tf.random.set_seed(seed)
 
-        self.logger = setup_logger(verbose, name="ExperimentSuit")
+        self.verbose = verbose
+        self.logger = setup_logger(verbose, name="ExperimentSuit Logger")
+
         self.dataset = dataset
-        self.limit = limit
+        self.max_rounds = max_rounds
+        self.runs = runs
         self.step_size = step_size
         self.acceptance_timeout = acceptance_timeout
+        self.seed = seed
 
         self.models = self.__init_models(models)
         self.query_functions = self.__init_query_fns(query_fns)
         self.metrics_handler = metrics_handler
+        self.no_save_state = no_save_state
         # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' # To disable tensorflow output
 
 
@@ -49,8 +64,50 @@ class ExperimentSuit:
 
             TODO:
                 [x] Last iteration even when no other experiments to run, prompts proceeding request.
+                [ ] Implement run/seed implementation. Run seeds experiments with seeds n-times.
         """
         
+        if self.runs == 1:
+            self.__iterate_seeds(self.runs-1)
+            return
+
+
+        for run in range(self.runs):
+            self.__iterate_experiments(run)
+
+
+    def __iterate_seeds(self, run):
+        """
+            Iterate through different seeds when a list of seeds where given.
+        """
+
+        if self.seed is not None:
+
+            if isinstance(self.seed, int):
+                self.__iterate_experiments(run, self.seed)
+                return
+
+            if not isinstance(self.seed, list):
+                raise ValueError("Error initializing the active learning loop. Parameter seed of unknown type. Expected list of integers or single integer.")
+            
+            for idx in range(len(self.seed)):
+                seed = self.seed[idx]
+                self.__iterate_experiments(idx, seed)
+
+            return
+        
+        # Run single experiment without seed
+        self.__iterate_experiments(run)
+    
+
+    def __iterate_experiments(self, run, seed=None):
+        """
+            
+            Parameters:
+                run (int): The number of run for acquisition function model and model.
+
+        """
+
         # Perform experiment for each model & query function combination
         exit_loop = False
         number_of_models = range(len(self.models))
@@ -58,6 +115,9 @@ class ExperimentSuit:
         for i in number_of_models:
             model = self.models[i]
             
+            if not self.no_save_state and not model.has_save_state():
+                model.save_weights()
+
             # Group experiment output per model in terminal
             if i != 0:
                 print("#"*10)
@@ -66,35 +126,46 @@ class ExperimentSuit:
             for j in number_of_query_fns:
                 query_fn = self.query_functions[j]
 
-                print("Running experiment Model: {} | Query-Function: {}".format(model, query_fn))
-                self.run_experiment(model, query_fn)
+                print("Running experiment (Run: {} | Model: {} | Query-Function: {})".format(run, model, query_fn))
+                self.__run_experiment(run, model, query_fn, seed)
 
                 if (j != (len(self.query_functions)-1) or i != (len(self.models)-1)) \
                 and not self.__await_proceed():
 
                     exit_loop = True
                     break
-
             
             if exit_loop:
                 break
 
-
-    def run_experiment(self, model, query_fn):
+    def __run_experiment(self, run, model, query_fn, seed):
         """
             Run a single experiment.
+
+            Parameters:
+                run (int): The number of experiment of this type (combination of acquisition funciton and model)
+                model (Model): A model wrapper.
+                query_ fn (str|AcquisitionFunction): The acquisition function to use.
         """
+
+        # Quick fix, reset random state after each iteration
+        # TODO: Adding outter loop and extend parameter list for seed
+        if seed is not None and isinstance(seed, int):
+            np.random.seed(seed)
+            tf.random.set_seed(seed)
 
         active_learning_loop = ActiveLearningLoop(
             model, 
             self.dataset, 
             query_fn, 
             step_size=self.step_size,
-            limit=self.limit,
-            pseudo=True
+            max_rounds=self.max_rounds,
+            pseudo=True,
+            verbose=self.verbose
         )
 
-        active_learning_loop.run(metrics_handler=self.metrics_handler)
+        experiment_name = str(run) + "_" + active_learning_loop.get_experiment_name()
+        active_learning_loop.run(experiment_name, self.metrics_handler)
 
 
     def __await_proceed(self):

@@ -1,9 +1,10 @@
-
-
 """
 TODO:
         - [ ] Add posibility to add default configurations to be filled if nothing supplied
 """
+
+
+
 class Config:
     """
         Configuration to clean up function calls and encapsulate
@@ -26,7 +27,7 @@ class Config:
                 kwargs (dict): Keyword arguments passed to Config.
 
             Returns:
-                dict: updated keyword arguments.
+                (dict) updated keyword arguments.
         """
 
         # defaults existing?

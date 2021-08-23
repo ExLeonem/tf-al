@@ -6,6 +6,7 @@ TODO:
     - Add dunder functions
     - Compress data when weights bigger than x
 """
+
 class Checkpoint:
     """
         Keep track of model iterations by saving checkpoints.
@@ -18,7 +19,8 @@ class Checkpoint:
             filename (str): The filename prefix to use for checkpoints.
     """
 
-    def __init__(self,filename="model", path, extension=None, sub_dir=True):
+    def __init__(self, path, filename="model", extension=None, sub_dir=True):
+
         self.PATH = path if not sub_dir else os.path.join(path, filename)
         self.FILENAME = filename
         self.EXTENSION = extension if not (extension is None) else "pb"
@@ -37,7 +39,6 @@ class Checkpoint:
             Parameters:
                 model (tf.Model): The model for which parameters to save.
         """
-
         self.__create_checkpoint_dir()
 
         # Build checkpoint path
@@ -87,7 +88,6 @@ class Checkpoint:
             Returns:
                 (str) The path to the checkpoint at given iteration
         """
-
         if len(self.checkpoints) == 0:
             # TODO: Checkpoint recovery can fail when path exists but model not of same arch.
             self.__try_checkpoints_recovery()
@@ -115,7 +115,6 @@ class Checkpoint:
         """
             Remove all checkpoint files.
         """
-
         for self.FILENAME in self.checkpoints:
             shutil.rmtree(self.PATH)
 

@@ -5,12 +5,12 @@ import logging as log
 from sklearn.metrics import accuracy_score
 import tensorflow.keras as keras
 
-from . import  BayesModel, ModelType, Mode
+from . import  Model, ModelType, Mode
 import tensorflow as tf
 
 
 
-class McDropout(BayesModel):
+class McDropout(Model):
     """
         Wrapper class for neural networks.
 
@@ -79,7 +79,8 @@ class McDropout(BayesModel):
         self.logger.info("evaluate/call")
         predictions = self.__call__(inputs, sample_size=sample_size, **kwargs)
         self.logger.info("evaluate/predictions.shape: {}".format(predictions.shape))
-        return self.__evaluate(predictions, targets, sample_size)
+        loss, acc = self.__evaluate(predictions, targets, sample_size)
+        return {"loss": loss, "accuracy": acc}
 
 
     def __evaluate(self, predictions, targets, sample_size):
@@ -202,6 +203,9 @@ class McDropout(BayesModel):
         if name == "std_mean":
             return self.__std_mean
 
+        if name == "margin_sampling":
+            return self.__margin_sampling
+
         return None
 
 
@@ -211,8 +215,10 @@ class McDropout(BayesModel):
 
             Parameters:
                 model (tf.Model) The tensorflow model to use for selection of datapoints
-                unlabeled_pool (UnlabeledPool) The pool of unlabeled data to select
+                unlabeled_pool (Pool) The pool of unlabeled data to select
         """
+        self.logger.info("----------Max-Entropy-------------")
+        
         # Create predictions
         predictions = self.__call__(data, sample_size=sample_size)
         expectation = self.expectation(predictions)
@@ -241,7 +247,6 @@ class McDropout(BayesModel):
         # Missing dimension in binary case?
         predictions = self.extend_binary_predictions(predictions)
         
-
         inner_sum = np.sum(predictions*np.log(np.abs(predictions) + .001), axis=1)
         self.logger.info("_bald/inner-shape: {}".format(inner_sum.shape))
 
@@ -259,6 +264,7 @@ class McDropout(BayesModel):
             # (batch, predictions, classes) reduce to (batch, predictions (max-class))
             # 1 - (count of most common class / num predictions)
         """
+        self.logger.info("----------Max-Var-Ratio--------------")
 
         # (batch, sample, num classses)
         # (batch, num_classes)
@@ -278,6 +284,8 @@ class McDropout(BayesModel):
            Todo:
             Implement distinction for different model types.
         """
+        self.logger.info("----------Std-Mean-------------")
+
         # TODO: generalize for n-classes For binary classes
         predictions = self.__call__(data, sample_size=sample_size)
 
@@ -287,6 +295,35 @@ class McDropout(BayesModel):
 
         # Mean over target variables
         return np.mean(std, axis=-1)
+
+
+    def __margin_sampling(self, data, sample_size=10, **kwargs):
+        """
+            Select sample which minimize distance between two most probable labels.
+            Margin Sampling (MS).
+        """
+
+        self.logger.info("----------Margin-Sampling-------------")
+
+        predictions = self.__call__(data, sample_size=sample_size)
+        expectation = self.expectation(predictions)
+
+        indices = np.argsort(expecation)[:, :-2]
+
+    
+    def __least_confidence(self, dtaa, sample_size=10, **kwargs):
+        """
+            Select sample which minimize distance between two most probable labels.
+            Margin Sampling (MS).
+        """
+
+        self.logger.info("----------Margin-Sampling-------------")
+
+        predictions = self.__call__(data, sample_size=sample_size)
+        expectation = self.expectation(predictions)
+
+        return np.argmin(expecation, axis=1)
+
 
 
     # ----------
@@ -314,3 +351,5 @@ class McDropout(BayesModel):
         predictions = np.average(predictions, axis=1)
         result = -(predictions * np.log2(predictions+1e-10))
         return np.sum(result, axis=-1)
+
+

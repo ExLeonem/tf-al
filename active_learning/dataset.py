@@ -1,6 +1,6 @@
 from enum import Enum
 from sklearn.model_selection import train_test_split
-from . import DataPool
+from . import Pool
 
 class Dataset:
     """
@@ -22,33 +22,47 @@ class Dataset:
         self, 
         inputs,
         targets,
+        test=None,
+        val=None,
         init_size=0,
-        train_size=.75, 
-        test_size=None, 
-        val_size=None
+        init_indices=None
+        # train_size=.75, 
+        # test_size=None, 
+        # val_size=None
     ):
 
         self.pseudo = True
         self.init_size = init_size
 
-        if len(inputs) != len(targets):
-            raise ValueError("Error in Dataset.__init__(). Can't initialize dataset. Length of inputs and targets are not equal.")
+        self.x_train = inputs
+        self.y_train = targets
+        
+        if test is not None:
+            self.x_test, self.y_test = test
+        
+        if val is not None:
+            self.x_test, self.y_test = val
+        
 
-        train_size, test_size, val_size = self.__init_sizes(len(inputs), train_size, test_size, val_size)
 
-        if train_size == 1 and test_size == 0 and val_size == 0:
-            self.x_train = inputs
-            self.y_train = targets
+        # if len(inputs) != len(targets):
+        #     raise ValueError("Error in Dataset.__init__(). Can't initialize dataset. Length of inputs and targets are not equal.")
 
-        else:
-            self.x_train, x_test, self.y_train, y_test = train_test_split(inputs, targets, train_size=train_size)
+        # train_size, test_size, val_size = self.__init_sizes(len(inputs), train_size, test_size, val_size)
 
-            if test_size != 0 and test_size + train_size == 1:
-                self.x_test = x_test
-                self.y_test = y_test
+        # if train_size == 1 and test_size == 0 and val_size == 0:
+        #     self.x_train = inputs
+        #     self.y_train = targets
 
-            else:
-                pass
+        # else:
+        #     self.x_train, x_test, self.y_train, y_test = train_test_split(inputs, targets, train_size=train_size)
+
+        #     if test_size != 0 and test_size + train_size == 1:
+        #         self.x_test = x_test
+        #         self.y_test = y_test
+
+        #     else:
+        #         pass
 
 
     def __init_sizes(self, data_size, train_size, test_size, val_size):
@@ -88,8 +102,8 @@ class Dataset:
             raise ValueError("Error in Dataset.__init__(). No ")
 
         # Sum percentages
-        for set_idx in range(num_of_sets):
-            set_name, set_size = 
+        # for set_idx in range(num_of_sets):
+        #     set_name, set_size = 
 
 
     def __cast_to_float(self, total_size, part_size, set_name="train"):
