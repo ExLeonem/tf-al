@@ -63,11 +63,9 @@ class Model:
         self._name = name
 
         # Checkpoints path set?
-        self.__checkpoints = None
-        if checkpoint is None:
-            self.__checkpoints = 
-
-        self._checkpoints = Checkpoint() if checkpoint is None else checkpoint
+        if checkpoint_path is None:
+            checkpoint_path = os.getcwd()
+        self._checkpoints = Checkpoint(checkpoint_path) if checkpoint is None else checkpoint
 
         self.__classification = classification
         if not self.__classification:

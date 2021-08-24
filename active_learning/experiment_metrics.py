@@ -54,7 +54,7 @@ class ExperimentSuitMetrics:
     """
 
     def __init__(self, base_path, verbose=False):
-        self.logger = setup_logger(verbose, name="ExperimentSuitMetrics", stream_level=logging.WARN)
+        self.logger = setup_logger(verbose, name="ExperimentSuitMetrics", default_log_level=logging.WARN)
 
         self.BASE_PATH = base_path
         self.META_FILE_PATH = os.path.join(base_path, ".meta.json")
