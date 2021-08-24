@@ -1,2 +1,7 @@
+# Exclude generated files
 **__pycache__
 **.coverage
+
+# Tmp excludes
+contributing.md
+tmp_requirements.txt

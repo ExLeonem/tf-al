@@ -1,0 +1,21 @@
+package:
+  name: active-learning
+  version: 1.0.0
+
+source:
+  git_url: https://github.com/ExLeonem/active-learning
+
+requirements:
+  build:
+    - python
+    - setuptools
+
+  run:
+    - python
+
+test:
+  imports:
+    -
+  
+about:
+  home:

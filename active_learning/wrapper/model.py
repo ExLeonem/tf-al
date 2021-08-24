@@ -25,21 +25,26 @@ class ModelType(Enum):
 
 class Model:
     """
-        Base class for encapsulation of a bayesian deep learning model. 
-
+        Base wrapper for deep learning models to interface
+        with the active learning environment. 
+        
         Attributes:
             _model (tf.Model): Tensorflow or pytorch module.
             _config (Config): Model configuration
             _mode (Mode): The mode the model is in 'train' or 'test'/'eval'.
             _model_type (ModelType): The model type
             _checkpoints (Checkpoint): Created checkpoints.
+
+        Parameters:
+            model (tf.Model): The tensorflow model to be used.
+            config (Config): Configuration object for the model. (default=None)
     """
 
     def __init__(
         self, 
         model, 
         config=None, 
-        mode=Mode.TRAIN, 
+        mode=Mode.TRAIN,
         name=None,
         model_type=None, 
         classification=True, 
