@@ -3,13 +3,40 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Active Learning's documentation!
+Index
 ===========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+
+Getting started
+==================================
+
+.. toctree ::
+   :maxdepth: 2
+
+   get_started
+
+
+
+Customization
+==================================
+
+.. toctree ::
+   :maxdepth: 2
+
+   custom
+
+
+API Documentation
+==================================
+
+.. toctree::
+   :maxdepth: 2
+
+   api
 
 
 Indices and tables

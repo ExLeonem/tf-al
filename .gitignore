@@ -1,6 +1,14 @@
-# Exclude generated files
+# Exclude setuptool generated files
+/.eggs
+/dist
+/active_learning.egg-info
+
+# Exclude caches and reports 
+**.pytest_cache
 **__pycache__
 **.coverage
+
+# Exclude generated local documentation
 /docs/_build
 
 # Tmp excludes

@@ -1,10 +1,3 @@
-import os, sys
-
-CONF_PATH = os.path.abspath(__file__)
-MODULE_PATH = os.path.join(CONF_PATH, "..", "active_learning")
-
-sys.path.insert(0, os.path.abspath("../active_learning"))
-
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -20,6 +13,13 @@ sys.path.insert(0, os.path.abspath("../active_learning"))
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+
+import os, sys
+
+# CONF_PATH = os.path.dirname(os.path.realpath(__file__))
+# MODULE_PATH = os.path.join(CONF_PATH, "..", "active_learning")
+# print(MODULE_PATH)
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
@@ -59,14 +59,19 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 # html_theme = 'alabaster'
+# html_theme_options = {
+#     "show_powered_by": False,
+#     "github_user": "exleonem",
+#     "github_repo": "",
+#     "github_banner": True,
+#     "show_related": False,
+#     "fixed_sidebar": True
+# }
+
 html_theme = "sphinx_book_theme"
 html_theme_options = {
-    "show_powered_by": False,
-    "github_user": "exleonem",
-    "github_repo": "",
-    "github_banner": True,
-    "show_related": False,
-    "fixed_sidebar": True
+    "repository_url": "https://github.com/ExLeonem/active-learning",
+    "use_issues_button": True
 }
 
 

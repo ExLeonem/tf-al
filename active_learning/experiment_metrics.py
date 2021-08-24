@@ -17,37 +17,6 @@ class ExperimentSuitMetrics:
 
         WARNING: The reconstructred files will be locked for appending and writing. Can be unlocked by using the unlock() method.
 
-
-        Example content of the meta file.
-
-            {
-                'dataset': {
-                    'name': 'mnist',
-                    'path': '...',
-                    'train_size': 0.75,
-                    'test_size': 0.25,
-                    'val_size': 0.15
-                },
-                'experiments': [
-                    {
-                        'model': 'mc_dropout',
-                        'query_fn': 'max_entropy',
-                        'filename': 'filename',
-                        'params': {
-                            'iterations': 100,
-                            'step_size': 10,
-                            'initial_size': 100,
-                            'fit': {
-                                'optimizer': 'adam',
-                                'learning_rate': 0.15,
-                                'loss': 'sparse_categorical_crossentropy'
-                            }
-                        }
-                    }
-                ]
-            }
-
-
         Parameters:
             base_path (str): Where to save the experiments? No recursive creation of directories.
             verbose (bool): Set debugg mode?
