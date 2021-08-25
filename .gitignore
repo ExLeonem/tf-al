@@ -13,4 +13,4 @@
 
 # Tmp excludes
 contributing.md
-**requirements.txt
+/requirements.txt
