@@ -7,49 +7,49 @@ API Reference
 ActiveLearningLoop
 -------------------------
 
-.. autoclass:: active_learning.ActiveLearningLoop
+.. autoclass:: tf_al.ActiveLearningLoop
    :members:
 
 
 Oracle
 ---------------------
 
-.. autoclass:: active_learning.Oracle
+.. autoclass:: tf_al.Oracle
     :members:
 
 
 Pool
 ---------------------
 
-.. autoclass:: active_learning.Pool
+.. autoclass:: tf_al.Pool
     :members:
 
 
 Dataset
 -------------------------
 
-.. autoclass:: active_learning.Dataset
+.. autoclass:: tf_al.Dataset
     :members:
 
 
 Metrics
 -------------------
 
-.. autoclass:: active_learning.Metrics
+.. autoclass:: tf_al.Metrics
     :members:
 
 
 ExperimentSuit
 --------------------
 
-.. autoclass:: active_learning.ExperimentSuit
+.. autoclass:: tf_al.ExperimentSuit
     :members:
 
 
 ExperimentSuitMetrics
 ---------------------
 
-.. autoclass:: active_learning.ExperimentSuitMetrics
+.. autoclass:: tf_al.ExperimentSuitMetrics
     :members:
 
 
@@ -59,14 +59,14 @@ Model Wrapper
 Model
 ----------------------
 
-.. autoclass:: active_learning.wrapper.Model
+.. autoclass:: tf_al.wrapper.Model
     :members:
 
 
 McDropout
 ----------------------
 
-.. autoclass:: active_learning.wrapper.McDropout
+.. autoclass:: tf_al.wrapper.McDropout
     :members:
 
 
@@ -78,12 +78,12 @@ Utils
 Logger
 --------------
 
-.. automodule:: active_learning.utils.logger
+.. automodule:: tf_al.utils.logger
     :members:
 
 
 Tensorflow
 --------------------
 
-.. automodule:: active_learning.utils.tf
+.. automodule:: tf_al.utils.tf
     :members:
