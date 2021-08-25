@@ -1,7 +1,4 @@
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense
 import pytest
 
 from tf_al import ActiveLearningLoop, Pool, Dataset

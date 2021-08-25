@@ -1,5 +1,5 @@
 
-# Active learning in tensorflow
+# Active learning with tensorflow
 
 
 # Index
@@ -7,7 +7,8 @@
 1. [Installation](#Installation)
 2. [Getting started](#Getting-started)
     1. [Model wrapper](#Model-wrapper)
-    1. [Generic loop](#Basic-loop)
+    2. [Acquisition functions](#Acquisition-functions)
+    1. [Basic active learning loop](#Basic-active-learning-loop)
 3. [Development](#Development)
     1. [Setup](#Setup)
     2. [Scripts](#Scripts)
@@ -15,14 +16,44 @@
 5. [Issues](#Issues)
 
 
+
 # Installation
+
+
+```shell
+$ pip install tf-al
+```
+
 
 # Getting started
 
+The library 
+
+
 ## Model wrapper
+
+Model wrappers are use to create interfaces to the active learning loop.
+
 
 
 ## Acquisition functions
+
+
+
+
+
+## Basic active learning loop
+
+
+```
+import tensorflow as tf
+from tf_al import ActiveLearningLoop, Dataset, Pool
+
+
+
+```
+
+
 
 
 

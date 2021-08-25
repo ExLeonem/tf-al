@@ -9,13 +9,10 @@ class ActiveLearningLoop:
         Creates an active learning loop. The loop accumulates metrics during training in a dictionary
         that is returned.
 
-
         To use with tqdm: 
         ::
             for i in tqdm(my_iterable):
             do_something()
-
-
 
         Parameters:
             model (Model): A model wrapped into a Model type object.

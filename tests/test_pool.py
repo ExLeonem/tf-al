@@ -1,7 +1,6 @@
-
 import numpy as np
 from tf_al import Pool
-    
+
 
 class TestPool:
 
@@ -26,6 +25,7 @@ class TestPool:
         new_pool.annotate(indices, [1, 0, 1, 1])
         inputs, targets = new_pool.get_labeled_data()
         assert len(inputs) == len(indices)
+
 
     def test_annotate_pseudo(self):
         test_inputs = np.random.randn(50)
@@ -99,3 +99,18 @@ class TestPool:
         new_pool[0] = 1
         inputs, indices = new_pool.get_unlabeled_data()
         assert len(indices) != len(test_inputs)
+
+
+    def test_set_explicit_initial_indices(self):
+        test_inputs = np.random.randn(50)
+        test_targets = np.random.choice([0, 1, 2], 50)
+        new_pool = Pool(test_inputs, test_targets)
+
+        explicit_indices = [0, 6, 10, 15]
+        new_pool.init(explicit_indices)
+
+        inputs, targets = new_pool.get_labeled_data()
+
+        equal_inputs = np.all(test_inputs[explicit_indices] == inputs)
+        equal_targets = np.all(test_targets[explicit_indices] == targets)
+        assert len(inputs) == len(explicit_indices) and equal_inputs and equal_targets

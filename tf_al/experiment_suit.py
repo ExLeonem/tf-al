@@ -3,7 +3,6 @@ import numpy as np
 import tensorflow as tf
 
 from . import ActiveLearningLoop, AcquisitionFunction, ExperimentSuitMetrics
-# from .wrapper import Model
 from .utils import setup_logger
 
 class ExperimentSuit:
@@ -35,10 +34,6 @@ class ExperimentSuit:
         metrics_handler=None,
         verbose=False
     ): 
-        
-        # if seed is not None and isinstance(seed, int):
-        #     np.random.seed(seed)
-        #     tf.random.set_seed(seed)
 
         self.verbose = verbose
         self.logger = setup_logger(verbose, name="ExperimentSuit Logger")

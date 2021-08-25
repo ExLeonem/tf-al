@@ -29,22 +29,34 @@ class Pool:
             Only applicable when pool in pseudo mode.
 
             Parameters:
-                size (int): number of targets to initialize the pool with.
+                size (int|list|np.ndarray): Either the number of datapoints to initialized or an explicit list or array of indices to initialize.
         """
         
+        is_int = isinstance(size, int)
+        is_list = isinstance(size, list)
+        is_np_array = isinstance(size, np.ndarray)
+
         if not self.is_pseudo():
             raise ValueError("Error in Pool.init(). Can't initialize pool using init(size) when not in pseudo mode. Initialize pool with targets, to put Pool in pseudo mode.")
 
-        if size < 1:
+        if is_int and size < 1:
             raise ValueError("Error in Pool.init(). Can't initialize pool with {} targets. Use a positive integer > 1.".format(size))
 
-        if len(self.__indices) < size:
+        if is_int and len(self.__indices) < size:
             raise ValueError("Error in Pool.init(). Can't initialize pool, not enough targets. {} targets required, {} are available.".format(size, len(self.__indices)))
 
+        if not (is_int or is_list or is_np_array):
+            raise ValueError("Error in Pool.init(). Expected size to be an integer, list or numpy array of indices.")
+
+        # Initialize explicit indices
+        if is_list or is_np_array:
+            self.__init_explicit_indices(size)
+            return
 
         # WARNING: Will only work for categorical targets
         unique_targets = np.unique(self.__true_targets)
 
+        # Initialize n-datapoints per class
         num_to_select = 1
         num_unique_targets = len(unique_targets)
         if num_unique_targets < size:
@@ -78,6 +90,21 @@ class Pool:
                 if size < 1:
                     break
     
+
+    def __init_explicit_indices(self, indices):
+        """
+            Initializes the pool with ex
+
+            Parameters:
+                indices (list|numpy.ndarray): A list of indices which to use 
+        """        
+        unlabeled_indices = self.get_unlabeled_indices()
+        true_targets = self.__true_targets[unlabeled_indices]
+
+        selected_indices = unlabeled_indices[indices]
+        selected_targets = true_targets[indices]
+        self.annotate(selected_indices, selected_targets)
+
     
     def __adapt_num_to_select(self, available, num_to_select):
         """
