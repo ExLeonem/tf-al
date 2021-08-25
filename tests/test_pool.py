@@ -1,3 +1,4 @@
+import pytest
 import numpy as np
 from tf_al import Pool
 
@@ -114,3 +115,39 @@ class TestPool:
         equal_inputs = np.all(test_inputs[explicit_indices] == inputs)
         equal_targets = np.all(test_targets[explicit_indices] == targets)
         assert len(inputs) == len(explicit_indices) and equal_inputs and equal_targets
+
+    
+    def test_set_explicit_initial_indices_array_valid(self):
+        test_inputs = np.random.randn(50)
+        test_targets = np.random.choice([0, 1, 2], 50)
+        new_pool = Pool(test_inputs, test_targets)
+
+        explicit_indices = np.array([0, 7, 12, 32, 19])
+        new_pool.init(explicit_indices)
+
+        inputs, targets = new_pool.get_labeled_data()
+        equal_inputs = np.all(test_inputs[explicit_indices] == inputs)
+        equal_targets = np.all(test_targets[explicit_indices] == targets)
+        assert len(inputs) == len(explicit_indices) and not equal_inputs and not equal_targets
+
+
+    def test_set_explicit_initial_indices_array_invalid(self):
+        test_inputs = np.random.randn(50)
+        test_targets = np.random.choice([0, 1, 2], 50)
+        new_pool = Pool(test_inputs, test_targets)
+
+        explicit_indices = np.array([60, 120])        
+        with pytest.raises(IndexError) as e:
+            new_pool.init(explicit_indices)
+
+        
+    def test_set_explicit_initial_indices_array_invalid_empty(self):
+        test_inputs = np.random.randn(50)
+        test_targets = np.random.choice([0, 1, 2], 50)
+        new_pool = Pool(test_inputs, test_targets)
+
+        explicit_indices = np.array([])        
+        with pytest.raises(IndexError) as e:
+            new_pool.init(explicit_indices)
+    
+

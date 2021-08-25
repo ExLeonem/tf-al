@@ -37,16 +37,16 @@ class Pool:
         is_np_array = isinstance(size, np.ndarray)
 
         if not self.is_pseudo():
-            raise ValueError("Error in Pool.init(). Can't initialize pool using init(size) when not in pseudo mode. Initialize pool with targets, to put Pool in pseudo mode.")
+            raise ValueError("Error in Pool.init(size). Can't initialize pool using init(size) when not in pseudo mode. Initialize pool with targets, to put Pool in pseudo mode.")
 
         if is_int and size < 1:
-            raise ValueError("Error in Pool.init(). Can't initialize pool with {} targets. Use a positive integer > 1.".format(size))
+            raise ValueError("Error in Pool.init(size). Can't initialize pool with {} targets. Use a positive integer > 1.".format(size))
 
         if is_int and len(self.__indices) < size:
-            raise ValueError("Error in Pool.init(). Can't initialize pool, not enough targets. {} targets required, {} are available.".format(size, len(self.__indices)))
+            raise ValueError("Error in Pool.init(size). Can't initialize pool, not enough targets. {} targets required, {} are available.".format(size, len(self.__indices)))
 
         if not (is_int or is_list or is_np_array):
-            raise ValueError("Error in Pool.init(). Expected size to be an integer, list or numpy array of indices.")
+            raise ValueError("Error in Pool.init(size). Expected size to be an integer, list or numpy array of indices.")
 
         # Initialize explicit indices
         if is_list or is_np_array:
@@ -98,12 +98,17 @@ class Pool:
             Parameters:
                 indices (list|numpy.ndarray): A list of indices which to use 
         """        
-        unlabeled_indices = self.get_unlabeled_indices()
-        true_targets = self.__true_targets[unlabeled_indices]
+    
+        try:
+            unlabeled_indices = self.get_unlabeled_indices()
+            true_targets = self.__true_targets[unlabeled_indices]
 
-        selected_indices = unlabeled_indices[indices]
-        selected_targets = true_targets[indices]
-        self.annotate(selected_indices, selected_targets)
+            selected_indices = unlabeled_indices[indices]
+            selected_targets = true_targets[indices]
+            self.annotate(selected_indices, selected_targets)
+
+        except IndexError as e:
+            raise IndexError("Error in Pool.init(size). " + str(e).capitalize() + ".")
 
     
     def __adapt_num_to_select(self, available, num_to_select):
