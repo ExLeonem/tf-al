@@ -17,18 +17,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@master
-        with:
-          fetch_depth: 0
         
-      - name: Build and Commit
-        uses: sphinx-notes/pages@master
+      - name: Build and push
+        uses: totaldebug/action-sphinx@v2
         with:
-          documentation_path: "./docs/"
-        
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+          sphinx_src: "docs/"
+          target_branch: "gh-pages"
