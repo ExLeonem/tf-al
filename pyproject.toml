@@ -1,21 +1,38 @@
-[project]
-name = "tf-acl"
-version = "0.1.0"
+[tool.poetry]
+name = "active_learning"
+version = "0.0.1"
+description = "A package to create active learning loops and perform experiments in active learning environments using tensorflow."
+authors = ["Maksim Sandybekov <maksim.sandybekov@live.de>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/ExLeonem/active-learning"
+keywords = [
+    "active learning",
+    "deep learning",
+    "tensorflow"
+]
 
-[dependencies]
-tensorflow = "2.2.0"
-numpy = "1.18.5"
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.18.5"
+tensorflow = "^2.6.0"
+tensorflow-datasets = "^4.4.0"
+scikit-learn = "^0.24.2"
 
-[dev-dependencies]
-sphinx = "3.2.1"
-pytest = "6.2.4"
+[tool.poetry.dev-dependencies]
+Sphinx = "^3.0.0"
+sphinx-book-theme = "^0.1.3"
+pydata-sphinx-theme = "^0.6.3"
+pytest = "^6.2.4"
+pytest-cov = "^2.12.1"
+sphinxcontrib-applehelp = "^1.0.2"
+sphinxcontrib-devhelp = "^1.0.2"
+sphinxcontrib-htmlhelp = "^2.0.0"
+sphinxcontrib-jsmath = "^1.0.1"
+sphinxcontrib-qthelp = "^1.0.3"
+sphinxcontrib-serializinghtml = "^1.1.5"
 
 
 [build-system]
-requires = [
-    "setuptools>=42",
-    "cython",
-    "wheel",
-]
-
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
