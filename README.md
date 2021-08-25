@@ -40,23 +40,32 @@ Model wrappers are use to create interfaces to the active learning loop.
 
 
 
-
-
 ## Basic active learning loop
 
 
-```
+```python
 import tensorflow as tf
+from tensorflow.keras import Model, Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Input, Flatten
+
 from tf_al import ActiveLearningLoop, Dataset, Pool
 
 
+#
+base_model = Sequential([
+    Conv2D(32, 3, activation=tf.nn.relu, padding="same", input_shape=input_shape),
+    Conv2D(64, 3, activation=tf.nn.relu, padding="same"),
+    MaxPooling2D(),
+    Dropout(.25),
+    Flatten(),
+    Dense(128, activation=tf.nn.relu),
+    Dropout(.5),
+    Dense(output, activation="softmax")        
+])
+
+
 
 ```
-
-
-
-
-
 
 
 # Development
@@ -72,7 +81,7 @@ from tf_al import ActiveLearningLoop, Dataset, Pool
 
 ### Create documentation
 
-To create documentation for the `./active_leanring` directory. Execute following command
+To create documentation for the `./tf_al` directory. Execute following command
 in `./docs`
 
 ```shell
@@ -96,5 +105,6 @@ $ pytest --cov
 
 
 # Contribution
+
 
 # Issues
