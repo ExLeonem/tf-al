@@ -1,7 +1,6 @@
 
-# TODO
+# Active learning in tensorflow
 
-[ ] Adding [poetry](https://python-poetry.org/)?
 
 # Index
 
@@ -23,6 +22,9 @@
 ## Model wrapper
 
 
+## Acquisition functions
+
+
 
 
 
@@ -30,9 +32,9 @@
 
 ## Setup
 
-1. Create a virtual env
-1. [Install and Setup Poetry](https://python-poetry.org/docs/#installation)
-2. []
+1. Create a virtual env (optional)
+2. [Install and Setup Poetry](https://python-poetry.org/docs/#installation)
+3. Install package dependencies using poetry
 
 
 ## Scripts

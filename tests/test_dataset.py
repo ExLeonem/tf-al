@@ -1,5 +1,5 @@
 import numpy as np
-from active_learning import Dataset
+from tf_al import Dataset
 
 
 class TestDataset:

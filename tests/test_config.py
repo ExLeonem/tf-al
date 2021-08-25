@@ -1,6 +1,6 @@
 
 import pytest
-from active_learning import Config, TrainConfig
+from tf_al import Config, TrainConfig
 
 class TestConfig:
 

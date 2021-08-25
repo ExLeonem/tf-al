@@ -7,7 +7,6 @@ def setup_growth():
     """
 
     gpus = tf.config.experimental.list_physical_devices("GPU")
-    # cpus = tf.config.experimental.list_physical_devices("CPU")
     if gpus:
         try:
             for gpu in gpus:
@@ -19,15 +18,14 @@ def setup_growth():
         except RuntimeError as e:
             print(e)
             
-    elif cpus:
+    else:
+        cpus = tf.config.experimental.list_physical_devices("CPU")
         try:
             logical_cpus = tf.config.experimental.list_logical_devices("CPU")
             print(len(cpus), "Physical CPU,", len(logical_cpus), "Logical CPU")
             
         except RuntimeError as e:
             print(e)
-            
-    tfk = tf.keras
 
 
 def set_tf_log_level(level="2"):

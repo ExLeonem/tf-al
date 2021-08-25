@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from active_learning import Oracle, Pool
+from tf_al import Oracle, Pool
 
 
 class TestOracle:

@@ -1,7 +1,7 @@
 import os, shutil
 import pytest
 
-from active_learning import Metrics
+from tf_al import Metrics
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))

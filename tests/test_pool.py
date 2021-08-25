@@ -1,6 +1,6 @@
 
 import numpy as np
-from active_learning import Pool
+from tf_al import Pool
     
 
 class TestPool:

@@ -4,9 +4,9 @@ from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense
 import pytest
 
-from active_learning import ActiveLearningLoop, Pool, Dataset
-from active_learning.wrapper import Model
-from active_learning.utils import setup_growth
+from tf_al import ActiveLearningLoop, Pool, Dataset
+from tf_al.wrapper import Model
+from tf_al.utils import setup_growth
 
 
 class MockFitResult(object):

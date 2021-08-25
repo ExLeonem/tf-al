@@ -1,8 +1,8 @@
 
 import pytest
 import numpy as np
-from active_learning.wrapper import Model
-from active_learning import AcquisitionFunction, Pool
+from tf_al.wrapper import Model
+from tf_al import AcquisitionFunction, Pool
 
 
 class MockModel:

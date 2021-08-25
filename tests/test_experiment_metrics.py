@@ -1,6 +1,6 @@
 import os, shutil
 import pytest
-from active_learning import ExperimentSuitMetrics
+from tf_al import ExperimentSuitMetrics
 
 
 METRICS_PATH = os.path.join(os.getcwd(), "test_metrics")
