@@ -1,0 +1,23 @@
+name: Documentation publish
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+jobs:
+
+  build:
+    name: Push sphinx pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: seanzhengw/sphinx-pages@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_readme: true
