@@ -30,6 +30,10 @@
 
 ## Setup
 
+1. Create a virtual env
+1. [Install and Setup Poetry](https://python-poetry.org/docs/#installation)
+2. []
+
 
 ## Scripts
 

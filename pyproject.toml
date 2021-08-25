@@ -2,22 +2,20 @@
 name = "tf-acl"
 version = "0.1.0"
 
-
 [dependencies]
 tensorflow = "2.2.0"
 numpy = "1.18.5"
-sphinx = "3.2.1"
-pytest = "6.2.4"
-
 
 [dev-dependencies]
+sphinx = "3.2.1"
 pytest = "6.2.4"
 
 
 [build-system]
 requires = [
     "setuptools>=42",
-    "wheel"
+    "cython",
+    "wheel",
 ]
 
 build-backend = "setuptools.build_meta"

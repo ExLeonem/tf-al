@@ -10,16 +10,12 @@ class ActiveLearningLoop:
         that is returned.
 
 
-        To use with tqdm:
+        To use with tqdm: 
+        ::
             for i in tqdm(my_iterable):
-                do_something()
+            do_something()
 
-        use a "with" close instead, as:
 
-            with tqdm(total=len(my_iterable)) as progress_bar:
-                for i in my_iterable:
-                    do_something()
-                    progress_bar.update(1) # update progress
 
         Parameters:
             model (Model): A model wrapped into a Model type object.
