@@ -31,7 +31,6 @@ class TestAcquisitionFunction:
 
     
     def test_name_decorator_invalid(self):
-
         with pytest.raises(ValueError):
             @name
             class MockAcq(AcquisitionFunction):

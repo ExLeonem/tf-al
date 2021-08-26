@@ -7,16 +7,11 @@ def name(function_name):
             name (str): The name used for the acquisition function.
     """
 
-    print(function_name)
-
-    if isinstance(function_name, object):
-        raise ValueError("Error in @name(). Missing value for function_name.")
-
     if not isinstance(function_name, str):
         raise ValueError("Error in @name(fn_name). Expected a string for fn_name.")
 
+    # Decorate class by adding function
     def decorator(cls):
-
         def get_default_name(self):
             return function_name
 
