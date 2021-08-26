@@ -122,13 +122,13 @@ class TestPool:
         test_targets = np.random.choice([0, 1, 2], 50)
         new_pool = Pool(test_inputs, test_targets)
 
-        explicit_indices = np.array([0, 7, 12, 32, 19])
+        explicit_indices = np.array([0, 7, 12, 19, 32])
         new_pool.init(explicit_indices)
 
         inputs, targets = new_pool.get_labeled_data()
         equal_inputs = np.all(test_inputs[explicit_indices] == inputs)
         equal_targets = np.all(test_targets[explicit_indices] == targets)
-        assert len(inputs) == len(explicit_indices) and not equal_inputs and not equal_targets
+        assert len(inputs) == len(explicit_indices) and equal_inputs and equal_targets
 
 
     def test_set_explicit_initial_indices_array_invalid(self):

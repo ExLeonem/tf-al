@@ -20,6 +20,7 @@
 # Installation
 
 
+
 ```shell
 $ pip install tf-al
 ```
@@ -62,11 +63,52 @@ model_config = Config(
     eval={"batch_size": 900, "sample_size": 25}
 )
 model = McDropout(base_model, config=model_config)
-model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=[keras.metrics.SparseCategoricalAccuracy()])
+model.compile(
+    optimizer="adam", 
+    loss="sparse_categorical_crossentropy", 
+    metrics=[keras.metrics.SparseCategoricalAccuracy()]
+)
 ```
 
-You can easily define a custom model wrapper, simply extend your own class using the `Model` class and 
-overwrite functions as needed. 
+The basic model wrapper in essence can be used like a regular tensorflow model.
+
+```python
+from tensorflow.keras import Model, Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Input, Flatten
+from tf_al.wrapper import McModel
+
+# Define and wrap model (here McDropout)
+base_model = Sequential([
+    Conv2D(32, 3, activation=tf.nn.relu, padding="same", input_shape=input_shape),
+    Conv2D(64, 3, activation=tf.nn.relu, padding="same"),
+    MaxPooling2D(),
+    Dropout(.25),
+    Flatten(),
+    Dense(128, activation=tf.nn.relu),
+    Dropout(.5),
+    Dense(output, activation="softmax")        
+])
+
+model = McDropout(base_model)
+model.compile(
+    optimizer="adam", 
+    loss="sparse_categorical_crossentropy", 
+    metrics=[keras.metrics.SparseCategoricalAccuracy()]
+)
+
+
+# Fitting the model
+model.fit(inputs, targets, batch_size=25, epochs=100)
+
+# Evaluating
+model.evaluate(some_inputs, some_targets)
+
+# Predicting
+model(inputs, **additional_params)
+```
+
+However you can easily define a custom model wrapper, simply extend your own class using the `Model` class and 
+overwrite functions as needed. The regular tensorflow model can be accessed via `self._model`.
 
 ```python
 from tf_al import Model
@@ -76,11 +118,16 @@ class CustomModel(Model):
 
     def __init__(self, model, **kwargs):
         super().__init__(model, **kwargs)
-        # Custom 
+        # Custom model initialization
+
+
+    def __call__(self, *args, **kwargs):
+        return self._model(*args, **kwargs)
 
 
     def predict(self, inputs, **kwargs):
         # Custom prediction method or the standard tensorflow call model(inputs)
+        return self._model(inputs, **kwargs)
 
 
     def evaluate(self, inputs, targets, **kwargs):
@@ -93,10 +140,12 @@ class CustomModel(Model):
 
     def fit(self, *args, **kwargs):
         # Custom fitting procedure, else tensorflow .fit() method is used. 
+        self._model.fit(*args, **kwargs)
 
 
     def compile(self, *args, **kwargs):
         # Custom compile method else using tensorflow .compile(**kwargs)
+        self._model.compile(**kwargs)
 
 
     def reset(self, pool, dataset):
@@ -143,12 +192,16 @@ base_model = Sequential([
 ])
 
 model_config = Config(
-    fit={"epochs": 200, "batch_size": 10},
-    query={"sample_size" 25},
-    eval={"batch_size": 900, "sample_size": 25}
+    fit={"epochs": 200, "batch_size": 10}, # Passed to fit() of the wrapper
+    query={"sample_size" 25}, # Configuration passed to acquisition function during query step
+    eval={"batch_size": 900, "sample_size": 25} # Parameters passed to evaluation method of the wrapper
 )
 model = McDropout(base_model, config=model_config)
-model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=[keras.metrics.SparseCategoricalAccuracy()])
+model.compile(
+    optimizer="adam", 
+    loss="sparse_categorical_crossentropy", 
+    metrics=[keras.metrics.SparseCategoricalAccuracy()]
+)
 
 # Over which model to perform experiments single or list [model_1, ..., model_n]
 models = model
@@ -164,7 +217,6 @@ experiments = ExperimentSuit(
 )
 
 ```
-
 
 # Development
 
