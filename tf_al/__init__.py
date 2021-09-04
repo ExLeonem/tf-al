@@ -4,7 +4,7 @@ from .metrics import Metrics, aggregates_per_key, save_history
 from .oracle import Oracle
 from .acquisition_function import AcquisitionFunction
 
-from .config import Config, TrainConfig
+from .config import Config
 from .pool import Pool
 
 from .dataset import Dataset

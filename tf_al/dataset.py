@@ -2,6 +2,7 @@ from enum import Enum
 from sklearn.model_selection import train_test_split
 from . import Pool
 
+
 class Dataset:
     """
         Splits a dataset into tree parts. Train/Test/validation.

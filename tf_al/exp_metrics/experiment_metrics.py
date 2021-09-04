@@ -2,7 +2,9 @@ import os
 import csv, json
 import logging
 
-from .utils import setup_logger
+from ..utils import setup_logger
+from .csv_writer import CsvWriter
+from .meta_writer import MetaWriter
 
 
 class ExperimentSuitMetrics:
@@ -24,13 +26,14 @@ class ExperimentSuitMetrics:
 
     def __init__(self, base_path, verbose=False):
         self.logger = setup_logger(verbose, name="ExperimentSuitMetrics", default_log_level=logging.WARN)
+        self.__BASE_PATH = base_path
 
-        self.BASE_PATH = base_path
-        self.META_FILE_PATH = os.path.join(base_path, ".meta.json")
-        self.__setup_dir(base_path)
+        self.__meta_writer = MetaWriter(base_path)
 
         # Keep track of written experiment metrics (Code 0=File was loaded, 1=File created)
         self.experiment_files = {}
+
+        self.__csv_writer = CsvWriter()
 
         # CSV Parameters
         self.delimiter = " "
@@ -50,8 +53,7 @@ class ExperimentSuitMetrics:
         
         # Create non-existent meta.json file
         if not os.path.exists(self.META_FILE_PATH):
-            # base_content = {"models": [], "dataset": {}, "params": {}, "acquisition_function": [], "run": []}
-            base_content = {"experiments": []}
+            base_content = {"models": [], "dataset": {}, "params": {}, "acquisition_function": [], "run": []}
             self.write_meta(base_content)
 
 
