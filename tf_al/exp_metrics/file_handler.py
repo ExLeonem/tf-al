@@ -6,7 +6,7 @@ class FileHandler:
         Offers generic handler utilities.
     """
 
-    def add(self, filename, data):
+    def write(self, filename, data, mode="a"):
         """
             Adding new data to already existing one.
 
@@ -29,6 +29,7 @@ class FileHandler:
         """
         pass
 
+    
     
     # ----
     # Utilities

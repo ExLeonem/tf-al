@@ -27,6 +27,7 @@ class ExperimentSuitMetrics:
 
     def __init__(self, base_path, metrics_handler=None, verbose=False):
         self.logger = setup_logger(verbose, name="ExperimentSuitMetrics", default_log_level=logging.WARN)
+        self.__BASE_PATH = base_path
 
         if metrics_handler is None:
             metrics_handler = CsvHandler(base_path)
@@ -39,7 +40,7 @@ class ExperimentSuitMetrics:
         self.__load_experiments()
 
 
-    def __setup_dir(self, path):
+    def init_dir(self, path):
         """
             Setup a directory for a suit of experiment metrics.
         """
@@ -49,10 +50,7 @@ class ExperimentSuitMetrics:
             os.mkdir(path)
         
         # Create non-existent meta.json file
-        if not os.path.exists(self.META_FILE_PATH):
-            base_content = {"models": [], "dataset": {}, "params": {}, "acquisition_function": [], "run": []}
-            self.write_meta(base_content)
-
+        self.__meta_handler.init_meta_file()
 
 
     def add_dataset_meta(self, name, path, train_size, test_size=None, val_size=None):
@@ -113,30 +111,7 @@ class ExperimentSuitMetrics:
     # Read/Write files
     # -------------------------
 
-    def write_meta(self, content):
-        """
-            Writes a dictionary to .meta.json.
 
-            Parameters:
-                content (dict): The meta information to be written to .meta.json
-        """
-
-        with open(self.META_FILE_PATH, "w") as json_file:
-            json_file.write(json.dumps(content, indent=4))
-
-
-    def read_meta(self):
-        """
-            Reads the meta information from the .meta.json file.
-
-            Returns:
-                (dict) of meta information.
-        """
-        content = {}
-        with open(self.META_FILE_PATH, "r") as json_file:
-            content = json_file.read()
-
-        return json.loads(content)
 
     
     def write_line(self, experiment_name, values, filter_keys=None, filter_nan=True):
@@ -181,19 +156,19 @@ class ExperimentSuitMetrics:
             csv_writer.writerow(values)
 
 
-    def read(self, experiment_name):
+    def read(self, filename):
         """
             Read metrics from a specific experiment.
 
             Parameters:
-                experiment_name (str): The experiment to read from.
+                filename (str): The name of the file, representing the experiment name.
 
             Returns:
                 (list(dict)) of accumulated experiment metrics.
         """
 
         # .csv extension in filename? 
-        experiment_name = self._add_extension(experiment_name, "csv")
+        experiment_name = self._add_extension(filename, "csv")
 
         values = []
         experiment_file_path = os.path.join(self.BASE_PATH, experiment_name) 
@@ -319,34 +294,3 @@ class ExperimentSuitMetrics:
             return "w"
 
         return default_mode
-
-
-
-    def get_dataset_info(self):
-        """
-            Read 
-
-            Returns:
-                (dict) containing meta information about the used dataset for the experiment
-        """
-        
-        meta = self.read_meta()
-        return meta.get("dataset", None)
-
-
-    def get_experiment_meta(self, experiment_name):
-        """
-
-            Parameter:
-                experiment_name (self): The name of the experiment.
-        """
-        meta = self.read_meta()
-        experiments = meta["experiments"]
-        experiment_information = {}
-        for experiment in experiments:
-            
-            if experiment["experiment_name"] == experiment_name:
-                experiment_information = experiment
-
-        return experiment_information
-        
