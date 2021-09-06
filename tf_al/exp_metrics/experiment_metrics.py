@@ -3,8 +3,8 @@ import csv, json
 import logging
 
 from ..utils import setup_logger
-from .csv_writer import CsvWriter
-from .meta_writer import MetaWriter
+from .csv_handler import CsvHandler
+from .meta_handler import MetaHandler
 
 
 class ExperimentSuitMetrics:
@@ -21,24 +21,21 @@ class ExperimentSuitMetrics:
 
         Parameters:
             base_path (str): Where to save the experiments? No recursive creation of directories.
-            verbose (bool): Set debugg mode?
+            metrics_handler (FileHandler): A different file format to write out files into. (default=CsvHandler)
+            verbose (bool): Set debugg mode? (default=False)
     """
 
-    def __init__(self, base_path, verbose=False):
+    def __init__(self, base_path, metrics_handler=None, verbose=False):
         self.logger = setup_logger(verbose, name="ExperimentSuitMetrics", default_log_level=logging.WARN)
-        self.__BASE_PATH = base_path
 
-        self.__meta_writer = MetaWriter(base_path)
+        if metrics_handler is None:
+            metrics_handler = CsvHandler(base_path)
+            
+        self.__metrics_handler = metrics_handler
+        self.__meta_handler = MetaHandler(base_path)
 
         # Keep track of written experiment metrics (Code 0=File was loaded, 1=File created)
         self.experiment_files = {}
-
-        self.__csv_writer = CsvWriter()
-
-        # CSV Parameters
-        self.delimiter = " "
-        self.quotechar = "\""
-        self.quoting = csv.QUOTE_MINIMAL
         self.__load_experiments()
 
 
@@ -281,23 +278,6 @@ class ExperimentSuitMetrics:
 
 
 
-    def _add_extension(self, filename, ext):
-        """
-            Adds an extension to a filename.
-
-            Parameters:
-                filename (str): The filename to check for the extension
-                ext (str): The file extension to add and check for
-            
-            Returns:
-                (str) the file name with a file extension appended. 
-        """
-
-        if ext not in filename:
-            return filename + "." + ext
-        
-        return filename
-
 
     def __load_experiments(self):
         """
@@ -340,23 +320,6 @@ class ExperimentSuitMetrics:
 
         return default_mode
 
-
-    def __get_csv_params(self):
-        return {
-            "delimiter": self.delimiter,
-            "quotechar": self.quotechar,
-            "quoting": self.quoting
-        }
-
-
-    def __get_csv_writer(self, file, fieldnames):
-        csv_params = self.__get_csv_params()
-        return csv.DictWriter(file, fieldnames, **csv_params)
-
-    
-    def __get_csv_reader(self, file):
-        csv_params = self.__get_csv_params()
-        return csv.DictReader(file, **csv_params)
 
 
     def get_dataset_info(self):

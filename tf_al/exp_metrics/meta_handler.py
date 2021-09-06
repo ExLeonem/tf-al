@@ -1,8 +1,10 @@
-import os, json, logging
+import os, json
+import base64, pickle
+import logging
 # from ..utils import setup_logger
 
 
-class MetaHandler:
+class MetaHandler():
     """
         Write meta information about the active learning experiment out into
         a json file.
@@ -24,14 +26,6 @@ class MetaHandler:
             "acquisition_function": [], 
             "run": []
         }
-
-
-    def add_model(self, name, loss, optimizer, fit, query):
-        """
-            Add information about a specific model.
-        """
-        
-        pass
 
     
     def add_dataset(
@@ -62,7 +56,48 @@ class MetaHandler:
         pass
 
 
-    def write(self, path, data, replace=True, create=False):
+    def add_model(self, model):
+        """
+            Append model information to the meta file. 
+            The passed model needs to be compiled. An uncompiled model will result in an error.
+
+            Parameters:
+                model (Model): the wrapped model, encapsulating all model information.
+        """
+
+        serialized_model = pickle.dumps(model)
+        model_name = model.get_model_name()
+        
+        # https://stackoverflow.com/questions/60212925/is-there-a-keras-function-to-obtain-the-compile-options
+        base_model = model.get_base_model()
+        loss = base_model.loss
+
+        # Collect optimizer information
+        optimizer_name = base_model.optimizer.__class__.__name__
+        optimizer_config = base_model.optimizer.get_config()
+        optimizer = {
+            "name": optimizer_name,
+            **optimizer_config
+        }
+        
+        # Write data to the file
+        data = {
+            "id": model.get_id(),
+            "name": model_name,
+            "object": base64.b64encode(serialized_model).decode("ascii"),
+            "loss": loss,
+            "optimizer": optimizer,
+        }
+
+        data = self.__add_model_config(model, data)
+        self.write("models", data, append=True)
+
+
+    def add_params(self, name, **kwargs):
+        pass
+
+
+    def write(self, key, data, append=False):
         """
             Write data into the meta file under given key.
 
@@ -73,15 +108,25 @@ class MetaHandler:
                 create (bool): Create non-existent paths or keys.
         """
         content = self.read()
-        if isinstance(path, str):
-            content[path] = data
+        if append:
 
-        # Resolve path
-        if isinstance(path, list):
-            content = self.__resolve(path, data, content, replace, create)
+            if isinstance(content[key], list):
+                content[key].append(data)
+
+            elif isinstance(content[key], dict):
+                content[key] = {
+                    **content[key],
+                    **data
+                }
+            
+            else:
+                raise ValueError("Error in MetaHandler.write(). Can only append to data of type list or dict. Got type {}".format(type(content[key])))
+
+        else:
+            content[key] = data
 
         # Overwrite old json meta information
-        with open(self.__META_FILE_PATH, "r") as json_file:
+        with open(self.__META_FILE_PATH, "w") as json_file:
             json_file.write(json.dumps(content))
 
 
@@ -118,11 +163,44 @@ class MetaHandler:
         return False
     
 
-    def __resolve(self, path, new_data, old_content, replace, create):
+    def __append_new_data(self, key, content, new_data):
+        
+        if isinstance(content[key], list):
+            content[key].append(new_data)
+
+        elif isinstance(content[key], dict):
+            content[key] = {
+                **content[key],
+                **new_data
+            }
+        
+        else:
+            raise ValueError("Error in MetaHandler.write(). Can only append to data of type list or dict. Got type {}".format(type(content[key])))
+
+        return content
+
+
+    def __add_model_config(self, model, data):
+        """
+            Adding model configurations to a dictionary.
+
+            Returns:
+                (dict) updated with model configurations for differen situations.
         """
 
-        """
-        pass
+        fit_config = model.get_fit_config()
+        if fit_config != {}:
+            data["fit"] = fit_config
+
+        query_config = model.get_query_config()
+        if query_config != {}:
+            data["query"] = query_config
+        
+        eval_config = model.get_eval_config()
+        if eval_config != {}:
+            data["eval"] = eval_config
+        
+        return data
 
 
     # ---------------

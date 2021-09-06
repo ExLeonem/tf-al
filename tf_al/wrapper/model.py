@@ -1,5 +1,5 @@
-import os, sys, math
-import logging
+import os, math
+import uuid
 import numpy as np
 from abc import ABC, abstractmethod
 from enum import Enum
@@ -56,11 +56,14 @@ class Model:
     ):
 
         self.logger = setup_logger(verbose, "Model Logger")
+        self.__verbose = verbose
+        self.__id = uuid.uuid1()
         self._model = model
         self._config = config
         self._mode = mode
         self._model_type = model_type
         self._name = name
+        
 
         # Checkpoints path set?
         if checkpoint_path is None:
@@ -384,6 +387,9 @@ class Model:
     # Setter/-Getter
     # --------------------------
 
+    def get_id(self):
+        return str(self.__id)
+
     def get_model_name(self, prefix=True):
         """
             Returns the model name.
@@ -409,7 +415,6 @@ class Model:
         return "model"
         
 
-
     def get_model_type(self):
         return self._model_type
 
@@ -425,6 +430,9 @@ class Model:
     def set_mode(self, mode):
         self._mode = mode
 
+    def get_base_model(self):
+        return self._model
+
     # ---------------
     # Dunder
     # ----------------------
@@ -436,3 +444,17 @@ class Model:
     def __str__(self):
         return self.get_model_name()
 
+    
+    def __getstate__(self):
+        """
+            Called when pickeling the object.
+            Remove logger, because no use to pickle logger.
+        """
+        d = dict(self.__dict__)
+        del d["logger"]
+        return d
+
+    def __setstate__(self, d):
+        self.__dict__.update(d)
+        verbose = d["__verbose"]
+        self.logger = setup_logger(verbose, "Model Logger")
