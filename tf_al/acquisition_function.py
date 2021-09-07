@@ -30,12 +30,20 @@ class AcquisitionFunction:
             batch_size (int): to configure the processing in batches (default=None)
     """
 
-    def __init__(self, fn_name, batch_size=None, verbose=False):
+    def __init__(self, fn_name, batch_size=None, verbose=False, **kwargs):
         self.logger = setup_logger(verbose, "Acquisition Function Logger")
 
         self.name = fn_name
         self.fn = None
         self.batch_size = batch_size
+
+        self.kwargs = kwargs
+
+        # Set passed kwargs as additional attributes, not overwriting existing
+        # for key, value in kwargs.items():
+        #     if not hasattr(self, key):
+        #         setattr(self, key, value)
+
 
     def __call__(self, model, pool, step_size=20, **kwargs):
         """

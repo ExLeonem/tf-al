@@ -156,6 +156,25 @@ class Dataset:
         return hasattr(self, 'x_val') and hasattr(self, 'y_val')
 
 
+    def get_split_ratio(self):
+        """
+
+            Returns:
+                (int, int, int) the split ratio between (train, test, eval) sets.  
+        """
+
+        train_size = len(self.x_train)
+        test_size = 0
+        if hasattr(self, "x_test"):
+            test_size = len(self.x_test)
+        
+        eval_size = 0
+        if hasattr(self, "x_eval"):
+            eval_size = len(self.x_eval)
+        
+        return (train_size, test_size, eval_size)
+
+
     def percentage_of(self, total_number, part):
         """
             Calculates the percentage a part takes from given total number.
@@ -203,9 +222,9 @@ class Dataset:
     def get_train_targets(self):
         return self.y_train
 
-
     def get_test_split(self):
         return (self.x_test, self.y_test)
 
     def get_eval_split(self):
         return (self.x_val, self.y_val)
+

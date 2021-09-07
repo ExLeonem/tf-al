@@ -1,6 +1,7 @@
 import os, json
 import base64, pickle
 import logging
+from tf_al.acquisition_function import AcquisitionFunction
 # from ..utils import setup_logger
 
 
@@ -13,10 +14,11 @@ class MetaHandler():
             base_path (str): The base path where to put the .meta.json file.
     """
 
-    def __init__(self, base_path, verbose=False):
+    def __init__(self, base_path, metric_extesion=None, verbose=False):
         # self.__logger = setup_logger(verbose, name="MetaWriter", default_log_level=logging.WARN)
         self.__BASE_PATH = base_path        
         self.__META_FILE_PATH = os.path.join(base_path, ".meta.json")
+        self.__METRIC_EXT = metric_extesion
 
         # What goes initialy into the .meta.json file
         self.__base_content = {
@@ -26,34 +28,6 @@ class MetaHandler():
             "acquisition_function": [], 
             "run": []
         }
-
-    
-    def add_dataset(
-        self, 
-        name, 
-        url=None, 
-        test_size=None, 
-        train_size=None, 
-        val_size=None
-    ):
-        """
-            Add information about the used dataset.
-        """
-
-        split_ratio = {}
-        data = {"name": name}
-
-        if url is not None:
-            data["url"] = url
-        
-        if split_ratio != {}:
-            data["split"] = split_ratio
-
-        self.write("dataset", data)
-
-
-    def add_params(self, **kwargs):
-        pass
 
 
     def add_model(self, model):
@@ -70,9 +44,18 @@ class MetaHandler():
         
         # https://stackoverflow.com/questions/60212925/is-there-a-keras-function-to-obtain-the-compile-options
         base_model = model.get_base_model()
-        loss = base_model.loss
 
-        # Collect optimizer information
+        # Is model compiled?
+        error_message = "Error in MetaHandler.add_model(). Can't add model information because model is not compiled. "
+        if not hasattr(base_model, "loss"):
+            raise ValueError(error_message + "Missing loss attribute.")
+
+        if not hasattr(base_model, "optimizer"):
+            raise ValueError(error_message, "Missing optimizer attribute")
+
+
+        # Collect compilation parameters
+        loss = base_model.loss
         optimizer_name = base_model.optimizer.__class__.__name__
         optimizer_config = base_model.optimizer.get_config()
         optimizer = {
@@ -93,8 +76,91 @@ class MetaHandler():
         self.write("models", data, append=True)
 
 
-    def add_params(self, name, **kwargs):
-        pass
+    def add_dataset(self, dataset, name, url=None):
+        """
+            Add information about the used dataset.
+
+            Parameters:
+                dataset (Dataset): The dataset used.
+                name (str): The name of the dataset.
+                url (str): An optional url where to get the dataset from. (default=None)
+        """
+
+        data = {"name": name}
+
+        if url is not None:
+            data["url"] = url
+
+        # Add dataset split information
+        train_size, test_size, eval_size = dataset.get_split_ratio()
+        if test_size != 0 or eval_size != 0:
+            data["splits"] = {
+                "train": train_size,
+                "test": test_size,
+                "eval": eval_size
+            }                        
+
+        self.write("dataset", data)
+
+
+    def add_params(self, **kwargs):
+        """
+            Add active learning specific arguments to the meat file.
+        """
+        self.write("params", kwargs)
+
+    
+    def add_acquisition_function(self, acqusition_function):
+        """
+            Add information about a specific acquisition function to the meta file.
+
+            Parameters:
+                acquisition_function (AcquisitionFunction): The acquisition function for which to add meta information.
+        """
+
+        data = {
+            "id": 0,
+            "name": acqusition_function.name,
+            "params": {
+                **acqusition_function.kwargs
+            }
+        }
+        
+        self.write("acquisition_function", data, append=True)
+
+
+
+    def add_run(self, num_run, model_id, acquisition_function, init_indices, seed=None):
+        """
+            Add information about an experimental run to the meta file.
+
+            TODO: 
+                - Add check if experiment already run
+
+            Parameters:
+                num_run (int): The number of this run.
+                model_id (uuid): The model uuid.
+                acquisition_function (AcquisitionFunction): The acquisition function to use.
+                init_indices (numpy.ndarray): The initial indices used for this experiment.
+                seed (int): The seed on which to experiment is performed. (default=None)
+
+        """
+
+        filename = model_id + "." + self.__METRIC_EXT
+        file_path = os.path.join(self.__BASE_PATH, filename)
+
+        data = {
+            "n": n,
+            "model": model_id,
+            "acquisition_function": "test",
+            "path": file_path,
+            "initial_indices": init_indices
+        }
+
+        if seed is not None:
+            data["seed"] = seed
+
+        self.write("run", data, append=True)
 
 
     def write(self, key, data, append=False):
@@ -227,7 +293,6 @@ class MetaHandler():
         key = "acquisition_function"
         return json_data.get(key, self.__base_content[key])
 
-    
     def get_run(self, run=None):
         """
             Access information of different experiment runs.

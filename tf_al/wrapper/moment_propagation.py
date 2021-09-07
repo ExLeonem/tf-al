@@ -173,18 +173,19 @@ from . import Model, ModelType, Mode
 #         return predictions
 
     
-#     def __cast_tensor_to_numpy(self, values):
-#         """
-#             Cast tensor objects of different libraries to
-#             numpy arrays.
-#         """
+    # def __cast_tensor_to_numpy(self, values):
+    #     """
+    #         Cast tensor objects of different libraries to
+    #         numpy arrays.
+    #     """
 
-#         # Values already of type numpy.ndarray
-#         if isinstance(values, np.ndarray):
-#             return values
+    #     # Values already of type numpy.ndarray
+    #     if isinstance(values, np.ndarray):
+    #         return values
 
-#         values = tf.make_ndarray(values)
-#         return values
+    #     # values = tf.make_ndarray(values)
+    #     values = values.numpy()
+    #     return values
 
 
 #     # ----------------

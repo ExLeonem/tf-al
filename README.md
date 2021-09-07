@@ -1,5 +1,13 @@
 
+
+[![PyPI version](https://badge.fury.io/py/tf-al.svg)](https://badge.fury.io/py/tf-al)
+[![PyPi license](https://badgen.net/pypi/license/tf-al/)](https://pypi.org/project/tf-al/)
+![Python Version: ^3.6](https://img.shields.io/badge/python-%5E3.6-blue)
+
+
 # Active learning with tensorflow
+
+Perform active learning in tensorflow. Currently only supports classification tasks using Mc Dropout models.
 
 
 # Index
@@ -17,8 +25,18 @@
 
 
 
+# Dependencies
+
+- python="^3.6"
+- tensorflow="^2.0.0"
+- scikit-learn="^0.24.2"
+- numpy="^1.0.0"
+- tqdm="^4.62.6"
+
+
 # Installation
 
+To use a specific version of tensorflow or if you want gpu support you should manually install tensorflow. Else this package automatically will install the lastest marked version of tensorflow.
 
 
 ```shell
@@ -220,11 +238,14 @@ experiments = ExperimentSuit(
 
 # Development
 
+
 ## Setup
 
-1. Create a virtual env (optional)
-2. [Install and Setup Poetry](https://python-poetry.org/docs/#installation)
-3. Install package dependencies using poetry
+1. Fork and clone the forked repository
+2. Create a virtual env (optional)
+3. [Install and Setup Poetry](https://python-poetry.org/docs/#installation)
+4. Install package dependencies [using poetry](https://python-poetry.org/docs/cli/#install) or set them up manually
+5. Start development
 
 
 ## Scripts
@@ -237,6 +258,13 @@ in `./docs`
 ```shell
 $ make html
 ```
+
+To clear the generated documentation use following command.
+
+```shell
+$ make clean
+```
+
 
 ### Run tests
 
@@ -251,7 +279,6 @@ To generate additional coverage reports run.
 ```shell
 $ pytest --cov
 ```
-
 
 
 # Contribution
