@@ -3,7 +3,9 @@ import pytest
 from tf_al import ExperimentSuitMetrics
 
 
-METRICS_PATH = os.path.join(os.getcwd(), "test_metrics")
+
+BASE_PATH = os.path.dirname(os.path.realpath(__file__))
+METRICS_PATH = os.path.join(BASE_PATH, "metrics")
 
 
 class TestExperimentMetricsReadWrite:

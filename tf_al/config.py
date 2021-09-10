@@ -47,6 +47,10 @@ class Config:
         return kwargs
 
 
+    # -------------
+    # Dunder
+    # -------------------
+
     # Access function
     def __getitem__(self, key):
         return self.kwargs[key]
@@ -54,36 +58,3 @@ class Config:
 
     def __contains__(self, key):
         return key in self.kwargs
-
-
-
-class TrainConfig(Config):
-    """
-        Setting training configuration.
-
-        Keyword-arguments:
-            batch_size (int): Set the batch size of the training set
-            epochs (int): The number of epochs to train
-            optimizer (str | object): The optimizer to be used
-            loss (str | object): The loss to be used
-            metrics (list(str)): A list of metrics to output while training
-    """
-
-    def __init__(self, **kwargs):
-        defaults = {
-            "batch_size": 40,
-            "epochs": 5,
-            "optimizer": "adam",
-            "loss": "binary_crossentropy",
-            "metrics": ["accuracy"]
-        }
-
-        # User trying to overwrite defaults?
-        if not (dict.get(kwargs, "defaults") is None):
-            raise ValueError("Error in TrainConfig. Can't overwrite defaults. Remove defaults from **kwargs.")
-
-
-        super(TrainConfig, self).__init__(defaults=defaults, **kwargs)
-
-    # def __getitem__(self, key):
-    #     return super().__getitem__(key)

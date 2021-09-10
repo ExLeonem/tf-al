@@ -1,6 +1,6 @@
 
 import pytest
-from tf_al import Config, TrainConfig
+from tf_al import Config
 
 class TestConfig:
 
@@ -30,30 +30,3 @@ class TestConfig:
         ]
         with pytest.raises(ValueError) as e:
             Config(train_size=0.4, defaults=defaults)
-
-        
-
-class TestTrainConfig:
-
-    def test_defaults_key_passed(self):
-        defaults = {
-            "batch_size": 60,
-            "epochs": 12
-        }
-        
-        with pytest.raises(ValueError) as e:
-            config = TrainConfig(defaults=defaults)
-
-
-    def test_only_defaults(self):
-        config = TrainConfig()
-        assert config["batch_size"] == 40
-        assert config["optimizer"] == "adam"
-
-
-    def test_overwrite_set_defaults(self):
-        batch_size = 12
-        config = TrainConfig(batch_size=batch_size)
-        assert config["batch_size"] == batch_size
-        assert config["optimizer"] == "adam"
-        

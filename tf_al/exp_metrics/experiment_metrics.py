@@ -2,7 +2,9 @@ import os
 import csv, json
 import logging
 
-from .utils import setup_logger
+from ..utils import setup_logger
+from .csv_handler import CsvHandler
+from .meta_handler import MetaHandler
 
 
 class ExperimentSuitMetrics:
@@ -19,41 +21,36 @@ class ExperimentSuitMetrics:
 
         Parameters:
             base_path (str): Where to save the experiments? No recursive creation of directories.
-            verbose (bool): Set debugg mode?
+            metrics_handler (FileHandler): A different file format to write out files into. (default=CsvHandler)
+            verbose (bool): Set debugg mode? (default=False)
     """
 
-    def __init__(self, base_path, verbose=False):
+    def __init__(self, base_path, metrics_handler=None, verbose=False):
         self.logger = setup_logger(verbose, name="ExperimentSuitMetrics", default_log_level=logging.WARN)
+        self.__BASE_PATH = base_path
 
-        self.BASE_PATH = base_path
-        self.META_FILE_PATH = os.path.join(base_path, ".meta.json")
-        self.__setup_dir(base_path)
+        if metrics_handler is None:
+            metrics_handler = CsvHandler(base_path)
+            
+        self.__metrics_handler = metrics_handler
+        self.__meta_handler = MetaHandler(base_path)
 
         # Keep track of written experiment metrics (Code 0=File was loaded, 1=File created)
         self.experiment_files = {}
-
-        # CSV Parameters
-        self.delimiter = " "
-        self.quotechar = "\""
-        self.quoting = csv.QUOTE_MINIMAL
         self.__load_experiments()
 
 
-    def __setup_dir(self, path):
+    def init_dir(self):
         """
             Setup a directory for a suit of experiment metrics.
         """
 
         # Try to create directory if non existen
-        if not os.path.exists(path):
-            os.mkdir(path)
+        if not os.path.exists(self.__BASE_PATH):
+            os.mkdir(self.__BASE_PATH)
         
         # Create non-existent meta.json file
-        if not os.path.exists(self.META_FILE_PATH):
-            # base_content = {"models": [], "dataset": {}, "params": {}, "acquisition_function": [], "run": []}
-            base_content = {"experiments": []}
-            self.write_meta(base_content)
-
+        self.__meta_handler.init_meta_file()
 
 
     def add_dataset_meta(self, name, path, train_size, test_size=None, val_size=None):
@@ -114,30 +111,7 @@ class ExperimentSuitMetrics:
     # Read/Write files
     # -------------------------
 
-    def write_meta(self, content):
-        """
-            Writes a dictionary to .meta.json.
 
-            Parameters:
-                content (dict): The meta information to be written to .meta.json
-        """
-
-        with open(self.META_FILE_PATH, "w") as json_file:
-            json_file.write(json.dumps(content, indent=4))
-
-
-    def read_meta(self):
-        """
-            Reads the meta information from the .meta.json file.
-
-            Returns:
-                (dict) of meta information.
-        """
-        content = {}
-        with open(self.META_FILE_PATH, "r") as json_file:
-            content = json_file.read()
-
-        return json.loads(content)
 
     
     def write_line(self, experiment_name, values, filter_keys=None, filter_nan=True):
@@ -162,7 +136,7 @@ class ExperimentSuitMetrics:
             values = {key: values[key] for key in filter_keys}
 
         filename = self._add_extension(experiment_name, "csv")
-        file_path = os.path.join(self.BASE_PATH, filename)
+        file_path = os.path.join(self.__BASE_PATH, filename)
 
         # Was metrics file reconstructed and is locked?
         if experiment_name in self.experiment_files and self.experiment_files[experiment_name] == 0:
@@ -182,22 +156,22 @@ class ExperimentSuitMetrics:
             csv_writer.writerow(values)
 
 
-    def read(self, experiment_name):
+    def read(self, filename):
         """
             Read metrics from a specific experiment.
 
             Parameters:
-                experiment_name (str): The experiment to read from.
+                filename (str): The name of the file, representing the experiment name.
 
             Returns:
                 (list(dict)) of accumulated experiment metrics.
         """
 
         # .csv extension in filename? 
-        experiment_name = self._add_extension(experiment_name, "csv")
+        experiment_name = self._add_extension(filename, "csv")
 
         values = []
-        experiment_file_path = os.path.join(self.BASE_PATH, experiment_name) 
+        experiment_file_path = os.path.join(self.__BASE_PATH, experiment_name) 
         with open(experiment_file_path, "r") as csv_file:
 
             csv_reader = self.__get_csv_reader(csv_file)
@@ -279,37 +253,20 @@ class ExperimentSuitMetrics:
 
 
 
-    def _add_extension(self, filename, ext):
-        """
-            Adds an extension to a filename.
-
-            Parameters:
-                filename (str): The filename to check for the extension
-                ext (str): The file extension to add and check for
-            
-            Returns:
-                (str) the file name with a file extension appended. 
-        """
-
-        if ext not in filename:
-            return filename + "." + ext
-        
-        return filename
-
 
     def __load_experiments(self):
         """
             Reconstrcut metrics from files available files.
         """
 
-        if not os.path.exists(self.BASE_PATH):
+        if not os.path.exists(self.__BASE_PATH):
             return
 
-        dir_content = os.listdir(self.BASE_PATH)
+        dir_content = os.listdir(self.__BASE_PATH)
         for element in dir_content:
             
             # Skip sub-directories
-            element_path = os.path.join(self.BASE_PATH, element)
+            element_path = os.path.join(self.__BASE_PATH, element)
             if not os.path.isfile(element_path):
                 continue
 
@@ -337,51 +294,3 @@ class ExperimentSuitMetrics:
             return "w"
 
         return default_mode
-
-
-    def __get_csv_params(self):
-        return {
-            "delimiter": self.delimiter,
-            "quotechar": self.quotechar,
-            "quoting": self.quoting
-        }
-
-
-    def __get_csv_writer(self, file, fieldnames):
-        csv_params = self.__get_csv_params()
-        return csv.DictWriter(file, fieldnames, **csv_params)
-
-    
-    def __get_csv_reader(self, file):
-        csv_params = self.__get_csv_params()
-        return csv.DictReader(file, **csv_params)
-
-
-    def get_dataset_info(self):
-        """
-            Read 
-
-            Returns:
-                (dict) containing meta information about the used dataset for the experiment
-        """
-        
-        meta = self.read_meta()
-        return meta.get("dataset", None)
-
-
-    def get_experiment_meta(self, experiment_name):
-        """
-
-            Parameter:
-                experiment_name (self): The name of the experiment.
-        """
-        meta = self.read_meta()
-        experiments = meta["experiments"]
-        experiment_information = {}
-        for experiment in experiments:
-            
-            if experiment["experiment_name"] == experiment_name:
-                experiment_information = experiment
-
-        return experiment_information
-        
