@@ -47,7 +47,7 @@ tqdm="^4.62.6"
 $ pip install tf-al
 ```
 
-<sup>*To use a specific version of tensorflow or if you want gpu support you should manually install tensorflow. Else this package automatically will install the lastest marked version of tensorflow.</sup>
+<sup>*To use a specific version of tensorflow or if you want gpu support you should manually install tensorflow. Else this package automatically will install the lastest version of tensorflow described in the [dependencies](#Dependencies).</sup>
 
 # Getting started
 
@@ -106,31 +106,14 @@ model.compile(
 ```
 
 
-The basic model wrapper in essence can be used like a regular tensorflow model.
+### Basic methods
+
+
+The model wrapper in essence can be used like a regular tensorflow model.
 
 ```python
-from tensorflow.keras import Model, Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Input, Flatten
-from tf_al.wrapper import McModel
-
-# Define and wrap model (here McDropout)
-base_model = Sequential([
-    Conv2D(32, 3, activation=tf.nn.relu, padding="same", input_shape=input_shape),
-    Conv2D(64, 3, activation=tf.nn.relu, padding="same"),
-    MaxPooling2D(),
-    Dropout(.25),
-    Flatten(),
-    Dense(128, activation=tf.nn.relu),
-    Dropout(.5),
-    Dense(output, activation="softmax")        
-])
-
 model = McDropout(base_model)
-model.compile(
-    optimizer="adam", 
-    loss="sparse_categorical_crossentropy", 
-    metrics=[keras.metrics.SparseCategoricalAccuracy()]
-)
+model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=[keras.metrics.SparseCategoricalAccuracy()])
 
 
 # Fitting the model
@@ -146,6 +129,10 @@ model(inputs, **additional_params)
 To define a custom  custom model wrapper, simply extend your own class using the `Model` class and 
 overwrite functions as needed. The regular tensorflow model can be accessed via `self._model`.
 
+To provide your model wrappers as a package you can simply use the [template on github](https://github.com/ExLeonem/tf-al-ext), which already offers a poetry package setup.
+
+
+
 ```python
 from tf_al import Model
 
@@ -154,35 +141,29 @@ class CustomModel(Model):
 
     def __init__(self, model, **kwargs):
         super().__init__(model, **kwargs)
-        # Custom model initialization
 
 
     def __call__(self, *args, **kwargs):
-        return self._model(*args, **kwargs)
+        # Custom __call__ or standard tensorflow __call__
 
 
     def predict(self, inputs, **kwargs):
         # Custom prediction method or the standard tensorflow call model(inputs)
-        return self._model(inputs, **kwargs)
-
+        
 
     def evaluate(self, inputs, targets, **kwargs):
-        """
-            Defining custom evaluate method, else standard evaluate method of tensorflow used.
-        """
-        # Some operations
+        # Defining custom evaluate method
+        # else standard evaluate method of tensorflow used.
         return {"metric_1": some_value, "metrics_2": some_other_value}
 
 
     def fit(self, *args, **kwargs):
         # Custom fitting procedure, else tensorflow .fit() method is used. 
-        self._model.fit(*args, **kwargs)
-
+        
 
     def compile(self, *args, **kwargs):
         # Custom compile method else using tensorflow .compile(**kwargs)
-        self._model.compile(**kwargs)
-
+        
 
     def reset(self, pool, dataset):
         # In Which way to reset the network after each active learning round

@@ -40,14 +40,14 @@ class ExperimentSuitMetrics:
         self.__load_experiments()
 
 
-    def init_dir(self, path):
+    def init_dir(self):
         """
             Setup a directory for a suit of experiment metrics.
         """
 
         # Try to create directory if non existen
-        if not os.path.exists(path):
-            os.mkdir(path)
+        if not os.path.exists(self.__BASE_PATH):
+            os.mkdir(self.__BASE_PATH)
         
         # Create non-existent meta.json file
         self.__meta_handler.init_meta_file()
@@ -136,7 +136,7 @@ class ExperimentSuitMetrics:
             values = {key: values[key] for key in filter_keys}
 
         filename = self._add_extension(experiment_name, "csv")
-        file_path = os.path.join(self.BASE_PATH, filename)
+        file_path = os.path.join(self.__BASE_PATH, filename)
 
         # Was metrics file reconstructed and is locked?
         if experiment_name in self.experiment_files and self.experiment_files[experiment_name] == 0:
@@ -171,7 +171,7 @@ class ExperimentSuitMetrics:
         experiment_name = self._add_extension(filename, "csv")
 
         values = []
-        experiment_file_path = os.path.join(self.BASE_PATH, experiment_name) 
+        experiment_file_path = os.path.join(self.__BASE_PATH, experiment_name) 
         with open(experiment_file_path, "r") as csv_file:
 
             csv_reader = self.__get_csv_reader(csv_file)
@@ -259,14 +259,14 @@ class ExperimentSuitMetrics:
             Reconstrcut metrics from files available files.
         """
 
-        if not os.path.exists(self.BASE_PATH):
+        if not os.path.exists(self.__BASE_PATH):
             return
 
-        dir_content = os.listdir(self.BASE_PATH)
+        dir_content = os.listdir(self.__BASE_PATH)
         for element in dir_content:
             
             # Skip sub-directories
-            element_path = os.path.join(self.BASE_PATH, element)
+            element_path = os.path.join(self.__BASE_PATH, element)
             if not os.path.isfile(element_path):
                 continue
 
