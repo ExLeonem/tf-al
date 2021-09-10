@@ -1,5 +1,6 @@
 import pytest
 import numpy as np
+
 from tf_al.query import AcquisitionFunction, name
 
 

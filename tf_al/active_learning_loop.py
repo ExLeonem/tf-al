@@ -1,7 +1,9 @@
 import os, time
 from copy import copy, deepcopy
 from tqdm import tqdm
-from . import AcquisitionFunction, Pool, Oracle, ExperimentSuitMetrics
+
+from .metric import ExperimentSuitMetrics
+from . import AcquisitionFunction, Pool, Oracle
 
 
 class ActiveLearningLoop:

@@ -2,7 +2,7 @@ import os, shutil
 import numpy as np
 import pytest
 
-from tf_al.exp_metrics import MetaHandler
+from tf_al.metric import MetaHandler
 from tf_al.wrapper import Model
 from tf_al import Dataset
 

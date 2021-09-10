@@ -1,6 +1,6 @@
 import os, shutil
 import pytest
-from tf_al import ExperimentSuitMetrics
+from tf_al.metric import ExperimentSuitMetrics
 
 
 

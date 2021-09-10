@@ -2,7 +2,8 @@ import os, sys, select
 import numpy as np
 import tensorflow as tf
 
-from . import ActiveLearningLoop, AcquisitionFunction, ExperimentSuitMetrics
+from .metric import ExperimentSuitMetrics
+from . import ActiveLearningLoop, AcquisitionFunction
 from .utils import setup_logger
 
 class ExperimentSuit:

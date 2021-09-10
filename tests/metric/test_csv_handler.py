@@ -2,7 +2,7 @@ import os, shutil
 import copy
 import random
 import pytest
-from tf_al.exp_metrics import CsvHandler, csv_handler
+from tf_al.metric import CsvHandler, csv_handler
 
 
 BASE_PATH = os.path.dirname(os.path.realpath(__file__))

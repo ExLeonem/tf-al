@@ -31,14 +31,6 @@ Dataset
 .. autoclass:: tf_al.Dataset
     :members:
 
-
-Metrics
--------------------
-
-.. autoclass:: tf_al.Metrics
-    :members:
-
-
 ExperimentSuit
 --------------------
 
@@ -46,11 +38,33 @@ ExperimentSuit
     :members:
 
 
+
+
+Metrics
+=============================
+
+
 ExperimentSuitMetrics
 ---------------------
 
-.. autoclass:: tf_al.ExperimentSuitMetrics
+.. autoclass:: tf_al.metric.ExperimentSuitMetrics
     :members:
+
+
+CsvHandler
+-------------------
+
+.. autoclass:: tf_al.metric.CsvHandler
+    :members:
+
+
+MetaHandler
+-------------------
+
+.. autoclass:: tf_al.metric.MetaHandler
+    :members:
+
+
 
 
 Model Wrapper
