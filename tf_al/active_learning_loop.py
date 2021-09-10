@@ -85,17 +85,6 @@ class ActiveLearningLoop:
         return times
 
 
-    # def __deepcopy__(self, memo):
-    #     """
-    #         Creates a deep copy of this active learning loop.
-    #     """
-
-    #     dataset = deepcopy(self.dataset)
-    #     query_fn = deepcopy(self.query_fn)
-        
-    #     return result
-
-
     # ---------
     # Iterator Protocol
     # -----------------
@@ -203,7 +192,6 @@ class ActiveLearningLoop:
         config = self.model.get_eval_config()
 
         # print("Config: {}".format(self.model.get_config()))
-
         if self.dataset.has_test_set():
             x_test, y_test = self.dataset.get_test_split()
             start = time.time()

@@ -192,7 +192,8 @@ class Model:
         """
             Use to reset states, weights and other stuff during each active learning loop iteration.
         """
-        self.load_weights()
+        # self.load_weights()
+        pass
 
 
     def optimize(self, inputs, targets):
