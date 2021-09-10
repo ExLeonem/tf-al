@@ -1,7 +1,6 @@
 import os, math
 import uuid
 import numpy as np
-from abc import ABC, abstractmethod
 from enum import Enum
 
 from . import Checkpoint
@@ -267,44 +266,6 @@ class Model:
         except:
             return False
 
-
-    # ---------------
-    # Loss function
-    # -----------------------
-
-    def nll(self, predictions, targets):
-        """
-            Calculate the negative log likelihood per element.
-
-            NLL: -np.log(true_class_prob)
-
-            Parameters:
-                prediction (numpy.ndarray): 
-
-            Returns:
-                (numpy.ndarray) the NLL values.
-        """
-
-        num_datapoints = len(predictions)
-        true_preds = np.zeros(num_datapoints)
-        for i in range(num_datapoints):
-            true_target_index = targets[i]
-            true_preds[i] = predictions[i][true_target_index]
-
-        return -np.log(true_preds)
-
-
-    def entropy(self, predictions):
-        """
-            Calculate the shannon entropy per datapoint.
-
-            Parameters:
-                prediction (numpy.ndarray): The predictions made by the network.
-            
-            Returns:
-                (numpy.ndarray) the entropy values.
-        """
-        return np.sum(-(predictions*np.log2(predictions+1e-10)), axis=-1)
 
 
     # -----------

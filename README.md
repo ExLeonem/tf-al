@@ -7,59 +7,76 @@
 
 # Active learning with tensorflow
 
-Perform active learning in tensorflow. Currently only supports classification tasks using Mc Dropout models.
+<sup>*Currently only supports classification tasks.</sup>
+
+Perform active learning in tensorflow with extendable parts.  
+
+
 
 
 # Index
 
 1. [Installation](#Installation)
-2. [Getting started](#Getting-started)
+2. [Documentation](https://exleonem.github.io/tf-al/)
+3. [Getting started](#Getting-started)
     1. [Model wrapper](#Model-wrapper)
     2. [Acquisition functions](#Acquisition-functions)
     1. [Basic active learning loop](#Basic-active-learning-loop)
-3. [Development](#Development)
+4. [Development](#Development)
     1. [Setup](#Setup)
     2. [Scripts](#Scripts)
-4. [Contribution](#Contribution)
-5. [Issues](#Issues)
+5. [Contribution](#Contribution)
+6. [Issues](#Issues)
 
 
 
 # Dependencies
 
-- python="^3.6"
-- tensorflow="^2.0.0"
-- scikit-learn="^0.24.2"
-- numpy="^1.0.0"
-- tqdm="^4.62.6"
-
+```toml
+python="^3.6"
+tensorflow="^2.0.0"
+scikit-learn="^0.24.2"
+numpy="^1.0.0"
+tqdm="^4.62.6"
+```
 
 # Installation
-
-To use a specific version of tensorflow or if you want gpu support you should manually install tensorflow. Else this package automatically will install the lastest marked version of tensorflow.
 
 
 ```shell
 $ pip install tf-al
 ```
 
+<sup>*To use a specific version of tensorflow or if you want gpu support you should manually install tensorflow. Else this package automatically will install the lastest marked version of tensorflow.</sup>
 
 # Getting started
 
 
+Following the active learning paradigm the most essential parts are the model and the pool of labeled/unlabeled data.
+
+
+To enable modularity tensorflow models are wrapped. The model wrapper acts as an interface between the active learning loop and the model.
+In essence the model wrapper defines methods which are called at different steps in the active learning loop.
+To manage the labeled and unlabeled datapoints the pool class can be used. Which offers methods to label and select datapoints, labels and indices.
+
+
+Other parts provided by the library easy the setup of active learning loops. The active learning loop class uses a dataset and model to creat an iterator, which then can be used to perform active learning over a single experiment.(model and query strategy combination)
+
+The experiment suit can be used to perform a couple of experiments in a row, which is useful if for example you want to compare differnt acquisition functions.
 
 
 ## Model wrapper
 
-Model wrappers are used to create interfaces to the active learning loop. 
+Model wrappers are used to create an interface between the tensorflow model and the active learning loop.
+Currently there are two wrappers defined. `Model` and `McDropout` for bayesian active learning. 
+The `Model` wrapper can be used to create custom model wrappers.
 
-Currently there are two wrappers defined `Model` and `McDropout` for bayesian active learning using Dropout as bayesian approximation.
+
+Here is an example of how to create and wrap a basic McDropout model.
 
 ```python
-import tensorflow as tf
-from tensorflow.keras import Model, Sequential
+from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Input, Flatten
-
 from tf_al.wrapper import McDropout
 
 # Define and wrap model (here McDropout)
@@ -87,6 +104,7 @@ model.compile(
     metrics=[keras.metrics.SparseCategoricalAccuracy()]
 )
 ```
+
 
 The basic model wrapper in essence can be used like a regular tensorflow model.
 
@@ -125,7 +143,7 @@ model.evaluate(some_inputs, some_targets)
 model(inputs, **additional_params)
 ```
 
-However you can easily define a custom model wrapper, simply extend your own class using the `Model` class and 
+To define a custom  custom model wrapper, simply extend your own class using the `Model` class and 
 overwrite functions as needed. The regular tensorflow model can be accessed via `self._model`.
 
 ```python
@@ -176,7 +194,72 @@ class CustomModel(Model):
 
 
 
-## Basic experiment setup
+## Basic active learning loop
+
+
+```python
+
+import tensorflow.keras as keras
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Input, Flatten
+
+from tf_al import ActiveLearningLoop, Dataset
+from tf_al.wrapper import McDropout
+
+# Load dataset and pack into dataset
+(x_train, y_train), test_set = keras.datasets.mnist.load()
+inital_pool_size = 20
+dataset = Dataset(x_train, y_train, test=test_set, init_size=initial_pool_size)
+
+# Create and wrap model
+base_model = Sequential([
+    Conv2D(32, 3, activation=tf.nn.relu, padding="same", input_shape=input_shape),
+    Conv2D(64, 3, activation=tf.nn.relu, padding="same"),
+    MaxPooling2D(),
+    Dropout(.25),
+    Flatten(),
+    Dense(128, activation=tf.nn.relu),
+    Dropout(.5),
+    Dense(output, activation="softmax")        
+])
+
+mc_model = McDropout(base_model)
+mc_model.compile(
+    optimizer="adam", 
+    loss="sparse_categorical_crossentropy", 
+    metrics=[keras.metrics.SparseCategoricalAccuracy()]
+)
+
+# Create and start experiment suit (Collection of different experiments model + query_strategy)
+query_strategy = "random"
+active_learning_loop = ActiveLearningLoop(
+    mc_model,
+    dataset,
+    query_strategy,
+    step_size=10, # Number of new datapoints to select after each round
+    max_rounds=100 # How many active learning rounds per experiment?
+)
+
+# To completely run through the active learning loop
+active_learning_loop.run()
+
+# Manually iterate over active learning loop
+for step in active_learning_loop:
+
+    # Dict with accumulated metrics 
+    # ["train", "train_time", "query_time", "optim", "optim_time", "eval", "eval_time", "indices_selected"]
+    step["train"]
+
+
+# Alternativly iterate step inside the loop
+num_rounds = 10
+for i in range(num_rounds):
+
+    metrics = active_learning_loop.step()
+    # ... do something with the metrics
+```
+
+## Basic experiment suit setup
 
 ```python
 import tensorflow as tf
@@ -225,13 +308,12 @@ model.compile(
 models = model
 
 # Define which acquisition functions to apply in separate runs either single one or a list [acquisition_1, ...] 
-acquisition_functions = AcqusitionFunction("random", batch_size=900)
-
+acquisition_functions = ["random", AcqusitionFunction("max_entropy", batch_size=900)]
 experiments = ExperimentSuit(
     models,
     acquisition_functions,
-    step_size=10, # How many new datapoints to select per round
-    max_rounds=25, # Setting limit on the rounds per experiment
+    step_size=10, # Number of new datapoints to select after each round
+    max_rounds=100 # How many active learning rounds per experiment?
 )
 
 ```

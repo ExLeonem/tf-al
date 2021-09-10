@@ -1,4 +1,4 @@
-import os, sys, math
+import os, math
 import time
 import numpy as np
 import logging as log
@@ -323,33 +323,5 @@ class McDropout(Model):
         expectation = self.expectation(predictions)
 
         return np.argmin(expecation, axis=1)
-
-
-
-    # ----------
-    # Loss Function
-    # ---------------------
-
-    def nll(self, predictions, targets):
-        """
-            Calculates the negative log-likelihood of.
-
-            Parameters:
-                predictions (numpy.ndarray): The predictions made by an mc dropout model.
-                targets (numpy.ndarray): 
-        """
-
-        dist_expectation = self.expectation(predictions)
-        return super().nll(dist_expectation, targets)
-
-
-    def entropy(self, predictions):
-        """
-            predictions shape: (batch_size, sample_size, target_size)
-
-        """
-        predictions = np.average(predictions, axis=1)
-        result = -(predictions * np.log2(predictions+1e-10))
-        return np.sum(result, axis=-1)
 
 
