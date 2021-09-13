@@ -3,6 +3,7 @@ import numpy as np
 import tensorflow as tf
 
 from . import ActiveLearningLoop, AcquisitionFunction
+from .wrapper import Model
 from .utils import setup_logger
 
 class ExperimentSuit:
@@ -122,7 +123,7 @@ class ExperimentSuit:
                 query_fn = self.query_functions[j]
 
                 print("Running experiment (Run: {} | Model: {} | Query-Function: {})".format(run, model, query_fn))
-                query_fn = self.__update_query_function(model, query_fn)
+                self.__update_query_function(model, query_fn)
                 self.__run_experiment(run, model, query_fn, seed)
 
                 if (j != (len(self.query_functions)-1) or i != (len(self.models)-1)) \
@@ -205,7 +206,7 @@ class ExperimentSuit:
             raising an error when one of the models can't be processed.
         """
 
-        if isinstance(models, BayesModel):
+        if isinstance(models, Model):
             return [models]
 
         verified_models = []
@@ -213,11 +214,11 @@ class ExperimentSuit:
             for model in models:
                 
                 # Passed model can be used in context of ActiveLearningLoop?
-                if not isinstance(model, BayesModel):
-                    raise ValueError("Error in ExperimentSuit.__init__(). One of the passed models is no sub-class of BayesModel.")
+                if not isinstance(model, Model):
+                    raise ValueError("Error in ExperimentSuit.__init__(). One of the passed models is no sub-class of Model.")
 
         else:
-            raise ValueError("Error in ExperimentSuit.__init__(). Can't parse models of type {}. Expected list of or single BayesModel.".format(type(models)))
+            raise ValueError("Error in ExperimentSuit.__init__(). Can't parse models of type {}. Expected list of or single Model.".format(type(models)))
 
         return models
 
@@ -249,7 +250,7 @@ class ExperimentSuit:
         return fns
 
 
-    def __update_query_function(self, functions, model):
+    def __update_query_function(self, model, functions):
         """
             Update the acquisition function to use new model.
 
@@ -270,8 +271,9 @@ class ExperimentSuit:
             return
 
         if is_obj:
-            functions.reset(model)
+            functions._set_fn(model)
+            return
         
         # Update a list of AcquisitionFunction objects
         for function in functions:
-            function.reset(model)
+            function._set_fn(model)

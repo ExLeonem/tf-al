@@ -324,9 +324,9 @@ class ActiveLearningLoop:
             return functions
 
         else:
-            raise ValueException(
+            raise ValueError(
                 "Error in ActiveLearningLoop.__init_acquisition_fn(). Can't initialize one of given acquisition functions. \
-                Expected value of type str or AcquisitionFunction. Received {}".format(type(function))
+                Expected value of type str or AcquisitionFunction. Received {}".format(type(functions))
             )
     
 

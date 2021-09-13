@@ -1,3 +1,4 @@
+from math import exp
 import numpy as np
 import pytest
 
@@ -60,20 +61,23 @@ class TestActiveLearningLoopIteration:
         for i in loop:
             res = i
 
+        keys = set(i.keys())
+        expected_keys = ["eval_time", "indices_selected", "optim"]
+
         expected_loss, expected_acc = model.evaluate()
         assert i["eval"]["loss"] == expected_loss and \
             i["eval"]["accuracy"] == expected_acc and \
-            i.keys == None
+            all([key in keys for key in expected_keys])
 
     
-    def test_iteration_with_model(self):
+    def test_base_iteration_generic_model(self):
         d_length = 10
         inputs = np.random.randn(d_length)
         targets = np.random.choice([0, 1, 2], d_length)
 
         model = base_model(output=d_length)
         mock_model = Model(model, None)
-        mock_model.compile(loss="mean_absolute_error", optimizer="sgd")
+        mock_model.compile(loss="mean_absolute_error", optimizer="sgd", metrics=[keras.metrics.SparseCategoricalAccuracy()])
 
         dataset = Dataset(inputs, targets, test=(inputs, targets))
         loop = ActiveLearningLoop(mock_model, dataset, "random")
@@ -81,8 +85,8 @@ class TestActiveLearningLoopIteration:
         res = None
         for i in loop:
             res = i
+            break
 
-        expected_loss, expected_acc = model.evaluate()
-        assert i["eval"]["loss"] == expected_loss and \
-            i["eval"]["accuracy"] == expected_acc and \
-            i.keys == None
+        keys = res.keys()
+        expected_keys = ["train", "train_time", "optim", "optim_time", "eval", "eval_time", "indices_selected"]
+        assert all([key in keys for key in expected_keys])
