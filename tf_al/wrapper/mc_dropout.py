@@ -216,9 +216,7 @@ class McDropout(Model):
             Parameters:
                 model (tf.Model) The tensorflow model to use for selection of datapoints
                 unlabeled_pool (Pool) The pool of unlabeled data to select
-        """
-        self.logger.info("----------Max-Entropy-------------")
-        
+        """        
         # Create predictions
         predictions = self.__call__(data, sample_size=sample_size)
         expectation = self.expectation(predictions)
@@ -232,15 +230,9 @@ class McDropout(Model):
 
     def __bald(self, data, sample_size=10, **kwargs):
         # TODO: dimensions do not line up in mutli class
-        
-        self.logger.info("------------ BALD -----------")
         # predictions shape (batch, num_predictions, num_classes)
-        self.logger.info("_bald/data-shape: {}".format(data.shape))
         predictions = self.__call__(data, sample_size=sample_size)
-
-        self.logger.info("_bald/predictions-shape: {}".format(predictions.shape))
         posterior = self.expectation(predictions)
-        self.logger.info("_bald/posterior-shape: {}".format(posterior.shape))
 
         first_term = -np.sum(posterior*np.log(np.abs(posterior) + .001), axis=1)
 
@@ -248,12 +240,7 @@ class McDropout(Model):
         predictions = self.extend_binary_predictions(predictions)
         
         inner_sum = np.sum(predictions*np.log(np.abs(predictions) + .001), axis=1)
-        self.logger.info("_bald/inner-shape: {}".format(inner_sum.shape))
-
         second_term = np.sum(inner_sum, axis=1)/predictions.shape[1]
-
-        self.logger.info("_bald/first-term-shape: {}".format(first_term.shape))
-        self.logger.info("_bald/second-term-shape: {}".format(second_term.shape))
         return first_term + second_term
 
 
@@ -264,10 +251,6 @@ class McDropout(Model):
             # (batch, predictions, classes) reduce to (batch, predictions (max-class))
             # 1 - (count of most common class / num predictions)
         """
-        self.logger.info("----------Max-Var-Ratio--------------")
-
-        # (batch, sample, num classses)
-        # (batch, num_classes)
         predictions = self.__call__(data, sample_size=sample_size)
         posterior = self.expectation(predictions)
 
@@ -284,8 +267,6 @@ class McDropout(Model):
            Todo:
             Implement distinction for different model types.
         """
-        self.logger.info("----------Std-Mean-------------")
-
         # TODO: generalize for n-classes For binary classes
         predictions = self.__call__(data, sample_size=sample_size)
 
@@ -302,9 +283,6 @@ class McDropout(Model):
             Select sample which minimize distance between two most probable labels.
             Margin Sampling (MS).
         """
-
-        self.logger.info("----------Margin-Sampling-------------")
-
         predictions = self.__call__(data, sample_size=sample_size)
         expectation = self.expectation(predictions)
 
@@ -316,9 +294,6 @@ class McDropout(Model):
             Select sample which minimize distance between two most probable labels.
             Margin Sampling (MS).
         """
-
-        self.logger.info("----------Margin-Sampling-------------")
-
         predictions = self.__call__(data, sample_size=sample_size)
         expectation = self.expectation(predictions)
 

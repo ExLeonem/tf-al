@@ -1,6 +1,8 @@
-import os, time
+import os, time, gc
 from copy import copy, deepcopy
 from tqdm import tqdm
+
+from .utils import setup_logger, log_mem_usage
 from . import AcquisitionFunction, Pool, Oracle, ExperimentSuitMetrics
 
 
@@ -42,6 +44,7 @@ class ActiveLearningLoop:
     ):
         
         self.verbose = verbose
+        self.logger = self.logger = setup_logger(verbose, "ActiveLearningLoop-Logger")
 
         # Data and pools
         self.dataset = dataset
@@ -106,24 +109,33 @@ class ActiveLearningLoop:
             raise StopIteration
 
         # Load previous checkpoints/recreate model
+        self.logger.info("++++++++++++++ (START) Iteration {} ++++++++++++++".format(self.i))
         self.model.reset(self.pool, self.dataset)
-
+        
         # Optimiize model params
         optim_metrics, optim_time = self.__optim_model_params()
 
         # Fit model
         train_metrics, train_time = self.__fit_model()
+        self.logger.info("\\---- (END) Model fitting")
 
         # Update pools
         acq_start = time.time()
         indices, _pred = self.query_fn(self.model, self.pool, **self.query_config)
+        self.logger.info("\\---- (END) Acquisition")
         acq_time = time.time() - acq_start
+
         self.oracle.annotate(self.pool, indices)
 
         # Evaluate model
         eval_metrics, eval_time = self.__eval_model()
-
         self.i += 1
+
+        self.logger.info("/// Memory ")
+        self.model.clear_session()
+        gc.collect()
+        log_mem_usage(self.logger)
+        self.logger.info("++++++++++++++ (END) Iteration ++++++++++++++")
 
         return {
             "train": train_metrics,
@@ -163,6 +175,7 @@ class ActiveLearningLoop:
         history = None
         duration = None
 
+        self.logger.info("//// (START) Model fitting")
         if self.pool.get_length_labeled() > 0:
             inputs, targets = self.pool.get_labeled_data()
             start = time.time()
@@ -170,9 +183,9 @@ class ActiveLearningLoop:
             h = None
             if self.dataset.has_eval_set():
                 x_eval, y_eval = self.dataset.get_eval_split()
-                h = self.model.fit(inputs, targets, verbose=self.verbose, validation_data=(x_eval, y_eval))
+                h = self.model.fit(inputs, targets, validation_data=(x_eval, y_eval), verbose=False)
             else:
-                h = self.model.fit(inputs, targets, verbose=self.verbose)
+                h = self.model.fit(inputs, targets, verbose=False)
 
             duration = time.time() - start
             history = h.history

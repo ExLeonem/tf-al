@@ -2,6 +2,7 @@ import os, math
 import uuid
 import numpy as np
 from enum import Enum
+import tensorflow as tf
 
 from . import Checkpoint
 from ..utils import setup_logger
@@ -168,7 +169,7 @@ class Model:
             Parameters:
                 - model (tf.Model) Tensorflow neural network model.
         """
-
+        
         disabled = False
         for l in self._model.layers:
             if l.__class__.__name__ == "BatchNormalization":

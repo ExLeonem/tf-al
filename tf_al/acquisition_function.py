@@ -57,9 +57,10 @@ class AcquisitionFunction:
                 (numpy.ndarray) Indices
         """
 
-        self.logger.info("Parameters ----")
+        self.logger.info("//// (START) Acquisition")
         self.logger.info("Step-size: {}".format(step_size))
-        self.logger.info(kwargs)
+        self.logger.info("Function: {}".format(self.name))
+        self.logger.info("Kwargs: {}".format(kwargs))
 
         # Set initial acquistion function
         if self.fn is None:
@@ -69,22 +70,14 @@ class AcquisitionFunction:
         # data = pool.get_data()
         # indices = pool.get_indices()
 
-        # Select values randomly? 
-        # No need for batch processing
+        # No need for batch processing, random selection of datapoints.
         if self.name == "random":
-            self.logger.info("Random function")
             return self.fn(indices, data, step_size=step_size, **kwargs)            
 
         # Iterate throug batches of data
         results = None
         num_datapoints = len(data)
-        self.logger.info("Use {} unlabeled datapoints".format(num_datapoints))
-        start = 0
-        # end = self.batch_size if num_datapoints > self.batch_size else num_datapoints
-        end = 0
-        
-        self.logger.info("Kwargs: {}".format(kwargs))
-
+           
         # ---------
         # Alternative
         if self.batch_size is None:
@@ -96,11 +89,9 @@ class AcquisitionFunction:
         for batch in batches:
 
             sub_result = self.fn(batch, **kwargs)
-            self.logger.info("Result shape: {}".format(sub_result.shape))
             results.append(sub_result)
 
         stacked = np.hstack(results)
-        self.logger.info("Stacked shaped: {}".format(stacked.shape))
         num_of_elements_to_select = self._adapt_selection_num(len(stacked), step_size)
         return self.__select_first(stacked, indices, num_of_elements_to_select)
 
@@ -155,13 +146,9 @@ class AcquisitionFunction:
             Returns:
                 (numpy.ndarray): Randomly selected indices for next training.
         """
-        self.logger.info("----------Random-------------")
-
         available_indices = np.linspace(0, len(data)-1, len(data), dtype=int)
         step_size = self._adapt_selection_num(len(available_indices), step_size)
         selected = np.random.choice(available_indices, step_size, replace=False).astype(int)
-
-        self.logger.info("Indices selected: {}".format(selected))
         return indices[selected], data[selected]
 
 
@@ -176,15 +163,8 @@ class AcquisitionFunction:
                 (numpy.ndarray) indices of n-biggest predictions.
         """
         
-        self.logger.info("__select_first/start-sort")
         sorted_keys = np.argsort(predictions)
-        # n_biggest_keys = sorted_keys[-n:]
         n_biggest_keys = sorted_keys[-n:]
-        # other_keys = sorted_keys[:10]
-        # self.logger.info("Other values: {}".format(predictions[other_keys]))
-        # self.logger.info("Values: {}".format(predictions[n_biggest_keys]))
-
-        self.logger.info("__select_first/finish_sort")
         return indices[n_biggest_keys], predictions[n_biggest_keys]
 
 
