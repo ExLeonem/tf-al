@@ -62,11 +62,8 @@ class AcquisitionFunction:
         if self.fn is None:
             self.fn = self._set_fn(model)
 
-        data, indices = pool.get_unlabeled_data()
-        # data = pool.get_data()
-        # indices = pool.get_indices()
-
         # No need for batch processing, random selection of datapoints.
+        data, indices = pool.get_unlabeled_data()
         if self.name == "random":
             return self.fn(indices, data, step_size=step_size, **kwargs)            
 
@@ -85,6 +82,7 @@ class AcquisitionFunction:
         results = []
         for batch in batches:
             
+            # Fix some of tf memory leak issues
             input_tensor = tf.convert_to_tensor(batch)
             output_tensor = self.fn(input_tensor, **kwargs)
             results.append(output_tensor)
@@ -124,15 +122,13 @@ class AcquisitionFunction:
             Returns:
                 (function): The function to use for acquisition.
         """
-
         query_fn = model.get_query_fn(self.name)
         if query_fn is None:
             self.logger.debug("Set acquisition function: random baseline.")
             self.name = "random"
             return self._random
 
-        else:
-            return query_fn
+        return query_fn
     
 
     def _random(self, indices, data, step_size=5, **kwargs):

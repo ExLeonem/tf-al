@@ -2,7 +2,7 @@ import os, time, gc
 from copy import copy, deepcopy
 from tqdm import tqdm
 
-from .utils import setup_logger, log_mem_usage
+from .utils import setup_logger
 from . import AcquisitionFunction, Pool, Oracle, ExperimentSuitMetrics
 
 
@@ -132,10 +132,9 @@ class ActiveLearningLoop:
         eval_metrics, eval_time = self.__eval_model()
         self.i += 1
 
-        self.logger.info("/// Memory ")
+        # Fix some tf memory leak issues
         gc.collect()
         self.model.clear_session()
-        log_mem_usage(self.logger)
         self.logger.info("++++++++++++++ (END) Iteration ++++++++++++++")
 
         return {
