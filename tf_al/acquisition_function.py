@@ -1,9 +1,7 @@
-import os, sys, importlib
 import math
-import time
-import logging
 import numpy as np
-from enum import Enum
+
+import tensorflow as tf
 from .utils import setup_logger
 
 
@@ -56,8 +54,6 @@ class AcquisitionFunction:
             Returns:
                 (numpy.ndarray) Indices
         """
-
-        self.logger.info("//// (START) Acquisition")
         self.logger.info("Step-size: {}".format(step_size))
         self.logger.info("Function: {}".format(self.name))
         self.logger.info("Kwargs: {}".format(kwargs))
@@ -77,20 +73,22 @@ class AcquisitionFunction:
         # Iterate throug batches of data
         results = None
         num_datapoints = len(data)
+        self.logger.info("Unlabeled Pool size: {}".format(num_datapoints))
            
-        # ---------
-        # Alternative
+        # Single batch processing
         if self.batch_size is None:
             self.batch_size = len(data)
 
+        # Multi batch Processing
         num_batches = math.ceil(num_datapoints/self.batch_size)
         batches = np.array_split(data, num_batches, axis=0)
         results = []
         for batch in batches:
-
-            sub_result = self.fn(batch, **kwargs)
-            results.append(sub_result)
-
+            
+            input_tensor = tf.convert_to_tensor(batch)
+            output_tensor = self.fn(input_tensor, **kwargs)
+            results.append(output_tensor)
+        
         stacked = np.hstack(results)
         num_of_elements_to_select = self._adapt_selection_num(len(stacked), step_size)
         return self.__select_first(stacked, indices, num_of_elements_to_select)
@@ -100,6 +98,12 @@ class AcquisitionFunction:
         """
             Check if n datapoints are available at all, else adapt the number of datapoints to select.
 
+            Parameters:
+                num_indices (int): The amount of total indices to select from
+                num_to_select (int): The number of datapoints to select
+
+            Returns:
+                (int) the adapted number datapoints to select from a collection.
         """
         if num_indices == 0:
             raise ArgumentError("Can't select {} datapoints, all data is labeled.".format(num_to_select))

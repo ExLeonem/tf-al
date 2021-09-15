@@ -236,10 +236,11 @@ class Pool:
         
         return self.__indices
 
+
     def get_labeled_indices(self):
         """
+            Get the indices of labeled datapoints.
             
-
             Returns:
                 (numpy.ndarray) of datapoints that already has been labeled.
         """
@@ -281,7 +282,7 @@ class Pool:
 
     def get_labeled_data(self):
         """
-            Get inputs, target pairs of already labeled inputs.
+            Get data and indices of datapoints which are currently labeled.
 
             Returns:
                 (tuple(numpy.ndarray, numpy.ndarray)) inputs and corresponding targets.
@@ -294,7 +295,7 @@ class Pool:
     
     def get_unlabeled_data(self):
         """
-            Get inputs whire are not already labeled with their indices.
+            Get data and their indices of datapoints which are currently not labeled. 
 
             Returns:
                 (tuple(numpy.ndarray, numpy.ndarray)) The inputs and their indices in the pool

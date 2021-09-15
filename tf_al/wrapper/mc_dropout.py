@@ -76,9 +76,7 @@ class McDropout(Model):
             raise ValueError("Error in McDropout.evaluate(). Targets and inputs not of equal length.")
 
         # Returns: (batch_size, sample_size, target_len) or (batch_size, target_len)
-        self.logger.info("evaluate/call")
         predictions = self.__call__(inputs, sample_size=sample_size, **kwargs)
-        self.logger.info("evaluate/predictions.shape: {}".format(predictions.shape))
         loss, acc = self.__evaluate(predictions, targets, sample_size)
         return {"loss": loss, "accuracy": acc}
 

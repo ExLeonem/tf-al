@@ -121,6 +121,7 @@ class ActiveLearningLoop:
 
         # Update pools
         acq_start = time.time()
+        self.logger.info("\\---- (START) Acquisition")
         indices, _pred = self.query_fn(self.model, self.pool, **self.query_config)
         self.logger.info("\\---- (END) Acquisition")
         acq_time = time.time() - acq_start
@@ -132,8 +133,8 @@ class ActiveLearningLoop:
         self.i += 1
 
         self.logger.info("/// Memory ")
-        self.model.clear_session()
         gc.collect()
+        self.model.clear_session()
         log_mem_usage(self.logger)
         self.logger.info("++++++++++++++ (END) Iteration ++++++++++++++")
 
