@@ -45,7 +45,6 @@ class Dataset:
             self.x_test, self.y_test = val
         
 
-
         # if len(inputs) != len(targets):
         #     raise ValueError("Error in Dataset.__init__(). Can't initialize dataset. Length of inputs and targets are not equal.")
 

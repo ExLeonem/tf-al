@@ -143,13 +143,17 @@ class ExperimentSuit:
                 run (int): The number of experiment of this type (combination of acquisition funciton and model)
                 model (Model): A model wrapper.
                 query_ fn (str|AcquisitionFunction): The acquisition function to use.
+                seed (int|None): The seed with which the experiment is run.
         """
 
         # Quick fix, reset random state after each iteration
         # TODO: Adding outter loop and extend parameter list for seed
+
+        experiment_name = str(run)
         if seed is not None and isinstance(seed, int):
             np.random.seed(seed)
             tf.random.set_seed(seed)
+            experiment_name += str(seed)
 
         active_learning_loop = ActiveLearningLoop(
             model, 
@@ -161,7 +165,7 @@ class ExperimentSuit:
             verbose=self.verbose
         )
 
-        experiment_name = str(run) + "_" + active_learning_loop.get_experiment_name()
+        experiment_name += "_" + active_learning_loop.get_experiment_name()
         active_learning_loop.run(experiment_name, self.metrics_handler)
 
 

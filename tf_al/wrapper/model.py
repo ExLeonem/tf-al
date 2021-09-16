@@ -64,7 +64,6 @@ class Model:
         self._model_type = model_type
         self._name = name
         
-
         # Checkpoints path set?
         if checkpoint_path is None:
             checkpoint_path = os.getcwd()

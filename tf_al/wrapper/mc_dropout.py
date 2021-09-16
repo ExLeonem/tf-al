@@ -77,8 +77,14 @@ class McDropout(Model):
 
         # Returns: (batch_size, sample_size, target_len) or (batch_size, target_len)
         predictions = self.__call__(inputs, sample_size=sample_size, **kwargs)
-        loss, acc = self.__evaluate(predictions, targets, sample_size)
-        return {"loss": loss, "accuracy": acc}
+
+        if self.is_classification():
+            loss, acc = self.__evaluate(predictions, targets, sample_size)
+            return {"loss": loss, "accuracy": acc}
+
+        loss_fn = keras.losses.get(self._model.loss)
+        loss = loss_fn(predictions, targets).numpy()
+        return {"loss": np.mean(loss, axis=-1), "accuracy": []}
 
 
     def __evaluate(self, predictions, targets, sample_size):
@@ -150,10 +156,6 @@ class McDropout(Model):
         """
         predictions = self.extend_binary_predictions(predictions)
         return np.std(predictions, axis=1)
-
-
-    def just_return(self, predictions):
-        return predictions
 
 
     def extend_binary_predictions(self, predictions, num_classes=2):

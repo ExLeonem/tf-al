@@ -14,13 +14,23 @@ class Pool:
 
         Parameters:
             inputs (numpy.ndarray): Inputs to the network.
+            targets (numpy.ndarray): Already known targets, used for experimental runs. (default=None)
+            target_shape (tuple()): The shape of the target, if None equals the len(inputs). (default=None)
     """
 
-    def __init__(self, inputs, targets=None):
+    def __init__(self, inputs, targets=None, target_shape=None):
         self.__inputs = inputs
         self.__true_targets = targets
         self.__indices = np.linspace(0, len(inputs)-1, len(inputs), dtype=int)
-        self.__targets = np.zeros(len(inputs))
+
+        if targets is not None:
+            self.__targets = np.zeros(targets.shape)
+        
+        elif target_shape is None:
+            self.__targets = np.zeros(len(inputs))
+
+        else:
+            self.__targets = np.zeros(target_shape)    
 
 
     def init(self, size):
@@ -65,13 +75,14 @@ class Pool:
         # Annotate samples in round robin like schme
         while size > 0:
             
-            # Select 
+            # TODO: unique targets may be one-hot vector or float in regression case
             for target in unique_targets:
 
                 unlabeled_indices = self.get_unlabeled_indices()
                 true_targets = self.__true_targets[unlabeled_indices]
                 selector = (true_targets == target)
 
+                # Selector may be multi-dimensional array -> needs to be flattened 
                 indices = unlabeled_indices[selector]
                 targets = true_targets[selector]
 
