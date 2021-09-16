@@ -4,6 +4,7 @@
 [![PyPi license](https://badgen.net/pypi/license/tf-al/)](https://pypi.org/project/tf-al/)
 ![Python Version: ^3.6](https://img.shields.io/badge/python-%5E3.6-blue)
 <a href="https://codeclimate.com/github/ExLeonem/tf-al/maintainability"><img src="https://api.codeclimate.com/v1/badges/50b2389c5a7ce33298be/maintainability" /></a>
+[![Coverage Status](https://coveralls.io/repos/github/ExLeonem/tf-al/badge.svg?branch=master)](https://coveralls.io/github/ExLeonem/tf-al?branch=master)
 
 
 # Active learning with tensorflow

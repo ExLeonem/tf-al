@@ -273,23 +273,9 @@ class Model:
     # Access Configuration
     # ----------------------------
 
-    def get_fit_config(self):
-        if (self._config is not None) and "fit" in self._config:
-            return self._config["fit"]
-        
-        return {}
-
-
-    def get_query_config(self):
-        if (self._config is not None) and "query" in self._config:
-            return self._config["query"]
-
-        return {}
-
-
-    def get_eval_config(self):
-        if (self._config is not None) and "eval" in self._config:
-            return self._config["eval"]
+    def get_config_for(self, name):
+        if (self._config is not None) and name in self._config:
+            return self._config[name]
         
         return {}
 

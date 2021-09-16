@@ -66,7 +66,7 @@ class ActiveLearningLoop:
         self.oracle = Oracle(pseudo_mode=pseudo)
         self.query_fn = self.__init_acquisition_fn(query_fn)
 
-        self.query_config = self.model.get_query_config()
+        self.query_config = self.model.get_config_for("query")
         self.query_config.update({"step_size": step_size})
 
 
@@ -202,7 +202,7 @@ class ActiveLearningLoop:
         """
         metrics = None
         duration = None
-        config = self.model.get_eval_config()
+        config = self.model.get_config_for("eval")
 
         # print("Config: {}".format(self.model.get_config()))
         if self.dataset.has_test_set():
