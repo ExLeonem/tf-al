@@ -1,0 +1,26 @@
+language: python
+python: 
+  - "3.6"
+
+env:
+    global:
+        - secure: "<encrypted PYPI_TOKEN=token>"
+
+before_install:
+  - pip install poetry
+
+install:
+    - poetry install
+
+script:
+    - poetry run pytest --cov=./tf_al
+    
+
+before_deploy:
+- poetry config pypi-token.pypi $PYPI_TOKEN
+- poetry build
+
+deploy:
+  provider: script
+  script: poetry publish
+  skip_cleanup: true

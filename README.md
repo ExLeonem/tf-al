@@ -3,6 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/tf-al.svg)](https://badge.fury.io/py/tf-al)
 [![PyPi license](https://badgen.net/pypi/license/tf-al/)](https://pypi.org/project/tf-al/)
 ![Python Version: ^3.6](https://img.shields.io/badge/python-%5E3.6-blue)
+<a href="https://codeclimate.com/github/ExLeonem/tf-al/maintainability"><img src="https://api.codeclimate.com/v1/badges/50b2389c5a7ce33298be/maintainability" /></a>
 
 
 # Active learning with tensorflow

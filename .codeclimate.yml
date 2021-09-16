@@ -1,0 +1,12 @@
+## other configuration excluded from example...
+exclude_patterns:
+- "docs/"
+- "tests/"
+- "**__pycache__"
+- "**.md"
+- "**.toml"
+- "**.yml"
+- "LICENSE"
+- ".github/"
+- ".gitignore"
+- "**.lock"

@@ -26,7 +26,7 @@ class MetricsAccumulator:
 
     
     def get_metric(self, name):
-        
+        pass
 
 
 
