@@ -2,19 +2,18 @@ language: python
 python: 
   - "3.6"
 
-env:
-    global:
-        - secure: "<encrypted PYPI_TOKEN=token>"
-
 before_install:
   - pip install poetry
 
 install:
     - poetry install
+    - pip install codeclimate-test-reporter
 
 script:
-    - poetry run pytest --cov=./tf_al
-    
+    - poetry run coverage run --source=./tf_al -m pytest tests/
+
+after_success:
+  - poetry run coveralls
 
 before_deploy:
 - poetry config pypi-token.pypi $PYPI_TOKEN
