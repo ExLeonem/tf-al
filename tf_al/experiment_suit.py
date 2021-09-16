@@ -33,6 +33,7 @@ class ExperimentSuit:
         no_save_state=False,
         acceptance_timeout=None,
         metrics_handler=None,
+        metrics_accumulator=None,
         verbose=False
     ): 
 
