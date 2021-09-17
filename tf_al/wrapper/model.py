@@ -8,21 +8,6 @@ from . import Checkpoint
 from ..utils import setup_logger
 
 
-class Mode(Enum):
-    TRAIN=1,
-    TEST=2,
-    EVAL=3
-
-
-class ModelType(Enum):
-    """
-        Different bayesian model types.
-    """
-    MC_DROPOUT=1,
-    MOMENT_PROPAGATION=2,
-    SWAG=3
-
-
 class Model:
     """
         Base wrapper for deep learning models to interface
@@ -32,7 +17,7 @@ class Model:
             _model (tf.Model): Tensorflow or pytorch module.
             _config (Config): Model configuration
             _mode (Mode): The mode the model is in 'train' or 'test'/'eval'.
-            _model_type (ModelType): The model type
+            _model_type (str): The model type
             _checkpoints (Checkpoint): Created checkpoints.
 
         Parameters:
@@ -44,7 +29,6 @@ class Model:
         self, 
         model, 
         config=None, 
-        mode=Mode.TRAIN,
         name=None,
         model_type=None, 
         classification=True, 
@@ -60,7 +44,6 @@ class Model:
         self.__id = uuid.uuid1()
         self._model = model
         self._config = config
-        self._mode = mode
         self._model_type = model_type
         self._name = name
         
@@ -69,16 +52,16 @@ class Model:
             checkpoint_path = os.getcwd()
         self._checkpoints = Checkpoint(checkpoint_path) if checkpoint is None else checkpoint
 
+        # Binary classification always false, when regression problem
         self.__classification = classification
         if not self.__classification:
-            # Binary classification always false, when regression problem
             self.__is_binary = False
         else:
             self.__is_binary = is_binary
 
 
-    def __call__(self, *args, **kwargs):
-        return self._model(inputs, training=self.in_mode(Mode.TRAIN))
+    def __call__(self, inputs, **kwargs):
+        return self._model(inputs, **kwargs)
 
 
     def predict(self, inputs, **kwargs):
@@ -89,7 +72,7 @@ class Model:
                 inputs (numpy.ndarray): The inputs for the approximation
 
         """
-        return self._model(inputs, training=self.in_mode(Mode.TRAIN))
+        return self._model.predict(inputs, **kwargs)
     
 
     def evaluate(self, inputs, targets, **kwargs):
@@ -284,14 +267,9 @@ class Model:
         return self._config.kwargs
 
 
-
     # --------------
     # Access important flags for predictions
-    # -----------------------------
-
-    def in_mode(self, mode):
-        return self._mode == mode
-
+    # ----------------------------
 
     def is_classification(self):
         return self.__classification
@@ -341,42 +319,35 @@ class Model:
     def get_model_name(self, prefix=True):
         """
             Returns the model name.
+
+            Parameters:
+                prefix (bool): Prefix the model name with model type?
+
+            Returns:
+                (str) the model name.
         """
 
-        model_type = None
-        if not (self._model_type is None) and prefix:
-            _pre, model_type = str(self._model_type).split(".")
-            model_typ3 = model_type.lower()
+        # Model name and model type?
+        model_name_exists = self._name is not None
+        if self._model_type is not None:
+            if model_name_exists and prefix:
+                return self._model_type.lower() + "_" + self._name
 
-
-        # 
-        if not (self._name is None): 
-            if not (model_type is None) and prefix:
-                return model_type + "_" + self._name
-
+            return self._model_type.lower()
+        
+        # Only model name given
+        if model_name_exists:
             return self._name
 
-        # No specific name set
-        if not (model_type is None):
-            return model_type
-
+        # Default model name
         return "model"
         
-
-    def get_model_type(self):
-        return self._model_type
 
     def get_model(self):
         return self._model
 
-    def get_mode(self):
-        return self._mode
-
     def get_metric_names(self):
         return self._model.metrics_names
-
-    def set_mode(self, mode):
-        self._mode = mode
 
     def get_base_model(self):
         return self._model
@@ -384,15 +355,10 @@ class Model:
     # ---------------
     # Dunder
     # ----------------------
-
-    def __eq__(self, other):
-        return other == self._model_type
-
-
+    
     def __str__(self):
         return self.get_model_name()
 
-    
     def __getstate__(self):
         """
             Called when pickeling the object.

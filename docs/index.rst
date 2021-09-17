@@ -39,6 +39,16 @@ API Documentation
    api
 
 
+
+Contributing
+================================
+
+.. toctree::
+   :maxdepth: 2
+
+   contrib
+
+
 Indices and tables
 ==================
 

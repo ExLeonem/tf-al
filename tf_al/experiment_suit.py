@@ -1,4 +1,4 @@
-import os, sys, select
+import sys, select
 import numpy as np
 import tensorflow as tf
 
@@ -14,11 +14,14 @@ class ExperimentSuit:
     Parameters:
         models (list(Model)): The models to iterate over.
         query_fns (list(str)|list(AcquisitionFunction)|str|AcquisitionFunction): A list of query functions to use
-        dataset (Dataset): A dataset for experiment execution.
-        max_rounds (int): The max. number of rounds to query for datapoints per experiment run. If not set, perform query operation as long as there is data.
+        dataset (Dataset): A dataset for experiment execution. 
+        step_size (int): The number of new datapoints to select after each query. (default=1)
+        max_rounds (int): The max. number of rounds to query for datapoints per experiment run. If not set, perform query operation as long as there is data. (default=None)
+        seed (int|list(int)): A single or multiple seeds to perform the experiment configurations over. (default=None)
+        no_save_state (bool): Initial the model after each active learning round with new weights and start fresh training or load previous weight settings.
         acceptance_timeout (int): Timeout in seconds in which experiment can be proceeded or aborted, after successfull (model,query function) iteration. Setting None will automatically proceed. (default: None)
-        metrics_handler (ExperimentSuitMetrics): A configured metrics handler to use.
-        verbose (bool): Printing log messages?
+        metrics_handler (ExperimentSuitMetrics): A configured metrics handler to use. (default=None)
+        verbose (bool): Printing log messages? (default=False)
     """
 
     def __init__(
@@ -51,7 +54,6 @@ class ExperimentSuit:
         self.query_functions = self.__init_query_fns(query_fns)
         self.metrics_handler = metrics_handler
         self.no_save_state = no_save_state
-        # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' # To disable tensorflow output
 
 
     def start(self):

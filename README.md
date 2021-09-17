@@ -15,7 +15,6 @@ Perform active learning in tensorflow with extendable parts.
 
 
 
-
 # Index
 
 1. [Installation](#Installation)
@@ -125,7 +124,7 @@ model.fit(inputs, targets, batch_size=25, epochs=100)
 model.evaluate(some_inputs, some_targets)
 
 # Predicting
-model(inputs, **additional_params)
+model(inputs)
 ```
 
 To define a custom  custom model wrapper, simply extend your own class using the `Model` class and 
@@ -142,7 +141,7 @@ from tf_al import Model
 class CustomModel(Model):
 
     def __init__(self, model, **kwargs):
-        super().__init__(model, **kwargs)
+        super().__init__(model, , model_type="custom", **kwargs)
 
 
     def __call__(self, *args, **kwargs):

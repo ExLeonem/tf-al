@@ -1,6 +1,5 @@
 import numpy as np
-from . import Model, ModelType, Mode
-
+from . import Model
 
 
 class SWAG(Model):
@@ -8,7 +7,7 @@ class SWAG(Model):
     # https://github.com/DD2412-Final-Projects/swag-reproduced/blob/master/train_swag.py
 
     def __init__(self, model):
-        super().__init__(model, config, model_type=ModelType.SWAG, **kwargs)
+        super().__init__(model, config, model_type="swag", **kwargs)
 
         self.second_moment = None
         self.cov_mat = None

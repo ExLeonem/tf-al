@@ -106,7 +106,14 @@ class KerasDataset(Dataset):
     
     def __filter_kwargs(self, names, kwargs):
         """
-            Collect 
+            Collect specific set of names from **kwargs.
+
+            Parameters:
+                names (list(str)): A list of parameter names.
+                kwargs (dict): A dictionary of parameters.
+
+            Returns:
+                (dict) the collected parameters.
         """
 
         parsed = {}
