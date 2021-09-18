@@ -1,0 +1,1 @@
+# Strategies for query-by-comitee (QBC)

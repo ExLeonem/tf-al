@@ -1,4 +1,4 @@
-from .acquisition_function import AcquisitionFunction, name
+from ..acquisition_function import AcquisitionFunction, name
 
 
 @name("bald")
