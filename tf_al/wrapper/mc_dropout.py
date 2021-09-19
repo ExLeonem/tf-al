@@ -1,8 +1,6 @@
-import os, math
-import time
+import math
 import numpy as np
-import logging as log
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import roc_auc_score
 import tensorflow.keras as keras
 
 from . import  Model
@@ -85,11 +83,10 @@ class McDropout(Model):
         loss_fn = keras.losses.get(self._model.loss)
         loss = loss_fn(predictions, targets).numpy()
         return {"loss": np.mean(loss, axis=-1), "accuracy": []}
-
+    
 
     def __evaluate(self, predictions, targets, sample_size):
         """
-
             Parameters:
                 predictions (numpy.ndarray): The predictions made by the network of shape (batch, targets) or (batch, samples, targets)
                 targets (numpy.ndarray): The target values
@@ -108,7 +105,7 @@ class McDropout(Model):
         loss = loss_fn(targets, expectation)
 
         # Extend dimension in binary case 
-        extended = self.extend_binary_predictions(predictions)
+        extended = self._problem.extend_binary_predictions(predictions)
         pred_targets = np.argmax(extended, axis=-1)
 
         # One-hot vector passed
@@ -121,6 +118,59 @@ class McDropout(Model):
         
         acc = np.mean(pred_targets == targets)
         return [np.mean(loss.numpy()), acc]
+
+
+    # ---------------
+    # Metric hooks
+    # -------------------------
+
+    def _on_evaluate_loss(self, predictions, inputs, targets, **kwargs):
+        """
+            Hook called upon evaluating loss in evaluation step.
+        """
+
+        expectation = predictions
+        if len(predictions.shape) == 3:
+            expectation = np.average(predictions, axis=1)
+
+        loss_fn = tf.keras.losses.get(self._model.loss)
+        loss = loss_fn(targets, expectation)
+        return {"loss": loss}
+
+
+    def _on_evaluate_acc(self, predictions, inputs, targets, **kwargs):
+        """
+            Hook called upon evaluating to get model accuracy.
+        """
+        extended = self._problem.extend_binary_predictions(predictions)
+        pred_targets = np.argmax(extended, axis=-1)
+
+        sample_size = kwargs.get("sample_size", 10)
+        targets = self.__prepare_targets(targets, sample_size)
+        acc = np.mean(pred_targets == targets)
+        return {"acc": acc}
+
+
+    def _on_evaluate_auc(self, predictions, inputs, targets, **kwargs):
+        pass
+
+
+    def __prepare_targets(self, targets, sample_size):
+        targets = self.__select_one_hot_index(targets)
+        if sample_size > 1:
+            targets = np.vstack([targets]*sample_size).T
+
+        return targets
+
+
+    def __select_one_hot_index(self, targets):
+
+        # Potentially one-hot-vector, select index for target comparison
+        if len(targets.shape) == 2:
+            return np.argmax(targets, axis=-1)
+
+        return targets
+
 
     # -----
     # Acquisition functions
@@ -172,11 +222,11 @@ class McDropout(Model):
         predictions = self.__call__(data, sample_size=sample_size)
         posterior = self.expectation(predictions)
 
-        entropy = - self.__shannon_entropy(posterior)
+        entropy = -self.__shannon_entropy(posterior)
         # first_term = -np.sum(posterior*np.log(np.abs(posterior) + .001), axis=1)
 
         # Missing dimension in binary case?
-        predictions = self.extend_binary_predictions(predictions)
+        predictions = self._problem.extend_binary_predictions(predictions)
         inner_sum = self.__shannon_entropy(predictions)
         # inner_sum = np.sum(predictions*np.log(np.abs(predictions) + .001), axis=1)
         disagreement = np.sum(inner_sum, axis=1)/predictions.shape[1]
@@ -224,11 +274,11 @@ class McDropout(Model):
         """
         predictions = self.__call__(data, sample_size=sample_size)
         expectation = self.expectation(predictions)
-
         indices = np.argsort(expectation)[:, :-2]
 
+
     
-    def __least_confidence(self, dtaa, sample_size=10, **kwargs):
+    def __least_confidence(self, data, sample_size=10, **kwargs):
         """
             Select sample which minimize distance between two most probable labels.
             Margin Sampling (MS).
@@ -260,7 +310,7 @@ class McDropout(Model):
                 (numpy.ndarray) The expectation per datapoint
         """
         # predictions -> (batch_size, num_predictions)
-        predictions = self.extend_binary_predictions(predictions)
+        predictions = self._problem.extend_binary_predictions(predictions)
         return np.average(predictions, axis=1)
 
 
@@ -271,7 +321,7 @@ class McDropout(Model):
             Returns:
                 (numpy.ndarray) The variance per datapoint and target
         """
-        predictions = self.extend_binary_predictions(predictions)
+        predictions = self._problem.extend_binary_predictions(predictions)
         return np.var(predictions, axis=1)
 
 
@@ -282,31 +332,5 @@ class McDropout(Model):
             Returns:
                 (numpy.ndarray) The standard deviation per datapoint and target
         """
-        predictions = self.extend_binary_predictions(predictions)
+        predictions = self._problem.extend_binary_predictions(predictions)
         return np.std(predictions, axis=1)
-
-
-    def extend_binary_predictions(self, predictions, num_classes=2):
-        """
-            In MC Dropout case always predictions of shape
-            (batch_size, sample_size, classes) for classification 
-            or (batch_size, sample_size) for binary/regression case
-        """
-
-        # Don't modify predictions shape in regression case
-        if not self.is_classification():
-            return predictions
-
-
-        # Binary case: calculate complementary prediction and concatenate
-        if self.is_binary():
-            bin_alt_class = (1 + np.zeros(predictions.shape)) - predictions
-
-            # Expand dimensions for predictions to concatenate. Is this needed?
-            bin_alt_class = np.expand_dims(bin_alt_class, axis=-1)
-            predictions = np.expand_dims(predictions, axis=-1)
-
-            # Concatenate predictions
-            predictions = np.concatenate([predictions, bin_alt_class], axis=len(predictions.shape)-1)
-        
-        return predictions

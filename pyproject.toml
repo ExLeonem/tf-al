@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tf-al"
-version = "0.0.5"
+version = "0.1.0"
 description = "Active learning with tensorflow. Create custom and generic active learning loops. Export and share your experiments."
 authors = ["Maksim Sandybekov <maksim.sandybekov@live.de>"]
 license = "MIT"

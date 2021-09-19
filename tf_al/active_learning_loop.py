@@ -1,9 +1,10 @@
-import os, time, gc
-from copy import copy, deepcopy
+import time, gc
 from tqdm import tqdm
 
 from .utils import setup_logger
-from . import AcquisitionFunction, Pool, Oracle, ExperimentSuitMetrics
+from .wrapper import Model
+from . import AcquisitionFunction, Pool, Oracle, \
+    ExperimentSuitMetrics, MetricsAccumulator, Dataset
 
 
 class ActiveLearningLoop:
@@ -20,26 +21,23 @@ class ActiveLearningLoop:
             model (Model): A model wrapped into a Model type object.
             dataset (Dataset): The dataset to use (inputs, targets)
             query_fn (list(str)|str): The query function to use.
-
-        
-        **kwargs:
-            step_size (int): How many new datapoints to add per iteration.
-            init_size (int): The initial labeled pool size.
-
-
-        Returns:
-            (dict()) containing accumulated metrics.
+            step_size (int): How many new datapoints to add per active learning rounds. (default=1)
+            max_rounds (int): The max. number of rounds to execute the active learning loop. If None apply until unlabeled data pool is empty. (default=None)
+            pseudo (bool): Whether or not to execute loop in pseudo mode. Pseudo mode uses already existing labels to perform experiments. (default=True)
+            verbose (bool): Wheter or not to generate logging output. (default=False)
+            metrics_acc (MetricsAccumulator): Define custom metrics to extract per active learning loop iteration. (default=None)
     """
 
     def __init__(
         self,
-        model,
-        dataset,
+        model: Model,
+        dataset: Dataset,
         query_fn,
-        step_size=1,
-        max_rounds=None,
-        pseudo=True,
-        verbose=False,
+        step_size: int=1,
+        max_rounds: int=None,
+        pseudo: bool=True,
+        verbose: bool=False,
+        metrics_acc: MetricsAccumulator=None,
         **kwargs
     ):
         
@@ -69,6 +67,13 @@ class ActiveLearningLoop:
         self.query_config = self.model.get_config_for("query")
         self.query_config.update({"step_size": step_size})
 
+        # Define metrics to keep track of
+        if metrics_acc is None:
+            metrics_acc = MetricsAccumulator()
+            metrics_acc.track(self.model._on_evaluate_loss)
+            metrics_acc.track(self.model._on_evaluate_acc)
+        self.__metrics_acc = metrics_acc
+
 
     def __len__(self):
         """
@@ -86,6 +91,7 @@ class ActiveLearningLoop:
             return self.iteration_user_limit
         
         return times
+
 
 
     # ---------
@@ -132,7 +138,7 @@ class ActiveLearningLoop:
         eval_metrics, eval_time = self.__eval_model()
         self.i += 1
 
-        # Fix some tf memory leak issues
+        # Fix some of tf memory leak issues
         gc.collect()
         self.model.clear_session()
         self.logger.info("++++++++++++++ (END) Iteration ++++++++++++++")
@@ -153,7 +159,6 @@ class ActiveLearningLoop:
         """
             Perform parameter optimization using on a validation set.
         """
-
         metrics = None
         duration = None
         if hasattr(self.model, "optimize") and self.dataset.has_eval_set():
@@ -208,6 +213,10 @@ class ActiveLearningLoop:
         if self.dataset.has_test_set():
             x_test, y_test = self.dataset.get_test_split()
             start = time.time()
+            
+            predictions = self.model(x_test, y_test, **config)
+            new_metrics = self.__metrics_acc(predictions, x_test, y_test, **config)
+
             metrics = self.model.evaluate(x_test, y_test, **config)
             duration = time.time() - start
         

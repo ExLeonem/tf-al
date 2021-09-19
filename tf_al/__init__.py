@@ -1,6 +1,9 @@
 
 from .experiment_metrics import ExperimentSuitMetrics
+from .metrics_accumulator import MetricsAccumulator
 from .metrics import Metrics, aggregates_per_key, save_history
+
+
 
 from .oracle import Oracle
 from .acquisition_function import AcquisitionFunction

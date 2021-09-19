@@ -35,9 +35,6 @@ class Oracle:
                 size (int): number of elements to initialize the pool with.
                 pseudo_mode (bool): Whether or not pseudo labeling of inputs. (Only applicable when pool initialized with targets)
         """
-
-        oracle_in_pseudo_mode = self.is_pseudo(pseudo_mode) 
-
         if self.is_pseudo(pseudo_mode) and pool.is_pseudo():
             pool.init(size)
             return

@@ -5,8 +5,7 @@ from enum import Enum
 import tensorflow as tf
 
 from . import Checkpoint
-from ..utils import setup_logger
-
+from ..utils import setup_logger, ProblemUtils
 
 class Model:
     """
@@ -23,6 +22,10 @@ class Model:
         Parameters:
             model (tf.Model): The tensorflow model to be used.
             config (Config): Configuration object for the model. (default=None)
+
+        
+            is_binary (bool): 
+            classification (bool): 
     """
 
     def __init__(
@@ -31,8 +34,6 @@ class Model:
         config=None, 
         name=None,
         model_type=None, 
-        classification=True, 
-        is_binary=False,
         checkpoint=None,
         verbose=False,
         checkpoint_path=None,
@@ -40,12 +41,12 @@ class Model:
     ):
 
         self.logger = setup_logger(verbose, "Model Logger")
-        self.__verbose = verbose
         self.__id = uuid.uuid1()
         self._model = model
         self._config = config
         self._model_type = model_type
         self._name = name
+        self.__verbose = verbose
         
         # Checkpoints path set?
         if checkpoint_path is None:
@@ -53,11 +54,10 @@ class Model:
         self._checkpoints = Checkpoint(checkpoint_path) if checkpoint is None else checkpoint
 
         # Binary classification always false, when regression problem
-        self.__classification = classification
-        if not self.__classification:
-            self.__is_binary = False
-        else:
-            self.__is_binary = is_binary
+        self._problem = ProblemUtils(
+            kwargs.get("classification", True),
+            kwargs.get("is_binary", False)
+        )
 
 
     def __call__(self, inputs, **kwargs):
@@ -117,33 +117,6 @@ class Model:
         self._model.compile(**kwargs)
 
 
-    def prepare_predictions(self, predictions):
-        """
-            Extend predictions for binary classification case.
-
-            Parameters:
-                predictions (numpy.ndarray): The predictions made by the model
-
-            Returns:
-                (numpy.ndarray) The extended numpy array
-        """
-        return predictions
-
-    
-    def map_eval_values(self, values):
-        """
-            Create a dictionary mapping for evaluation metrics.
-
-            Parameters:
-                values (any): Values received from model.evaluate
-
-            Returns:
-                (dict) The values mapped to a specific key.
-        """
-        metric_names = self._model.metrics_names
-        return dict(zip(metric_names, values))
-
-
     def disable_batch_norm(self):
         """
             Disable batch normalization for activation of dropout during prediction.
@@ -173,7 +146,11 @@ class Model:
 
     def reset(self, pool, dataset):
         """
-            Use to reset states, weights and other stuff during each active learning loop iteration.
+            Use to reset states, weights and other stuff after each active learning loop iteration.
+
+            Parameters:
+                pool (Pool): The pool managing labeled and unlabeled indices.
+                dataset (Dataset): The dataset containting the different splits.
         """
         # self.load_weights()
         pass
@@ -181,7 +158,7 @@ class Model:
 
     def optimize(self, inputs, targets):
         """
-        Use to optimize parameters during active learning loop        
+            Use to perform optimization during active learning loop.
         """
         pass
 
@@ -272,11 +249,11 @@ class Model:
     # ----------------------------
 
     def is_classification(self):
-        return self.__classification
+        return self._problem.classification
 
 
     def is_binary(self):
-        return self.__is_binary
+        return self._problem.is_binary
 
 
     # ---------------
@@ -307,7 +284,19 @@ class Model:
 
     def __std_mean(self, data, **kwargs):
         pass
-        
+    
+
+    # -------------
+    # Metric hooks
+    # -----------------
+
+    def _on_evaluate_loss(self, **kwargs):
+        pass
+
+    
+    def _on_evaluate_acc(self, **kwargs):
+        pass
+
 
     # -----------------
     # Setter/-Getter
@@ -351,6 +340,7 @@ class Model:
 
     def get_base_model(self):
         return self._model
+
 
     # ---------------
     # Dunder

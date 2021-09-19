@@ -204,7 +204,6 @@ class ExperimentSuitMetrics:
             for row in csv_reader:
                 values.append(row)
             
-        
         return values
 
 
@@ -245,7 +244,7 @@ class ExperimentSuitMetrics:
         
         self.experiment_files[experiment_name] = 2
 
-        
+
 
     # ---------
     # Utilities
@@ -276,7 +275,6 @@ class ExperimentSuitMetrics:
             flattened_dict.update(resolved)
 
         return flattened_dict
-
 
 
     def _add_extension(self, filename, ext):

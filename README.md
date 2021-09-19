@@ -114,17 +114,20 @@ The model wrapper in essence can be used like a regular tensorflow model.
 
 ```python
 model = McDropout(base_model)
-model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=[keras.metrics.SparseCategoricalAccuracy()])
+model.compile(
+    optimizer="adam", 
+    loss="sparse_categorical_crossentropy", 
+    metrics=[keras.metrics.SparseCategoricalAccuracy()]
+)
 
-
-# Fitting the model
+# Fit model to data
 model.fit(inputs, targets, batch_size=25, epochs=100)
 
-# Evaluating
-model.evaluate(some_inputs, some_targets)
-
-# Predicting
+# Use model to predict output values
 model(inputs)
+
+# Evaluate model returning loss and accuracy
+model.evaluate(some_inputs, some_targets)
 ```
 
 To define a custom  custom model wrapper, simply extend your own class using the `Model` class and 
