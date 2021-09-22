@@ -67,13 +67,6 @@ class ActiveLearningLoop:
         self.query_config = self.model.get_config_for("query")
         self.query_config.update({"step_size": step_size})
 
-        # Define metrics to keep track of
-        if metrics_acc is None:
-            metrics_acc = MetricsAccumulator()
-            metrics_acc.track(self.model._on_evaluate_loss)
-            metrics_acc.track(self.model._on_evaluate_acc)
-        self.__metrics_acc = metrics_acc
-
 
     def __len__(self):
         """
@@ -214,9 +207,8 @@ class ActiveLearningLoop:
             x_test, y_test = self.dataset.get_test_split()
             start = time.time()
             
-            predictions = self.model(x_test, y_test, **config)
-            new_metrics = self.__metrics_acc(predictions, x_test, y_test, **config)
-
+            # predictions = self.model(x_test, y_test, **config)
+            # new_metrics = self.__metrics_acc(predictions, x_test, y_test, **config)
             metrics = self.model.evaluate(x_test, y_test, **config)
             duration = time.time() - start
         

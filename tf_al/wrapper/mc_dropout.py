@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.metrics import roc_auc_score
 import tensorflow.keras as keras
 
+from types import FunctionType
 from . import  Model
 import tensorflow as tf
 
@@ -76,13 +77,27 @@ class McDropout(Model):
         # Returns: (batch_size, sample_size, target_len) or (batch_size, target_len)
         predictions = self.__call__(inputs, sample_size=sample_size, **kwargs)
 
-        if self.is_classification():
-            loss, acc = self.__evaluate(predictions, targets, sample_size)
-            return {"loss": loss, "accuracy": acc}
+        output_metrics = {}
+        for metric in self.eval_metrics:
 
-        loss_fn = keras.losses.get(self._model.loss)
-        loss = loss_fn(predictions, targets).numpy()
-        return {"loss": np.mean(loss, axis=-1), "accuracy": []}
+            metric_name = None
+            if hasattr(metric, "__name__"):
+                metric_name = metric.__name__
+
+            else:
+                metric_name = metric.name
+
+            output_metrics[metric_name] = metric(targets, predictions, sample_size=sample_size)
+
+        return output_metrics
+
+        # if self.is_classification():
+        #     loss, acc = self.__evaluate(predictions, targets, sample_size)
+        #     return {"loss": loss, "accuracy": acc}
+
+        # loss_fn = keras.losses.get(self._model.loss)
+        # loss = loss_fn(predictions, targets).numpy()
+        # return {"loss": np.mean(loss, axis=-1), "accuracy": []}
     
 
     def __evaluate(self, predictions, targets, sample_size):
@@ -120,56 +135,13 @@ class McDropout(Model):
         return [np.mean(loss.numpy()), acc]
 
 
-    # ---------------
-    # Metric hooks
-    # -------------------------
+    def compile(self, *args, **kwargs):
+        self._model.compile(**kwargs)
+        metrics = self._create_init_metrics(kwargs)        
+        metric_names = self._extract_metric_names(metrics)
 
-    def _on_evaluate_loss(self, predictions, inputs, targets, **kwargs):
-        """
-            Hook called upon evaluating loss in evaluation step.
-        """
-
-        expectation = predictions
-        if len(predictions.shape) == 3:
-            expectation = np.average(predictions, axis=1)
-
-        loss_fn = tf.keras.losses.get(self._model.loss)
-        loss = loss_fn(targets, expectation)
-        return {"loss": loss}
-
-
-    def _on_evaluate_acc(self, predictions, inputs, targets, **kwargs):
-        """
-            Hook called upon evaluating to get model accuracy.
-        """
-        extended = self._problem.extend_binary_predictions(predictions)
-        pred_targets = np.argmax(extended, axis=-1)
-
-        sample_size = kwargs.get("sample_size", 10)
-        targets = self.__prepare_targets(targets, sample_size)
-        acc = np.mean(pred_targets == targets)
-        return {"acc": acc}
-
-
-    def _on_evaluate_auc(self, predictions, inputs, targets, **kwargs):
-        pass
-
-
-    def __prepare_targets(self, targets, sample_size):
-        targets = self.__select_one_hot_index(targets)
-        if sample_size > 1:
-            targets = np.vstack([targets]*sample_size).T
-
-        return targets
-
-
-    def __select_one_hot_index(self, targets):
-
-        # Potentially one-hot-vector, select index for target comparison
-        if len(targets.shape) == 2:
-            return np.argmax(targets, axis=-1)
-
-        return targets
+        self.eval_metrics = self._init_metrics("sampling", metric_names)
+        self._compile_params = kwargs
 
 
     # -----

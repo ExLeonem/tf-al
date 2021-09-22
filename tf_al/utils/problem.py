@@ -7,10 +7,10 @@ class ProblemUtils:
         self.classification = classification
 
         self.is_binary = is_binary
-        if not self.is_classificiation():
+        if not self.classification:
             self.is_binary = False
 
-    
+
     def extend_binary_predictions(self, predictions, num_classes=2):
         """
             In MC Dropout case always predictions of shape
@@ -40,7 +40,7 @@ class ProblemUtils:
     def alt_extend_binary_predictions(self, predictions):
         """
             Extend dimensions for binary classification problems.
-
+ 
             Parameters:
                 predictions (numpy.ndarray): Predictions made by the network.
 
@@ -48,7 +48,7 @@ class ProblemUtils:
                 (numpy.ndarray) The predictions with extended dimension.
         """
         # Don't modify predictions shape in regression case
-        if not self.is_classification():
+        if not self.classification:
             return predictions
 
         # Binary case: calculate complementary prediction and concatenate

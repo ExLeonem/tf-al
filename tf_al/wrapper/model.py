@@ -6,6 +6,8 @@ import tensorflow as tf
 
 from . import Checkpoint
 from ..utils import setup_logger, ProblemUtils
+from ..stats import get
+
 
 class Model:
     """
@@ -22,8 +24,6 @@ class Model:
         Parameters:
             model (tf.Model): The tensorflow model to be used.
             config (Config): Configuration object for the model. (default=None)
-
-        
             is_binary (bool): 
             classification (bool): 
     """
@@ -40,24 +40,26 @@ class Model:
         **kwargs
     ):
 
+        self.__verbose = verbose
         self.logger = setup_logger(verbose, "Model Logger")
         self.__id = uuid.uuid1()
         self._model = model
         self._config = config
         self._model_type = model_type
         self._name = name
-        self.__verbose = verbose
-        
+        self._compile_params = None
+        self._problem = ProblemUtils(
+            kwargs.get("classification", True),
+            kwargs.get("is_binary", False)
+        )
+
+        self.eval_metrics = []
+
         # Checkpoints path set?
         if checkpoint_path is None:
             checkpoint_path = os.getcwd()
         self._checkpoints = Checkpoint(checkpoint_path) if checkpoint is None else checkpoint
 
-        # Binary classification always false, when regression problem
-        self._problem = ProblemUtils(
-            kwargs.get("classification", True),
-            kwargs.get("is_binary", False)
-        )
 
 
     def __call__(self, inputs, **kwargs):
@@ -86,8 +88,24 @@ class Model:
             Returns:
                 (list) A list with two values. [loss, accuracy]  
         """
-        loss, accuracy = self._model.evaluate(inputs, targets, **kwargs)
-        return {"loss": loss, "accuracy": accuracy}
+
+        pred_targets = self.predict(inputs, **kwargs)
+        output_metrics = {}
+        for metric in self.eval_metrics:
+            
+            if isinstance(metric, str):
+                metric = tf.keras.metrics.get(metric)
+
+            metric_name = None
+            if hasattr(metric, "__name__"):
+                metric_name = metric.__name__
+            
+            else:
+                metric_name = metric.name
+
+            output_metrics[metric_name] = metric(targets, pred_targets)
+            
+        return output_metrics
 
 
     def fit(self, *args, **kwargs):
@@ -114,7 +132,13 @@ class Model:
         """
             Compile the model if needed
         """
+        self._compile_params = kwargs
         self._model.compile(**kwargs)
+
+        # Create evaluation metrics from compile parameters
+        metrics = self._create_init_metrics(kwargs)
+        if self.eval_metrics == []:
+            self.eval_metrics = metrics
 
 
     def disable_batch_norm(self):
@@ -152,8 +176,8 @@ class Model:
                 pool (Pool): The pool managing labeled and unlabeled indices.
                 dataset (Dataset): The dataset containting the different splits.
         """
-        # self.load_weights()
-        pass
+        self._model = tf.keras.models.clone_model(self._model)
+        self._model.compile(**self._compile_params)
 
 
     def optimize(self, inputs, targets):
@@ -188,6 +212,69 @@ class Model:
             predictions.append(self._model(batch, training=True))
 
         return np.vstack(predictions)
+
+
+    def _create_init_metrics(self, kwargs):
+        """
+            Extract loss and other metrics passed to Model.compile()
+            and transfer them to metrics which should be used for evaluation.
+        """
+
+        loss = kwargs.get("loss", None)
+        metrics = kwargs.get("metrics", [])
+
+        if not isinstance(metrics, list):
+            metrics = [metrics]
+
+        if loss is not None:
+            metrics = [loss] + metrics
+        
+        return metrics
+
+
+    def _extract_metric_names(self, metrics):
+        """
+            Get the metric names from a list of metric classes, 
+            passing already existing metric names on.
+
+            Parameters:
+                metrics (list()): A list can contain strings and metric objects.
+            
+            Returns:
+                (list(str)) a list of metric names
+        """
+        
+        all_metrics = []
+        for metric in metrics:
+
+            metric_name = metric
+            if not isinstance(metric, str):
+                metric_name = metric.name
+            
+            all_metrics.append(metric_name)
+        
+        return all_metrics
+        
+
+    def _init_metrics(self, prefix, metrics):
+        """
+            Initializes metrics passed to the object during compilation.
+            Using model specific metrics instead. 
+
+            Parameters:
+                prefix (str): The sub-package of tf_al.stats to be used (sampling, stochastic, ...)
+                metrics (list(str)): A list of metric names.
+            
+            Returns:
+                (list) of initialized metrics
+        """
+        initialized_metrics = []
+        for metric in metrics:
+            initialized_metrics.append(get(prefix, metric))
+
+        return initialized_metrics
+
+
 
 
     # --------------
@@ -290,12 +377,12 @@ class Model:
     # Metric hooks
     # -----------------
 
-    def _on_evaluate_loss(self, **kwargs):
-        pass
+    # def _on_evaluate_loss(self, **kwargs):
+    #     pass
 
     
-    def _on_evaluate_acc(self, **kwargs):
-        pass
+    # def _on_evaluate_acc(self, **kwargs):
+    #     pass
 
 
     # -----------------
@@ -340,7 +427,7 @@ class Model:
 
     def get_base_model(self):
         return self._model
-
+        
 
     # ---------------
     # Dunder

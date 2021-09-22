@@ -1,3 +1,4 @@
+from logging import disable
 from math import exp
 import numpy as np
 import pytest
@@ -9,7 +10,8 @@ from tensorflow.keras.layers import Dense, Softmax
 
 from tf_al import ActiveLearningLoop, Pool, Dataset
 from tf_al.wrapper import Model
-from tf_al.utils import setup_growth
+from tf_al.utils import setup_growth, disable_tf_logs
+
 
 
 def base_model(output=10):
@@ -34,7 +36,7 @@ class MockModel:
         return np.random.randn(self.output_shape) 
 
     def evaluate(self, *args, **kwargs):
-        return [10, 0.1]
+        return {"loss": 10, "acc": 0.1}
 
     def predict(self, *args, **kwargs):
         return np.random.randn(self.output_shape)
@@ -63,10 +65,7 @@ class TestActiveLearningLoopIteration:
 
         keys = set(i.keys())
         expected_keys = ["eval_time", "indices_selected", "optim"]
-
-        expected_loss, expected_acc = model.evaluate()
-        assert i["eval"]["loss"] == expected_loss and \
-            i["eval"]["accuracy"] == expected_acc and \
+        assert i["eval"] == {} and \
             all([key in keys for key in expected_keys])
 
     

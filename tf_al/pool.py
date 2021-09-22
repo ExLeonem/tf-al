@@ -63,17 +63,18 @@ class Pool:
             self.__init_explicit_indices(size)
             return
 
-        # WARNING: Will only work for categorical targets
-        unique_targets = np.unique(self.__true_targets)
+        # Initialize pool with one-hot-vector labels
+        true_target_shape = self.__true_targets.shape
+        if len(true_target_shape) > 1 and true_target_shape[-1] > 1:
+            self.__init_with_one_hot_vectors(size)
+            return
 
+        # WARNING: Will only work for categorical targets
         # Initialize n-datapoints per class
-        num_to_select = 1
-        num_unique_targets = len(unique_targets)
-        if num_unique_targets < size:
-            num_to_select = math.floor(size/num_unique_targets)    
-        
-        # Annotate samples in round robin like schme
+        unique_targets = np.unique(self.__true_targets)
+        num_to_select = self.__adapt_init_size(size, len(unique_targets))
         while size > 0:
+            # Annotate samples in round robin like schme
             
             # TODO: unique targets may be one-hot vector or float in regression case
             for target in unique_targets:
@@ -96,11 +97,45 @@ class Pool:
                 # Update pool
                 selected_targets = self.__true_targets[selected_indices]
                 self.annotate(selected_indices, selected_targets)
-                size -= num_to_select
+                size -= adapted_num_to_select
 
                 if size < 1:
                     break
     
+                
+    def __init_with_one_hot_vectors(self, size):
+        true_label_index = np.argmax(self.__true_targets, axis=-1)
+        num_labels = np.unique(true_label_index)
+        num_to_select = self.__adapt_init_size(size, len(num_labels))
+
+        while size > 0:
+
+            for target in num_labels:
+
+                # Get one-hot encoded labels
+                unlabeled_indices = self.get_unlabeled_indices()
+                true_targets = np.argmax(self.__true_targets, axis=-1)[unlabeled_indices]
+                selector = (true_targets == target)
+
+                # 
+                indices = unlabeled_indices[selector]
+                targets = true_targets[selector]
+
+                # No datapoints for current target available
+                if len(indices) == 0:
+                    continue
+            
+                adapted_num_to_select = self.__adapt_num_to_select(targets, num_to_select)
+                selected_indices = np.random.choice(indices, adapted_num_to_select, replace=False)
+
+                # Update pool
+                selected_targets = self.__true_targets[selected_indices]
+                self.annotate(selected_indices, selected_targets)
+                size -= adapted_num_to_select
+                
+                if size < 1:
+                    break
+
 
     def __init_explicit_indices(self, indices):
         """
@@ -196,6 +231,14 @@ class Pool:
     # ---------
     # Utilities
     # -------------------
+
+    def __adapt_init_size(self, size, available):
+        num_to_select = 1
+        if available < size:
+            num_to_select = math.floor(size/available)   
+        
+        return num_to_select
+
 
     def has_unlabeled(self):
         """

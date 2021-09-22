@@ -153,10 +153,10 @@ class ExperimentSuit:
         # TODO: Adding outter loop and extend parameter list for seed
 
         experiment_name = str(run)
-        if seed is not None and isinstance(seed, int):
+        if seed is not None:
             np.random.seed(seed)
             tf.random.set_seed(seed)
-            experiment_name += str(seed)
+            experiment_name += "_" + str(seed)
 
         active_learning_loop = ActiveLearningLoop(
             model, 
