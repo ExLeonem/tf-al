@@ -9,9 +9,9 @@
 
 # Active learning with tensorflow
 
-<sup>*Currently only supports classification tasks.</sup>
+<sup>*Currently only supports bayesian active learning tasks.</sup>
 
-Perform active learning in tensorflow with extendable parts.  
+Perform active learning in tensorflow/keras with extendable parts. 
 
 
 

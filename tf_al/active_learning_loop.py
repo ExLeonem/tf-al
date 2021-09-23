@@ -4,7 +4,7 @@ from tqdm import tqdm
 from .utils import setup_logger
 from .wrapper import Model
 from . import AcquisitionFunction, Pool, Oracle, \
-    ExperimentSuitMetrics, MetricsAccumulator, Dataset
+    ExperimentSuitMetrics, Dataset
 
 
 class ActiveLearningLoop:
@@ -25,7 +25,6 @@ class ActiveLearningLoop:
             max_rounds (int): The max. number of rounds to execute the active learning loop. If None apply until unlabeled data pool is empty. (default=None)
             pseudo (bool): Whether or not to execute loop in pseudo mode. Pseudo mode uses already existing labels to perform experiments. (default=True)
             verbose (bool): Wheter or not to generate logging output. (default=False)
-            metrics_acc (MetricsAccumulator): Define custom metrics to extract per active learning loop iteration. (default=None)
     """
 
     def __init__(
@@ -37,7 +36,6 @@ class ActiveLearningLoop:
         max_rounds: int=None,
         pseudo: bool=True,
         verbose: bool=False,
-        metrics_acc: MetricsAccumulator=None,
         **kwargs
     ):
         

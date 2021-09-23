@@ -13,7 +13,7 @@ class Accuracy:
             Calculate the accuracy for the sampling procedure.
         """
         pred_mean = np.mean(predictions, axis=1)
-        acc_fn = tf.keras.metrics.get(self.name)
+        acc_fn = get(self.name)
         true_targets = tf.convert_to_tensor(true_targets)
         output = acc_fn(true_targets, pred_mean)
         return np.mean(output)

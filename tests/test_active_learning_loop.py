@@ -6,6 +6,7 @@ import pytest
 import tensorflow as tf
 import tensorflow.keras as keras
 from tensorflow.keras import Sequential
+from tensorflow.keras import Model as KerasModel
 from tensorflow.keras.layers import Dense, Softmax
 
 from tf_al import ActiveLearningLoop, Pool, Dataset
@@ -27,7 +28,7 @@ class MockFitResult(object):
         self.__dict__.update(kwargs)
 
 
-class MockModel:
+class MockModel(KerasModel):
 
     def __init__(self, output_shape):
         self.output_shape = output_shape
@@ -51,11 +52,13 @@ class MockModel:
 class TestActiveLearningLoopIteration:
 
     def test_base_iteration(self):
+        disable_tf_logs()
         inputs = np.random.randn(10)
         targets = np.random.choice([0, 1, 2], 10)
 
-        model = MockModel(10)
+        model = base_model(output=3)
         mock_model = Model(model, None)
+        mock_model.compile(loss="sparse_categorical_crossentropy", optimizer="sgd", metrics=[keras.metrics.SparseCategoricalAccuracy()])
         dataset = Dataset(inputs, targets, test=(inputs, targets))
         loop = ActiveLearningLoop(mock_model, dataset, "random")
 
@@ -65,18 +68,19 @@ class TestActiveLearningLoopIteration:
 
         keys = set(i.keys())
         expected_keys = ["eval_time", "indices_selected", "optim"]
-        assert i["eval"] == {} and \
+        assert i["eval"] != {} and \
             all([key in keys for key in expected_keys])
 
     
     def test_base_iteration_generic_model(self):
+        disable_tf_logs()
         d_length = 10
         inputs = np.random.randn(d_length)
         targets = np.random.choice([0, 1, 2], d_length)
 
-        model = base_model(output=d_length)
+        model = base_model(output=3)
         mock_model = Model(model, None)
-        mock_model.compile(loss="mean_absolute_error", optimizer="sgd", metrics=[keras.metrics.SparseCategoricalAccuracy()])
+        mock_model.compile(loss="sparse_categorical_crossentropy", optimizer="sgd", metrics=[keras.metrics.SparseCategoricalAccuracy()])
 
         dataset = Dataset(inputs, targets, test=(inputs, targets))
         loop = ActiveLearningLoop(mock_model, dataset, "random")
