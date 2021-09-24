@@ -11,7 +11,7 @@ class TestLabelEfficiency:
         baseline = random.random()
 
         result = leff(main, baseline)
-        expected = (main-baseline)
+        expected = (main/baseline)
 
         assert result == pytest.approx(expected) and \
             result <= 1 and result >= -1
@@ -23,7 +23,7 @@ class TestLabelEfficiency:
         baseline = np.random.random(num_rounds)
 
         out_mean, out_std = leff(main, baseline)
-        expected = (main-baseline)
+        expected = (main/baseline)
         assert len(out_mean) == len(expected)
 
     
@@ -33,8 +33,8 @@ class TestLabelEfficiency:
         main = np.random.random((num_experiments, num_rounds))
         baseline = np.random.random((num_experiments, num_rounds))
 
-        exp_mean = np.mean(main, axis=0)-np.mean(baseline, axis=0)
-        exp_std = np.std(main, axis=0)-np.std(baseline, axis=0)
+        exp_mean = np.mean(main, axis=0)/np.mean(baseline, axis=0)
+        exp_std = np.std(main, axis=0)/np.std(baseline, axis=0)
 
         out_mean, out_std = leff(main, baseline)
         assert len(out_mean) == len(exp_mean)

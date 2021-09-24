@@ -1,11 +1,12 @@
 import math
 import numpy as np
 from sklearn.metrics import roc_auc_score
+from scipy.special import digamma, beta
 import tensorflow.keras as keras
-
-from types import FunctionType
-from . import  Model
 import tensorflow as tf
+
+from . import  Model
+from ..utils import beta_approximated_upper_joint_entropy
 
 
 
@@ -13,10 +14,12 @@ class McDropout(Model):
     """
         Wrapper class for neural networks.
 
+
     """
 
     def __init__(self, model, config=None, **kwargs):
         super().__init__(model, config=config, model_type="mc_dropout", **kwargs)
+        self._approximation_type = "sampling"
 
         # disable batch norm
         # super().disable_batch_norm()
@@ -64,6 +67,7 @@ class McDropout(Model):
             return predictions[0]
 
         return np.vstack(predictions)
+
 
 
     def evaluate(self, inputs, targets, sample_size=10, **kwargs):
@@ -163,8 +167,8 @@ class McDropout(Model):
         elif name == "std_mean":
             fn = self.__std_mean
 
-        elif name == "margin_sampling":
-            fn = self.__margin_sampling
+        elif name == "baba":
+            fn = self.__baba
 
         return fn
 
@@ -239,32 +243,41 @@ class McDropout(Model):
         return np.mean(std, axis=-1)
 
 
-    def __margin_sampling(self, data, sample_size=10, **kwargs):
+    def __baba(self, data, sample_size=10, **kwargs):
         """
-            Select sample which minimize distance between two most probable labels.
-            Margin Sampling (MS).
+            Normalized mutual information
+
+            Implementation of acquisition function described in:
+            BABA: Beta Approximation for Bayesian Active Learning, Jae Oh Woo
         """
+        # predictions shape (batch, num_predictions, num_classes)
         predictions = self.__call__(data, sample_size=sample_size)
-        expectation = self.expectation(predictions)
-        indices = np.argsort(expectation)[:, :-2]
-
-
-    
-    def __least_confidence(self, data, sample_size=10, **kwargs):
-        """
-            Select sample which minimize distance between two most probable labels.
-            Margin Sampling (MS).
-        """
-        predictions = self.__call__(data, sample_size=sample_size)
-        expectation = self.expectation(predictions)
-
-        return np.argmin(expectation, axis=1)
+        sample_mean = self.expectation(predictions)
+        entropy = -self.__shannon_entropy(sample_mean)
+        disagreement = self.__disagreement(predictions)
+        bald_term = self.__mutual_information(entropy, disagreement)
+        
+        # Beta approximation parameters
+        sample_var = self.variance(predictions)
+        a = ((np.power(sample_mean, 2)*(1-sample_mean))/(sample_var+.0001))-sample_mean
+        b = ((1/sample_mean)-1)*a
+        upper_joint_entropy = beta_approximated_upper_joint_entropy(a, b)
+        return bald_term/np.abs(upper_joint_entropy)
 
 
 
     # --------------
     # Utils
     # --------------------
+
+    def __disagreement(self, predictions):
+        predictions = self._problem.extend_binary_predictions(predictions)
+        inner_sum = self.__shannon_entropy(predictions)
+        return np.sum(inner_sum, axis=1)/predictions.shape[1]
+
+
+    def __mutual_information(self, entropy, disagreement):
+        return entropy + disagreement
 
     def __shannon_entropy(self, values):
         """

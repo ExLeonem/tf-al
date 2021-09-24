@@ -18,13 +18,16 @@ def __multi_experiment_leff(main: np.ndarray, baseline: np.ndarray) -> tuple:
     if main.shape[-1] != baseline.shape[-1]:
         raise ValueError("Error in leff(). Input shape missmatch. Got shapes \"main={}\" and \"baseline={}\"".format(main.shape, baseline.shape))
 
-    main_mean = np.mean(main, axis=0)
-    main_std = np.std(main, axis=0)
-    
-    base_mean = np.mean(baseline, axis=0)
-    base_std = np.std(baseline, axis=0)
+    main_eff = main/baseline
+    return np.mean(main_eff, axis=0), np.std(main_eff, axis=0)
 
-    return (main_mean-base_mean), (main_std-base_std)
+    # main_mean = np.mean(main, axis=0)
+    # main_std = np.std(main, axis=0)
+    
+    # base_mean = np.mean(baseline, axis=0)
+    # base_std = np.std(baseline, axis=0)
+
+    # return (main_mean/base_mean), (main_std/base_std)
 
 
 def leff(main, baseline):
@@ -47,7 +50,8 @@ def leff(main, baseline):
 
         # Output of single experiment passed (accuracy_at_round_n)
         if has_shape_len(main, 1) and has_shape_len(baseline, 1):
-            return main-baseline, np.zeros(len(main))
+            mean_leff = main/baseline
+            return mean_leff, np.zeros(len(main))
 
         # Output of multiple experiments passed (nth_experiment, accuracy_at_round_n)
         elif has_shape_len(main, 2) and has_shape_len(baseline, 2):
@@ -59,7 +63,7 @@ def leff(main, baseline):
     
     # Calculate labeling efficiency for single value pair (values of different functions at active learning step n)
     elif of_type(float, main, baseline) or of_type(int, main, baseline):
-        return main-baseline
+        return main/baseline
     
 
     raise ValueError("Error in leff(). Type missmatch. Expected parameters both to be of type np.ndarray, float or int.\
