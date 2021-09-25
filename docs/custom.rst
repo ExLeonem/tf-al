@@ -2,19 +2,9 @@
 
 
 Customization
-====================
+======================
 
 
 
-Model Wrapper
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-Acquisition Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-Active Learning Loops
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Creating new model wrappers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^

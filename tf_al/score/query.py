@@ -23,15 +23,16 @@ def __multi_experiment_qeff(main: np.ndarray, baseline: np.ndarray) -> tuple:
          (main_exp_std-base_exp_std)/max(main_exp_std, base_exp_std)
 
 
+
 # def qeff(main, baseline, args*):
-def qeff(main, baseline):
+def qeff_relative(main, baseline, *args):
     """
         Calculate the query efficiency of main method to
         the baseline.
 
         Parameters:
-            main (np.ndarray): The query time per timestep
-            baseline (np.ndarray): The baseline times to check against
+            main (numpy.ndarray): The query time per timestep
+            baseline (numpy.ndarray): The baseline times to check against
 
 
         Examples:
@@ -43,6 +44,10 @@ def qeff(main, baseline):
         > mult_exp_2 = np.array([[5.313, 4.238, 3.134], [5.434, 4.313, 3.223]])
         > queff(mult_exp_1, mult_exp_2)
     """
+
+    if len(args) > 0:
+        return 
+
 
     if of_type(np.ndarray, main, baseline):
 
@@ -65,3 +70,29 @@ def qeff(main, baseline):
 
 
     raise ValueError("Error in qeff(). Expected both inputs to be of type numpy.ndarray, float or int. Got \"main={}\" and \"baseline={}\"".format(type(main), type(baseline)))
+
+
+def qeff(*args):
+    """
+        Calculate 
+
+        Parameters:
+            *args: A number of arrays with equal sizes, representing time of execution.
+    """
+
+    num_elements = len(args)
+    if num_elements < 2:
+        raise ValueError("Error in qeff(). Not enough values to calculate")
+
+    mean_ar = []
+    std_ar = []
+    for arg in args:
+        mean_ar.append(np.mean(arg))
+        std_ar.append(np.std(arg))
+    
+    mean_ar = np.array(mean_ar)
+    std_ar = np.array(std_ar)
+
+    mean_qeff = (mean_ar-np.min(mean_ar))/(np.max(mean_ar)-np.min(mean_ar))
+    std_qeff = (std_ar-np.min(std_ar))/(np.max(std_ar)-np.min(std_ar))
+    return np.abs(mean_qeff-1), np.abs(std_qeff-1)

@@ -54,36 +54,36 @@ ExperimentSuitMetrics
 
 
 Model Wrapper
-=============================
+---------------------
 
 Model
-----------------------
+^^^^^^^^^^^^^^^^^^^^
 
 .. autoclass:: tf_al.wrapper.Model
     :members:
 
 
 McDropout
-----------------------
+^^^^^^^^^^^^^^^^^^^^
 
 .. autoclass:: tf_al.wrapper.McDropout
     :members:
 
 
 
-Utils
-==============================
+Utilities
+--------------------------
 
 
 Logger
---------------
+^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: tf_al.utils.logger
     :members:
 
 
 Tensorflow
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: tf_al.utils.tf
     :members:

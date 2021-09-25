@@ -28,7 +28,7 @@ def predict_n(model, point, n_times=5, enable_tqdm=True):
 
         Parameters:
             - model (tf.Model | torch.Model) The model to be used for the prediction
-            - point (np.ndarray) The datapoint to be used for prediction
+            - point (numpy.ndarray) The datapoint to be used for prediction
             - n_times (int) The number of predictions to be made
             - enabel_tqdm (bool) Should tqdm be used for progress indication?
 
@@ -37,7 +37,7 @@ def predict_n(model, point, n_times=5, enable_tqdm=True):
             - [ ] Test if first dimension of output can always be omitted
         
         Returns:
-            - (np.ndarray)  of shape (ntimes, ...model output shape)
+            - (numpy.ndarray)  of shape (ntimes, ...model output shape)
     """
 
     if n_times < 1 or not int(n_times):
@@ -68,12 +68,12 @@ def batch_predict_n(model, data, n_times=5, enable_tqdm=True):
 
         Parameters:
             - model (tf.Model | torch.Model) The model to perform predictions on
-            - data (np.ndarray) The data to perform the predictions on
+            - data (numpy.ndarray) The data to perform the predictions on
             - n_times (int) total number of predictions per input point
             - fun_pred (function) 
 
         Returns:
-            - (np.ndarray) of shape (num data points, n_times, ...model output shape)
+            - (numpy.ndarray) of shape (num data points, n_times, ...model output shape)
     """
 
     disable_batch_norm(model)
@@ -100,11 +100,11 @@ def measures(predictions, batch_dim=False):
         Helper to calculate regular measures for bayesian neural networks.
 
         Parameters:
-            - predictions (np.ndarray) Array with n-predictions.
+            - predictions (numpy.ndarray) Array with n-predictions.
             - batch_dim (bool) Existing batch dimension at first index.
 
         Returns:
-            - (np.ndarray, np.ndarray) The mean and std of predictions
+            - (numpy.ndarray, numpy.ndarray) The mean and std of predictions
     """
 
     axis = 0

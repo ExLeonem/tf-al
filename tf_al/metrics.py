@@ -91,7 +91,7 @@ class Metrics:
         """
             Collect metric values from a dictionary of values.
 
-            Parameter:
+            Parameters:
                 values (dict): A collection of values collected during training
 
             Returns:

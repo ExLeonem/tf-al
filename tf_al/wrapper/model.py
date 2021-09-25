@@ -1,9 +1,7 @@
 import os, math
 import uuid
 import numpy as np
-from enum import Enum
 import tensorflow as tf
-
 from . import Checkpoint
 from ..utils import setup_logger, ProblemUtils
 from ..stats import get
@@ -13,13 +11,6 @@ class Model:
     """
         Base wrapper for deep learning models to interface
         with the active learning environment. 
-        
-        Attributes:
-            _model (tf.Model): Tensorflow or pytorch module.
-            _config (Config): Model configuration
-            _mode (Mode): The mode the model is in 'train' or 'test'/'eval'.
-            _model_type (str): The model type
-            _checkpoints (Checkpoint): Created checkpoints.
 
         Parameters:
             model (tf.Model): The tensorflow model to be used.
@@ -70,7 +61,7 @@ class Model:
         """
             Approximate predictive distribution.
 
-            Parameter:
+            Parameters:
                 inputs (numpy.ndarray): The inputs for the approximation
 
         """

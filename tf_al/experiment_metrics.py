@@ -145,7 +145,7 @@ class ExperimentSuitMetrics:
             Writes a new line into one of the experiment files. 
             Creating the experiment file if it not already exists.
 
-            Parameter:
+            Parameters:
                 experiment_name (str): The name of the experiment performed.
                 values (dict): A dictionary of values to write to the experiment file.
                 filter_keys (list(str)): A list of str keys to filter keys of given values dictionary.
@@ -370,7 +370,7 @@ class ExperimentSuitMetrics:
     def get_experiment_meta(self, experiment_name):
         """
 
-            Parameter:
+            Parameters:
                 experiment_name (self): The name of the experiment.
         """
         meta = self.read_meta()

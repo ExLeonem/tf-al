@@ -1,4 +1,8 @@
 .. _contrib:
 
-Contributing
-======================
+
+Contribution
+====================
+
+Development Setup
+^^^^^^^^^^^^^^^^^^^^^

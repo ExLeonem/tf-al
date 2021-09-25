@@ -8,45 +8,13 @@ Index
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-
-
-Getting started
-==================================
-
-.. toctree ::
-   :maxdepth: 2
 
    get_started
-
-
-
-Customization
-==================================
-
-.. toctree ::
-   :maxdepth: 2
-
    custom
-
-
-API Documentation
-==================================
-
-.. toctree::
-   :maxdepth: 2
-
    api
-
-
-
-Contributing
-================================
-
-.. toctree::
-   :maxdepth: 2
-
    contrib
+
+   
 
 
 Indices and tables

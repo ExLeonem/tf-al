@@ -66,7 +66,7 @@ def leff(main, baseline):
         return main/baseline
     
 
-    raise ValueError("Error in leff(). Type missmatch. Expected parameters both to be of type np.ndarray, float or int.\
+    raise ValueError("Error in leff(). Type missmatch. Expected parameters both to be of type numpy.ndarray, float or int.\
          Received types {} and {}.".format(type(main), type(baseline)))
 
 

@@ -39,7 +39,7 @@ class Pool:
             Only applicable when pool in pseudo mode.
 
             Parameters:
-                size (int|list|np.ndarray): Either the number of datapoints to initialized or an explicit list or array of indices to initialize.
+                size (int|list|numpy.ndarray): Either the number of datapoints to initialized or an explicit list or array of indices to initialize.
         """
         
         is_int = isinstance(size, int)
