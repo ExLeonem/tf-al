@@ -86,7 +86,7 @@ class ExperimentSuit:
                 self.__iterate_experiments(run, self.seed)
                 return
 
-            if not isinstance(self.seed, list):
+            if not isinstance(self.seed, list) and not isinstance(self.seed, np.ndarray):
                 raise ValueError("Error initializing the active learning loop. Parameter seed of unknown type. Expected list of integers or single integer.")
             
             for idx in range(len(self.seed)):
@@ -148,9 +148,6 @@ class ExperimentSuit:
                 query_ fn (str|AcquisitionFunction): The acquisition function to use.
                 seed (int|None): The seed with which the experiment is run.
         """
-
-        # Quick fix, reset random state after each iteration
-        # TODO: Adding outter loop and extend parameter list for seed
 
         experiment_name = str(run)
         if seed is not None:

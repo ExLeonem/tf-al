@@ -74,10 +74,11 @@ def qeff_relative(main, baseline, *args):
 
 def qeff(*args):
     """
-        Calculate 
+        Calculate the query efficency for different acquisition functions. Query efficency
+        represents a ranking by time, the higher the value the better the acquisition function performs in order of query time.
 
         Parameters:
-            *args: A number of arrays with equal sizes, representing time of execution.
+            *args: Multiple arrays with execution times.
     """
 
     num_elements = len(args)
@@ -93,6 +94,8 @@ def qeff(*args):
     mean_ar = np.array(mean_ar)
     std_ar = np.array(std_ar)
 
+    
     mean_qeff = (mean_ar-np.min(mean_ar))/(np.max(mean_ar)-np.min(mean_ar))
     std_qeff = (std_ar-np.min(std_ar))/(np.max(std_ar)-np.min(std_ar))
-    return np.abs(mean_qeff-1), np.abs(std_qeff-1)
+
+    return np.abs(np.abs(mean_qeff -1)), std_qeff

@@ -2,6 +2,23 @@ import numpy as np
 from .__checks import has_same_len, has_shape_len, of_type
 
 
+
+def selection_prob(pool_size, selected_labels):
+    """
+        Calculate the probability of a certain datapoint to be selected during
+        the active learning procedure.
+
+        Parameters:
+            pool_size (int): The total number of datapoints in the unlabeled_pool
+
+            
+    """
+
+    pass
+
+
+
+
 def __multi_experiment_leff(main: np.ndarray, baseline: np.ndarray) -> tuple:
     """
         Calcualte labeling efficiency for multi experiment inputs.
