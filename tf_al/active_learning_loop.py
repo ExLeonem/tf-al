@@ -49,7 +49,7 @@ class ActiveLearningLoop:
 
         self.pool = Pool(x_train, y_train)
         if dataset.is_pseudo() and initial_pool_size > 0:
-            self.pool.init(initial_pool_size)
+            self.pool.init(initial_pool_size, kwargs.get("initializer", None))
         
         # Loop parameters
         self.step_size = step_size

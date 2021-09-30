@@ -26,12 +26,13 @@ class Dataset:
         test=None,
         val=None,
         init_size=0,
-        init_indices=None
+        init_indices=None,
+        initializer=None
         # train_size=.75, 
         # test_size=None, 
         # val_size=None
     ):
-
+        self.initializer = initializer
         self.pseudo = True
         self.init_size = init_size
 
@@ -43,7 +44,6 @@ class Dataset:
         
         if val is not None:
             self.x_test, self.y_test = val
-        
 
         # if len(inputs) != len(targets):
         #     raise ValueError("Error in Dataset.__init__(). Can't initialize dataset. Length of inputs and targets are not equal.")

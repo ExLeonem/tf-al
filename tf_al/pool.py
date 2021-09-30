@@ -1,6 +1,6 @@
 import math
-from copy import deepcopy
 import numpy as np
+from .pool_init import sbc
 
 
 class Pool:
@@ -33,7 +33,7 @@ class Pool:
             self.__targets = np.zeros(target_shape)    
 
 
-    def init(self, size):
+    def init(self, size, initializer=None):
         """
             Initialize the pool with specific number of labels.
             Only applicable when pool in pseudo mode.
@@ -68,6 +68,13 @@ class Pool:
         if len(true_target_shape) > 1 and true_target_shape[-1] > 1:
             self.__init_with_one_hot_vectors(size)
             return
+
+        if initializer == "sbc":
+            indices = sbc(size, self.__inputs)
+            targets = self.__true_targets[indices]
+            self.annotate(indices, targets)
+            return
+
 
         # WARNING: Will only work for categorical targets
         # Initialize n-datapoints per class

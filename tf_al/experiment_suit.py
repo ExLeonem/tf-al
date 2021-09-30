@@ -162,7 +162,8 @@ class ExperimentSuit:
             step_size=self.step_size,
             max_rounds=self.max_rounds,
             pseudo=True,
-            verbose=self.verbose
+            verbose=self.verbose,
+            initializer=self.dataset.initializer
         )
 
         experiment_name += "_" + active_learning_loop.get_experiment_name()
