@@ -237,7 +237,7 @@ class McDropout(Model):
 
         # Calculate variance/standard deviation from samples
         variance = self.variance(predictions)
-        std = np.square(variance)
+        std = np.sqrt(variance)
 
         # Mean over target variables
         return np.mean(std, axis=-1)
