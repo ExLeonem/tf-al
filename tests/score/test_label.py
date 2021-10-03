@@ -12,9 +12,7 @@ class TestLabelEfficiency:
 
         result = leff(main, baseline)
         expected = (main/baseline)
-
-        assert result == pytest.approx(expected) and \
-            result <= 1 and result >= -1
+        assert result == pytest.approx(expected)
 
     
     def test_valid_array_inputs(self):
