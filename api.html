@@ -1,0 +1,1246 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Reference &#8212; Active Learning  documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.5f77b4aec8189eecf79907ce328c390d.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contrib.html" />
+    <link rel="prev" title="Customization" href="custom.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Active Learning  documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="get_started.html">
+   Getting started
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="custom.html">
+   Customization
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   API Reference
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="contrib.html">
+   Contributing
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/api.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/ExLeonem/active-learning/issues/new?title=Issue%20on%20page%20%2Fapi.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   API Reference
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#activelearningloop">
+     ActiveLearningLoop
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#oracle">
+     Oracle
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pool">
+     Pool
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dataset">
+     Dataset
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#metrics">
+     Metrics
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#experimentsuit">
+     ExperimentSuit
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#experimentsuitmetrics">
+     ExperimentSuitMetrics
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-wrapper">
+   Model Wrapper
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model">
+     Model
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mcdropout">
+     McDropout
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#utils">
+   Utils
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#module-tf_al.utils.logger">
+     Logger
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#module-tf_al.utils.tf">
+     Tensorflow
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="api-reference">
+<span id="api"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="activelearningloop">
+<h2>ActiveLearningLoop<a class="headerlink" href="#activelearningloop" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.ActiveLearningLoop">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.</span></code><code class="sig-name descname"><span class="pre">ActiveLearningLoop</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">tf_al.wrapper.model.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">tf_al.dataset.Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rounds</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/active_learning_loop.html#ActiveLearningLoop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ActiveLearningLoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an active learning loop. The loop accumulates metrics during training in a dictionary
+that is returned.</p>
+<p>To use with tqdm:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">my_iterable</span><span class="p">):</span>
+<span class="n">do_something</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<a class="reference internal" href="#tf_al.wrapper.Model" title="tf_al.wrapper.Model"><em>Model</em></a>) – A model wrapped into a Model type object.</p></li>
+<li><p><strong>dataset</strong> (<a class="reference internal" href="#tf_al.Dataset" title="tf_al.Dataset"><em>Dataset</em></a>) – The dataset to use (inputs, targets)</p></li>
+<li><p><strong>query_fn</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>|str</em>) – The query function to use.</p></li>
+<li><p><strong>step_size</strong> (<em>int</em>) – How many new datapoints to add per active learning rounds. (default=1)</p></li>
+<li><p><strong>max_rounds</strong> (<em>int</em>) – The max. number of rounds to execute the active learning loop. If None apply until unlabeled data pool is empty. (default=None)</p></li>
+<li><p><strong>pseudo</strong> (<em>bool</em>) – Whether or not to execute loop in pseudo mode. Pseudo mode uses already existing labels to perform experiments. (default=True)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Wheter or not to generate logging output. (default=False)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.ActiveLearningLoop.collect_meta_params">
+<code class="sig-name descname"><span class="pre">collect_meta_params</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/active_learning_loop.html#ActiveLearningLoop.collect_meta_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ActiveLearningLoop.collect_meta_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect meta information about experiment to be written into .meta.json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(dict) with all meta information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ActiveLearningLoop.has_next">
+<code class="sig-name descname"><span class="pre">has_next</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/active_learning_loop.html#ActiveLearningLoop.has_next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ActiveLearningLoop.has_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can another step of the active learning loop be performed?</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ActiveLearningLoop.is_done">
+<code class="sig-name descname"><span class="pre">is_done</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/active_learning_loop.html#ActiveLearningLoop.is_done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ActiveLearningLoop.is_done" title="Permalink to this definition">¶</a></dt>
+<dd><p>The active learning has executed and is done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(bool) whether or not the loop has executed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ActiveLearningLoop.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/active_learning_loop.html#ActiveLearningLoop.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ActiveLearningLoop.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the active learning loop till the end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>experiment_name</strong> (<em>str</em>) – The name of the file to write to</p></li>
+<li><p><strong>metrics_handler</strong> (<a class="reference internal" href="#tf_al.ExperimentSuitMetrics" title="tf_al.ExperimentSuitMetrics"><em>ExperimentSuitMetrics</em></a>) – Metrics handler for write/read operations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ActiveLearningLoop.step">
+<code class="sig-name descname"><span class="pre">step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/active_learning_loop.html#ActiveLearningLoop.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ActiveLearningLoop.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a step of the active learning loop.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="oracle">
+<h2>Oracle<a class="headerlink" href="#oracle" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.Oracle">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.</span></code><code class="sig-name descname"><span class="pre">Oracle</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/oracle.html#Oracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Oracle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oracle handles the labeling process for input values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>callback</strong> (<em>Callback</em>) – Function to call for user input for input values. Function receives (pool, indices)</p></li>
+<li><p><strong>pseudo_mode</strong> (<em>bool</em>) – Active learning environment in pseudo mode?</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.Oracle.annotate">
+<code class="sig-name descname"><span class="pre">annotate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/oracle.html#Oracle.annotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Oracle.annotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create annotations for given indices and update the pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pool</strong> (<a class="reference internal" href="#tf_al.Pool" title="tf_al.Pool"><em>Pool</em></a>) – The pool holding information about already annotated inputs.</p></li>
+<li><p><strong>indices</strong> (<em>numpy.ndarray|list</em><em>(</em><em>int</em><em>)</em>) – Indices indicating which inputs to annotate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Oracle.init">
+<code class="sig-name descname"><span class="pre">init</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/oracle.html#Oracle.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Oracle.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize pool with given number of samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pool</strong> (<a class="reference internal" href="#tf_al.Pool" title="tf_al.Pool"><em>Pool</em></a>) – holding information about already labeled targets.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – number of elements to initialize the pool with.</p></li>
+<li><p><strong>pseudo_mode</strong> (<em>bool</em>) – Whether or not pseudo labeling of inputs. (Only applicable when pool initialized with targets)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Oracle.is_pseudo">
+<code class="sig-name descname"><span class="pre">is_pseudo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/oracle.html#Oracle.is_pseudo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Oracle.is_pseudo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is the oracle put into pseudo labeling mode?
+Meaning: when pool is also in pseudo mode, labels will automatically be set by using known labels.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pool">
+<h2>Pool<a class="headerlink" href="#pool" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.Pool">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.</span></code><code class="sig-name descname"><span class="pre">Pool</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pool that holds information about labeled and unlabeld inputs.
+The attribute ‘indices’ holds information about the labeled inputs.</p>
+<p>Each value of self.indices can take the following states:
+(value==-1) Corresponding input is labeld
+(value!=-1) Corresponding input is not labeled</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>numpy.ndarray</em>) – Inputs to the network.</p></li>
+<li><p><strong>targets</strong> (<em>numpy.ndarray</em>) – Already known targets, used for experimental runs. (default=None)</p></li>
+<li><p><strong>target_shape</strong> (<em>tuple</em><em>(</em><em>)</em>) – The shape of the target, if None equals the len(inputs). (default=None)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.Pool.annotate">
+<code class="sig-name descname"><span class="pre">annotate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.annotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.annotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate inputs of given indices with given targets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indices</strong> (<em>numpy.ndarray</em>) – The indices to annotate.</p></li>
+<li><p><strong>targets</strong> (<em>numpy.ndarray</em>) – The labels to set for the given annotations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_indices">
+<code class="sig-name descname"><span class="pre">get_indices</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current labeling state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(numpy.ndarray) the indices state. (-1) indicating a labeled input.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_inputs_by">
+<code class="sig-name descname"><span class="pre">get_inputs_by</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_inputs_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_inputs_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get inputs by indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<em>numpy.ndarray</em>) – The indices at which to access the data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(numpy.ndarray) the data at given indices.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_labeled_data">
+<code class="sig-name descname"><span class="pre">get_labeled_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_labeled_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_labeled_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data and indices of datapoints which are currently labeled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(tuple(numpy.ndarray, numpy.ndarray)) inputs and corresponding targets.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_labeled_indices">
+<code class="sig-name descname"><span class="pre">get_labeled_indices</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_labeled_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_labeled_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the indices of labeled datapoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(numpy.ndarray) of datapoints that already has been labeled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_length_labeled">
+<code class="sig-name descname"><span class="pre">get_length_labeled</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_length_labeled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_length_labeled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of labeled inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(int) The number of labeled inputs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_length_unlabeled">
+<code class="sig-name descname"><span class="pre">get_length_unlabeled</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_length_unlabeled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_length_unlabeled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of unlabeld inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(int) the number of unlabeled inputs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_targets_by">
+<code class="sig-name descname"><span class="pre">get_targets_by</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_targets_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_targets_by" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_unlabeled_data">
+<code class="sig-name descname"><span class="pre">get_unlabeled_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_unlabeled_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_unlabeled_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data and their indices of datapoints which are currently not labeled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(tuple(numpy.ndarray, numpy.ndarray)) The inputs and their indices in the pool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.get_unlabeled_indices">
+<code class="sig-name descname"><span class="pre">get_unlabeled_indices</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.get_unlabeled_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.get_unlabeled_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all unlabeled indices for this pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(numpy.ndarray) an array of indices.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.has_labeled">
+<code class="sig-name descname"><span class="pre">has_labeled</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.has_labeled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.has_labeled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Has pool labeled inputs?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(bool) true or false depending whether or not there are labeled inputs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.has_unlabeled">
+<code class="sig-name descname"><span class="pre">has_unlabeled</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.has_unlabeled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.has_unlabeled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Has pool any unlabeled inputs?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(bool) true or false depending whether unlabeled data exists.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.init">
+<code class="sig-name descname"><span class="pre">init</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the pool with specific number of labels.
+Only applicable when pool in pseudo mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int|list|np.ndarray</em>) – Either the number of datapoints to initialized or an explicit list or array of indices to initialize.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Pool.is_pseudo">
+<code class="sig-name descname"><span class="pre">is_pseudo</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/pool.html#Pool.is_pseudo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Pool.is_pseudo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is the pool in pseudo mode?
+Meaning, true target labels are already known?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(bool) indicating whether or not true labels are existent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="dataset">
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.Dataset">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.</span></code><code class="sig-name descname"><span class="pre">Dataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/dataset.html#Dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits a dataset into tree parts. Train/Test/validation.
+The train split is used for selection of</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>numpy.ndarray</em>) – The model inputs.</p></li>
+<li><p><strong>targets</strong> (<em>numpy.ndarray</em>) – The targets, labels or values.</p></li>
+<li><p><strong>init_size</strong> (<em>int</em>) – The initial size of labeled inputs in the pool.</p></li>
+<li><p><strong>train_size</strong> (<em>float|int</em>) – Size of the train split.</p></li>
+<li><p><strong>test_size</strong> (<em>float|int</em>) – Size of the test split.</p></li>
+<li><p><strong>val_size</strong> (<em>float|int</em>) – Size of the validation split.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.Dataset.check_float_range">
+<code class="sig-name descname"><span class="pre">check_float_range</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/dataset.html#Dataset.check_float_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Dataset.check_float_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is float in procentual range?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>float</em>) – The value to perform the check on.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Dataset.check_int_in_range">
+<code class="sig-name descname"><span class="pre">check_int_in_range</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/dataset.html#Dataset.check_int_in_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Dataset.check_int_in_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Dataset.get_split_ratio">
+<code class="sig-name descname"><span class="pre">get_split_ratio</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/dataset.html#Dataset.get_split_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Dataset.get_split_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(int, int, int) the split ratio between (train, test, eval) sets.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Dataset.percentage_of">
+<code class="sig-name descname"><span class="pre">percentage_of</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">part</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/dataset.html#Dataset.percentage_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Dataset.percentage_of" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the percentage a part takes from given total number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_number</strong> (<em>int</em>) – The total number from which to calculate the percentual part.</p></li>
+<li><p><strong>part</strong> (<em>int</em>) – The part of which to calculate the percentage.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(float) representing the percentage of given part im total number.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="metrics">
+<h2>Metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.Metrics">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.</span></code><code class="sig-name descname"><span class="pre">Metrics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['accuracy',</span> <span class="pre">'loss']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/metrics.html#Metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the given path to create
+Prepares and writes metrics into a csv file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>str</em>) – The base path where to save the metrics.</p></li>
+<li><p><strong>keys</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – A list of keys.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.Metrics.collect">
+<code class="sig-name descname"><span class="pre">collect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/metrics.html#Metrics.collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Metrics.collect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect metric values from a dictionary of values.</p>
+<dl class="simple">
+<dt>Parameter:</dt><dd><p>values (dict): A collection of values collected during training</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(dict) A subset of metrics extracted from the values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Metrics.read">
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/metrics.html#Metrics.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Metrics.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a .csv file of metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The filename to read in.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(list(dict)) a list of metric values, per trained iteration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.Metrics.write">
+<code class="sig-name descname"><span class="pre">write</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/metrics.html#Metrics.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.Metrics.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write given values into a csv file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the file.</p></li>
+<li><p><strong>values</strong> (<em>list</em><em>(</em><em>dict</em><em>)</em>) – A dictionary of metrics/values to write into a .csv file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="experimentsuit">
+<h2>ExperimentSuit<a class="headerlink" href="#experimentsuit" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.ExperimentSuit">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.</span></code><code class="sig-name descname"><span class="pre">ExperimentSuit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_fns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_save_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptance_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_accumulator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_suit.html#ExperimentSuit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a number of experiments.
+Iterating over given models and methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>models</strong> (<em>list</em><em>(</em><a class="reference internal" href="#tf_al.wrapper.Model" title="tf_al.wrapper.Model"><em>Model</em></a><em>)</em>) – The models to iterate over.</p></li>
+<li><p><strong>query_fns</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>|list</em><em>(</em><em>AcquisitionFunction</em><em>)</em><em>|str|AcquisitionFunction</em>) – A list of query functions to use</p></li>
+<li><p><strong>dataset</strong> (<a class="reference internal" href="#tf_al.Dataset" title="tf_al.Dataset"><em>Dataset</em></a>) – A dataset for experiment execution.</p></li>
+<li><p><strong>step_size</strong> (<em>int</em>) – The number of new datapoints to select after each query. (default=1)</p></li>
+<li><p><strong>max_rounds</strong> (<em>int</em>) – The max. number of rounds to query for datapoints per experiment run. If not set, perform query operation as long as there is data. (default=None)</p></li>
+<li><p><strong>seed</strong> (<em>int|list</em><em>(</em><em>int</em><em>)</em>) – A single or multiple seeds to perform the experiment configurations over. (default=None)</p></li>
+<li><p><strong>no_save_state</strong> (<em>bool</em>) – Initial the model after each active learning round with new weights and start fresh training or load previous weight settings.</p></li>
+<li><p><strong>acceptance_timeout</strong> (<em>int</em>) – Timeout in seconds in which experiment can be proceeded or aborted, after successfull (model,query function) iteration. Setting None will automatically proceed. (default: None)</p></li>
+<li><p><strong>metrics_handler</strong> (<a class="reference internal" href="#tf_al.ExperimentSuitMetrics" title="tf_al.ExperimentSuitMetrics"><em>ExperimentSuitMetrics</em></a>) – A configured metrics handler to use. (default=None)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Printing log messages? (default=False)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.ExperimentSuit.start">
+<code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_suit.html#ExperimentSuit.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuit.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the experiment suit.
+Runs an experiment for each acquisition function and model combination.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>[x] Last iteration even when no other experiments to run, prompts proceeding request.
+[ ] Implement run/seed implementation. Run seeds experiments with seeds n-times.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="experimentsuitmetrics">
+<h2>ExperimentSuitMetrics<a class="headerlink" href="#experimentsuitmetrics" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.ExperimentSuitMetrics">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.</span></code><code class="sig-name descname"><span class="pre">ExperimentSuitMetrics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the given path to write and read experiment metrics
+and meta information.</p>
+<p>If the last segment of the path is not existent it will be created.</p>
+<p>Creating a new object pointing to an already existing metrics path will
+reconstruct all metrics files that were written.</p>
+<p>WARNING: The reconstructred files will be locked for appending and writing. Can be unlocked by using the unlock() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>str</em>) – Where to save the experiments? No recursive creation of directories.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Set debugg mode?</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.add_dataset_meta">
+<code class="sig-name descname"><span class="pre">add_dataset_meta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.add_dataset_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.add_dataset_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding meta information about the dataset used for the experiments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the dataset.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – The path to the dataset used.</p></li>
+<li><p><strong>train_size</strong> (<em>float|int</em>) – Similiar to sklearn.model_selection.train_test_split.</p></li>
+<li><p><strong>test_size</strong> (<em>float|int</em>) – the size of the test set.</p></li>
+<li><p><strong>val_size</strong> (<em>float|int</em>) – the size of the validation set.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.add_experiment_meta">
+<code class="sig-name descname"><span class="pre">add_experiment_meta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.add_experiment_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.add_experiment_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding meta information about an experiment to the meta file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>experiment_name</strong> (<em>str</em>) – The name of the experiment</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – Name of the model used</p></li>
+<li><p><strong>query_fn</strong> (<em>str</em>) – Name of the acquisition function</p></li>
+<li><p><strong>params</strong> (<em>dict</em>) – Dictionary of additional parameters to be saved. Like step_size, iterations, …</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.get_dataset_info">
+<code class="sig-name descname"><span class="pre">get_dataset_info</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.get_dataset_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.get_dataset_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(dict) containing meta information about the used dataset for the experiment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.get_experiment_meta">
+<code class="sig-name descname"><span class="pre">get_experiment_meta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.get_experiment_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.get_experiment_meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Parameter:</dt><dd><p>experiment_name (self): The name of the experiment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.overwrite">
+<code class="sig-name descname"><span class="pre">overwrite</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.overwrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.overwrite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark reconstructed experiment metrics to be overwriten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>experiment_name</strong> (<em>str</em>) – Name of the experiment to mark for overwriting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.read">
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read metrics from a specific experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>experiment_name</strong> (<em>str</em>) – The experiment to read from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(list(dict)) of accumulated experiment metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.read_meta">
+<code class="sig-name descname"><span class="pre">read_meta</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.read_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.read_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the meta information from the .meta.json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(dict) of meta information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.unlock">
+<code class="sig-name descname"><span class="pre">unlock</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.unlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlocks a reconstructed file to be available to write it again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>experiment_name</strong> (<em>str</em>) – Name of the expierment to unlock for appending.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.unlock_all">
+<code class="sig-name descname"><span class="pre">unlock_all</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.unlock_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.unlock_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlocks all locked files, being able to append to files again.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.write_line">
+<code class="sig-name descname"><span class="pre">write_line</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.write_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.write_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a new line into one of the experiment files.
+Creating the experiment file if it not already exists.</p>
+<dl class="simple">
+<dt>Parameter:</dt><dd><p>experiment_name (str): The name of the experiment performed.
+values (dict): A dictionary of values to write to the experiment file.
+filter_keys (list(str)): A list of str keys to filter keys of given values dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.ExperimentSuitMetrics.write_meta">
+<code class="sig-name descname"><span class="pre">write_meta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/experiment_metrics.html#ExperimentSuitMetrics.write_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.ExperimentSuitMetrics.write_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a dictionary to .meta.json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>content</strong> (<em>dict</em>) – The meta information to be written to .meta.json</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="model-wrapper">
+<h1>Model Wrapper<a class="headerlink" href="#model-wrapper" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.wrapper.Model">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.wrapper.</span></code><code class="sig-name descname"><span class="pre">Model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base wrapper for deep learning models to interface
+with the active learning environment.</p>
+<dl class="py attribute">
+<dt id="tf_al.wrapper.Model._model">
+<code class="sig-name descname"><span class="pre">_model</span></code><a class="headerlink" href="#tf_al.wrapper.Model._model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tensorflow or pytorch module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tf.Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tf_al.wrapper.Model._config">
+<code class="sig-name descname"><span class="pre">_config</span></code><a class="headerlink" href="#tf_al.wrapper.Model._config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Config</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tf_al.wrapper.Model._mode">
+<code class="sig-name descname"><span class="pre">_mode</span></code><a class="headerlink" href="#tf_al.wrapper.Model._mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mode the model is in ‘train’ or ‘test’/’eval’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Mode</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tf_al.wrapper.Model._model_type">
+<code class="sig-name descname"><span class="pre">_model_type</span></code><a class="headerlink" href="#tf_al.wrapper.Model._model_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The model type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tf_al.wrapper.Model._checkpoints">
+<code class="sig-name descname"><span class="pre">_checkpoints</span></code><a class="headerlink" href="#tf_al.wrapper.Model._checkpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Created checkpoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Checkpoint</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>tf.Model</em>) – The tensorflow model to be used.</p></li>
+<li><p><strong>config</strong> (<em>Config</em>) – Configuration object for the model. (default=None)</p></li>
+<li><p><strong>is_binary</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>classification</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.batch_prediction">
+<code class="sig-name descname"><span class="pre">batch_prediction</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.batch_prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.batch_prediction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>numpy.ndarray</em>) – Inputs going into the model</p></li>
+<li><p><strong>n_times</strong> (<em>int</em>) – How many times to sample from posterior?</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – In how many batches to split the data?</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.compile">
+<code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.compile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile the model if needed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.disable_batch_norm">
+<code class="sig-name descname"><span class="pre">disable_batch_norm</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.disable_batch_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.disable_batch_norm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable batch normalization for activation of dropout during prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> (<em>-</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.evaluate">
+<code class="sig-name descname"><span class="pre">evaluate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a model on given input data and targets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>numpy.ndarray</em>) – </p></li>
+<li><p><strong>targets</strong> (<em>numpy.ndarray</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(list) A list with two values. [loss, accuracy]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.fit">
+<code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model to the given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – The inputs to train the model on. (default=None)</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – The targets to fit the model to. (default=None)</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The size of each individual batch</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>() a record of the trianing procedure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.get_model_name">
+<code class="sig-name descname"><span class="pre">get_model_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.get_model_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.get_model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prefix</strong> (<em>bool</em>) – Prefix the model name with model type?</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(str) the model name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.get_query_fn">
+<code class="sig-name descname"><span class="pre">get_query_fn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.get_query_fn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.get_query_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get model specific acquisition function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the acquisition function to return.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(function) the acquisition function to use.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.optimize">
+<code class="sig-name descname"><span class="pre">optimize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use to perform optimization during active learning loop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.predict">
+<code class="sig-name descname"><span class="pre">predict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Approximate predictive distribution.</p>
+<dl class="simple">
+<dt>Parameter:</dt><dd><p>inputs (numpy.ndarray): The inputs for the approximation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.Model.reset">
+<code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/model.html#Model.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.Model.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use to reset states, weights and other stuff after each active learning loop iteration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pool</strong> (<a class="reference internal" href="#tf_al.Pool" title="tf_al.Pool"><em>Pool</em></a>) – The pool managing labeled and unlabeled indices.</p></li>
+<li><p><strong>dataset</strong> (<a class="reference internal" href="#tf_al.Dataset" title="tf_al.Dataset"><em>Dataset</em></a>) – The dataset containting the different splits.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mcdropout">
+<h2>McDropout<a class="headerlink" href="#mcdropout" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tf_al.wrapper.McDropout">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tf_al.wrapper.</span></code><code class="sig-name descname"><span class="pre">McDropout</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/mc_dropout.html#McDropout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.McDropout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper class for neural networks.</p>
+<dl class="py method">
+<dt id="tf_al.wrapper.McDropout.compile">
+<code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/mc_dropout.html#McDropout.compile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.McDropout.compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile the model if needed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.McDropout.evaluate">
+<code class="sig-name descname"><span class="pre">evaluate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/mc_dropout.html#McDropout.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.McDropout.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a model on given input data and targets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.McDropout.expectation">
+<code class="sig-name descname"><span class="pre">expectation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/mc_dropout.html#McDropout.expectation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.McDropout.expectation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the mean of the distribution
+output distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(numpy.ndarray) The expectation per datapoint</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.McDropout.get_query_fn">
+<code class="sig-name descname"><span class="pre">get_query_fn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/mc_dropout.html#McDropout.get_query_fn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.McDropout.get_query_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get model specific acquisition function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the acquisition function to return.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(function) the acquisition function to use.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.McDropout.std">
+<code class="sig-name descname"><span class="pre">std</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/mc_dropout.html#McDropout.std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.McDropout.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(numpy.ndarray) The standard deviation per datapoint and target</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tf_al.wrapper.McDropout.variance">
+<code class="sig-name descname"><span class="pre">variance</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/wrapper/mc_dropout.html#McDropout.variance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.wrapper.McDropout.variance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the variance of the distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>(numpy.ndarray) The variance per datapoint and target</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="utils">
+<h1>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-tf_al.utils.logger">
+<span id="logger"></span><h2>Logger<a class="headerlink" href="#module-tf_al.utils.logger" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="tf_al.utils.logger.setup_logger">
+<code class="sig-prename descclassname"><span class="pre">tf_al.utils.logger.</span></code><code class="sig-name descname"><span class="pre">setup_logger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Runner'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_log_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/utils/logger.html#setup_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.utils.logger.setup_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup a logger for the active learning loop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>debug</strong> (<em>bool</em>) – activate logging output in console?</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the logger to use. (default=’Runner’)</p></li>
+<li><p><strong>log_level</strong> (<em>logging.level</em>) – The log level to use when debug==True. (default=logging.DEBUG)</p></li>
+<li><p><strong>default_log_level</strong> (<em>logging.level</em>) – The default log level to use when debug==False. (default=logging.CRITICAL)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(logging.Logger) a configured logger object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tf_al.utils.tf">
+<span id="tensorflow"></span><h2>Tensorflow<a class="headerlink" href="#module-tf_al.utils.tf" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="tf_al.utils.tf.disable_tf_logs">
+<code class="sig-prename descclassname"><span class="pre">tf_al.utils.tf.</span></code><code class="sig-name descname"><span class="pre">disable_tf_logs</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/utils/tf.html#disable_tf_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.utils.tf.disable_tf_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable tensorflow log messages.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tf_al.utils.tf.set_tf_log_level">
+<code class="sig-prename descclassname"><span class="pre">tf_al.utils.tf.</span></code><code class="sig-name descname"><span class="pre">set_tf_log_level</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/utils/tf.html#set_tf_log_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.utils.tf.set_tf_log_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a log level for tensorflow logging messages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>level</strong> (<em>str</em>) – The log level, one of [0, 1, 2, 3].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tf_al.utils.tf.setup_growth">
+<code class="sig-prename descclassname"><span class="pre">tf_al.utils.tf.</span></code><code class="sig-name descname"><span class="pre">setup_growth</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tf_al/utils/tf.html#setup_growth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tf_al.utils.tf.setup_growth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup memory to grow. Check tf.config.experimental.set_memory_growth for reference.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="custom.html" title="previous page">Customization</a>
+    <a class='right-next' id="next-link" href="contrib.html" title="next page">Contributing</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Maksim Sandybekov<br/>
+        
+            &copy; Copyright 2021, Maksim Sandybekov.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

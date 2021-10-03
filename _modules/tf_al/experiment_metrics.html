@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tf_al.experiment_metrics &#8212; Active Learning  documentation</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.5f77b4aec8189eecf79907ce328c390d.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Active Learning  documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../get_started.html">
+   Getting started
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../custom.html">
+   Customization
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../api.html">
+   API Reference
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../contrib.html">
+   Contributing
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/ExLeonem/active-learning/issues/new?title=Issue%20on%20page%20%2F_modules/tf_al/experiment_metrics.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for tf_al.experiment_metrics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">csv</span><span class="o">,</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics">[docs]</a><span class="k">class</span> <span class="nc">ExperimentSuitMetrics</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the given path to write and read experiment metrics</span>
+<span class="sd">        and meta information.</span>
+
+<span class="sd">        If the last segment of the path is not existent it will be created.</span>
+
+<span class="sd">        Creating a new object pointing to an already existing metrics path will</span>
+<span class="sd">        reconstruct all metrics files that were written. </span>
+
+<span class="sd">        WARNING: The reconstructred files will be locked for appending and writing. Can be unlocked by using the unlock() method.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            base_path (str): Where to save the experiments? No recursive creation of directories.</span>
+<span class="sd">            verbose (bool): Set debugg mode?</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_path</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ExperimentSuitMetrics&quot;</span><span class="p">,</span> <span class="n">default_log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">BASE_PATH</span> <span class="o">=</span> <span class="n">base_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">META_FILE_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s2">&quot;.meta.json&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__setup_dir</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
+
+        <span class="c1"># Keep track of written experiment metrics (Code 0=File was loaded, 1=File created)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># CSV Parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quotechar</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quoting</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_MINIMAL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__load_experiments</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">__setup_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Setup a directory for a suit of experiment metrics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Try to create directory if non existen</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        
+        <span class="c1"># Create non-existent meta.json file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">META_FILE_PATH</span><span class="p">):</span>
+            <span class="c1"># base_content = {&quot;models&quot;: [], &quot;dataset&quot;: {}, &quot;params&quot;: {}, &quot;acquisition_function&quot;: [], &quot;run&quot;: []}</span>
+            <span class="n">base_content</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;experiments&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_meta</span><span class="p">(</span><span class="n">base_content</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.add_dataset_meta"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.add_dataset_meta">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">train_size</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Adding meta information about the dataset used for the experiments</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                name (str): The name of the dataset.</span>
+<span class="sd">                path (str): The path to the dataset used.</span>
+<span class="sd">                train_size (float|int): Similiar to sklearn.model_selection.train_test_split.</span>
+<span class="sd">                test_size (float|int): the size of the test set.</span>
+<span class="sd">                val_size (float|int): the size of the validation set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_meta</span><span class="p">()</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
+            <span class="s2">&quot;train_size&quot;</span><span class="p">:</span> <span class="n">train_size</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">test_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">][</span><span class="s2">&quot;test_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_size</span>
+        
+
+        <span class="k">if</span> <span class="n">val_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">][</span><span class="s2">&quot;val_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_meta</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.add_experiment_meta"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.add_experiment_meta">[docs]</a>    <span class="k">def</span> <span class="nf">add_experiment_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">query_fn</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Adding meta information about an experiment to the meta file.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                experiment_name (str): The name of the experiment</span>
+<span class="sd">                model_name (str): Name of the model used</span>
+<span class="sd">                query_fn (str): Name of the acquisition function</span>
+<span class="sd">                params (dict): Dictionary of additional parameters to be saved. Like step_size, iterations, ...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_meta</span><span class="p">()</span>
+        <span class="n">experiments</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;experiments&quot;</span><span class="p">]</span>
+
+        <span class="n">experiments</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;experiment_name&quot;</span><span class="p">:</span> <span class="n">experiment_name</span><span class="p">,</span>
+            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+            <span class="s2">&quot;query_fn&quot;</span><span class="p">:</span> <span class="n">query_fn</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span>
+        <span class="p">})</span>
+
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;experiments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_meta</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ----------</span>
+    <span class="c1"># Read/Write files</span>
+    <span class="c1"># -------------------------</span>
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.write_meta"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.write_meta">[docs]</a>    <span class="k">def</span> <span class="nf">write_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Writes a dictionary to .meta.json.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                content (dict): The meta information to be written to .meta.json</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">META_FILE_PATH</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">json_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.read_meta"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.read_meta">[docs]</a>    <span class="k">def</span> <span class="nf">read_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Reads the meta information from the .meta.json file.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (dict) of meta information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">META_FILE_PATH</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">json_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ExperimentSuitMetrics.write_line"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.write_line">[docs]</a>    <span class="k">def</span> <span class="nf">write_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">filter_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Writes a new line into one of the experiment files. </span>
+<span class="sd">            Creating the experiment file if it not already exists.</span>
+
+<span class="sd">            Parameter:</span>
+<span class="sd">                experiment_name (str): The name of the experiment performed.</span>
+<span class="sd">                values (dict): A dictionary of values to write to the experiment file.</span>
+<span class="sd">                filter_keys (list(str)): A list of str keys to filter keys of given values dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Filter out empty values</span>
+        <span class="k">if</span> <span class="n">filter_nan</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        
+        <span class="c1"># Filter specific keys</span>
+        <span class="k">if</span> <span class="n">filter_keys</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filter_keys</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">filter_keys</span><span class="p">}</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_extension</span><span class="p">(</span><span class="n">experiment_name</span><span class="p">,</span> <span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># Was metrics file reconstructed and is locked?</span>
+        <span class="k">if</span> <span class="n">experiment_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;File </span><span class="si">{}</span><span class="s2"> was reconstructed and is locked. Use .unlock(experiment_name) to open this file up for writing.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">experiment_name</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+        
+        <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_mode</span><span class="p">(</span><span class="n">experiment_name</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+            <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">csv_writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_csv_writer</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">)</span>
+            
+            <span class="c1"># Experiment file non-existent? Overwrite mode?</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">experiment_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">csv_writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+
+            <span class="n">csv_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.read"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Read metrics from a specific experiment.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                experiment_name (str): The experiment to read from.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (list(dict)) of accumulated experiment metrics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># .csv extension in filename? </span>
+        <span class="n">experiment_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_extension</span><span class="p">(</span><span class="n">experiment_name</span><span class="p">,</span> <span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">experiment_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">)</span> 
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">experiment_file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+
+            <span class="n">csv_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_csv_reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv_reader</span><span class="p">:</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.unlock"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.unlock">[docs]</a>    <span class="k">def</span> <span class="nf">unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Unlocks a reconstructed file to be available to write it again.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                experiment_name (str): Name of the expierment to unlock for appending.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">experiment_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.unlock_all"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.unlock_all">[docs]</a>    <span class="k">def</span> <span class="nf">unlock_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Unlocks all locked files, being able to append to files again.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.overwrite"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.overwrite">[docs]</a>    <span class="k">def</span> <span class="nf">overwrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Mark reconstructed experiment metrics to be overwriten.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                experiment_name (str): Name of the experiment to mark for overwriting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">experiment_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">:</span>
+            <span class="k">return</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+
+
+    <span class="c1"># ---------</span>
+    <span class="c1"># Utilities</span>
+    <span class="c1"># --------------------</span>
+    
+    <span class="k">def</span> <span class="nf">_resolve_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Resolves a dictionary into a flat pandas dataframe like structure.</span>
+<span class="sd">            Nested dictionaries are getting prefixed with parent key.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                values (dict): A dictionary of keys. Can include dictionaries with single level nesting.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (dict) a flattened dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">flattened_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        
+            <span class="c1"># Copy flat values into flattened dictionary</span>
+            <span class="n">prefixed_key</span> <span class="o">=</span> <span class="n">key</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">flattened_dict</span><span class="p">[</span><span class="n">prefixed_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">continue</span>
+            
+            <span class="n">resolved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_dict</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefixed_key</span><span class="p">)</span>
+            <span class="n">flattened_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resolved</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">flattened_dict</span>
+
+
+    <span class="k">def</span> <span class="nf">_add_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Adds an extension to a filename.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                filename (str): The filename to check for the extension</span>
+<span class="sd">                ext (str): The file extension to add and check for</span>
+<span class="sd">            </span>
+<span class="sd">            Returns:</span>
+<span class="sd">                (str) the file name with a file extension appended. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">ext</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">ext</span>
+        
+        <span class="k">return</span> <span class="n">filename</span>
+
+
+    <span class="k">def</span> <span class="nf">__load_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Reconstrcut metrics from files available files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">dir_content</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">dir_content</span><span class="p">:</span>
+            
+            <span class="c1"># Skip sub-directories</span>
+            <span class="n">element_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">element_path</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Skip meta file</span>
+            <span class="k">if</span> <span class="s2">&quot;.meta.json&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+                <span class="k">continue</span>
+            
+            <span class="c1"># Strip extension off of filename</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        
+
+
+    <span class="c1"># -----------</span>
+    <span class="c1"># Getter/-Setter</span>
+    <span class="c1"># ------------------</span>
+
+    <span class="k">def</span> <span class="nf">__get_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">):</span>
+        <span class="n">default_mode</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span>
+        <span class="k">if</span> <span class="n">experiment_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default_mode</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_files</span><span class="p">[</span><span class="n">experiment_name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;w&quot;</span>
+
+        <span class="k">return</span> <span class="n">default_mode</span>
+
+
+    <span class="k">def</span> <span class="nf">__get_csv_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;delimiter&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">,</span>
+            <span class="s2">&quot;quotechar&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quotechar</span><span class="p">,</span>
+            <span class="s2">&quot;quoting&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quoting</span>
+        <span class="p">}</span>
+
+
+    <span class="k">def</span> <span class="nf">__get_csv_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">):</span>
+        <span class="n">csv_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_csv_params</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">,</span> <span class="o">**</span><span class="n">csv_params</span><span class="p">)</span>
+
+    
+    <span class="k">def</span> <span class="nf">__get_csv_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+        <span class="n">csv_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_csv_params</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="o">**</span><span class="n">csv_params</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.get_dataset_info"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.get_dataset_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Read </span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (dict) containing meta information about the used dataset for the experiment</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_meta</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExperimentSuitMetrics.get_experiment_meta"><a class="viewcode-back" href="../../api.html#tf_al.ExperimentSuitMetrics.get_experiment_meta">[docs]</a>    <span class="k">def</span> <span class="nf">get_experiment_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">            Parameter:</span>
+<span class="sd">                experiment_name (self): The name of the experiment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_meta</span><span class="p">()</span>
+        <span class="n">experiments</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;experiments&quot;</span><span class="p">]</span>
+        <span class="n">experiment_information</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
+            
+            <span class="k">if</span> <span class="n">experiment</span><span class="p">[</span><span class="s2">&quot;experiment_name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">experiment_name</span><span class="p">:</span>
+                <span class="n">experiment_information</span> <span class="o">=</span> <span class="n">experiment</span>
+
+        <span class="k">return</span> <span class="n">experiment_information</span></div></div>
+        
+</pre></div>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Maksim Sandybekov<br/>
+        
+            &copy; Copyright 2021, Maksim Sandybekov.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

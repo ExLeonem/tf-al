@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tf_al.active_learning_loop &#8212; Active Learning  documentation</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.5f77b4aec8189eecf79907ce328c390d.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Active Learning  documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../get_started.html">
+   Getting started
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../custom.html">
+   Customization
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../api.html">
+   API Reference
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../contrib.html">
+   Contributing
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/ExLeonem/active-learning/issues/new?title=Issue%20on%20page%20%2F_modules/tf_al/active_learning_loop.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for tf_al.active_learning_loop</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">gc</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span> <span class="nn">.wrapper</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">AcquisitionFunction</span><span class="p">,</span> <span class="n">Pool</span><span class="p">,</span> <span class="n">Oracle</span><span class="p">,</span> \
+    <span class="n">ExperimentSuitMetrics</span><span class="p">,</span> <span class="n">Dataset</span>
+
+
+<div class="viewcode-block" id="ActiveLearningLoop"><a class="viewcode-back" href="../../api.html#tf_al.ActiveLearningLoop">[docs]</a><span class="k">class</span> <span class="nc">ActiveLearningLoop</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an active learning loop. The loop accumulates metrics during training in a dictionary</span>
+<span class="sd">        that is returned.</span>
+
+<span class="sd">        To use with tqdm: </span>
+<span class="sd">        ::</span>
+<span class="sd">            for i in tqdm(my_iterable):</span>
+<span class="sd">            do_something()</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            model (Model): A model wrapped into a Model type object.</span>
+<span class="sd">            dataset (Dataset): The dataset to use (inputs, targets)</span>
+<span class="sd">            query_fn (list(str)|str): The query function to use.</span>
+<span class="sd">            step_size (int): How many new datapoints to add per active learning rounds. (default=1)</span>
+<span class="sd">            max_rounds (int): The max. number of rounds to execute the active learning loop. If None apply until unlabeled data pool is empty. (default=None)</span>
+<span class="sd">            pseudo (bool): Whether or not to execute loop in pseudo mode. Pseudo mode uses already existing labels to perform experiments. (default=True)</span>
+<span class="sd">            verbose (bool): Wheter or not to generate logging output. (default=False)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+        <span class="n">query_fn</span><span class="p">,</span>
+        <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">max_rounds</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pseudo</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="s2">&quot;ActiveLearningLoop-Logger&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Data and pools</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_train_split</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_size</span> <span class="o">=</span> <span class="n">initial_pool_size</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_init_size</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">is_pseudo</span><span class="p">()</span> <span class="ow">and</span> <span class="n">initial_pool_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">initial_pool_size</span><span class="p">)</span>
+        
+        <span class="c1"># Loop parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="n">step_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span> <span class="o">=</span> <span class="n">max_rounds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iteration_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get_length_unlabeled</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Active learning components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oracle</span> <span class="o">=</span> <span class="n">Oracle</span><span class="p">(</span><span class="n">pseudo_mode</span><span class="o">=</span><span class="n">pseudo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_acquisition_fn</span><span class="p">(</span><span class="n">query_fn</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_config_for</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;step_size&quot;</span><span class="p">:</span> <span class="n">step_size</span><span class="p">})</span>
+
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            How many iterations until the active learning loop exits.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (int) The number of iterations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">times</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rest</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">times</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span> <span class="o">&lt;</span> <span class="n">times</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span>
+        
+        <span class="k">return</span> <span class="n">times</span>
+
+
+
+    <span class="c1"># ---------</span>
+    <span class="c1"># Iterator Protocol</span>
+    <span class="c1"># -----------------</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Iterate over dataset and query for labels.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (dict) Accumulated information during avtive learning iterations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+
+        <span class="c1"># Load previous checkpoints/recreate model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;++++++++++++++ (START) Iteration </span><span class="si">{}</span><span class="s2"> ++++++++++++++&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+        
+        <span class="c1"># Optimiize model params</span>
+        <span class="n">optim_metrics</span><span class="p">,</span> <span class="n">optim_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__optim_model_params</span><span class="p">()</span>
+
+        <span class="c1"># Fit model</span>
+        <span class="n">train_metrics</span><span class="p">,</span> <span class="n">train_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fit_model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">---- (END) Model fitting&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Update pools</span>
+        <span class="n">acq_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">---- (START) Acquisition&quot;</span><span class="p">)</span>
+        <span class="n">indices</span><span class="p">,</span> <span class="n">_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">query_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">---- (END) Acquisition&quot;</span><span class="p">)</span>
+        <span class="n">acq_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">acq_start</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">oracle</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+
+        <span class="c1"># Evaluate model</span>
+        <span class="n">eval_metrics</span><span class="p">,</span> <span class="n">eval_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eval_model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Fix some of tf memory leak issues</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">clear_session</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;++++++++++++++ (END) Iteration ++++++++++++++&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="n">train_metrics</span><span class="p">,</span>
+            <span class="s2">&quot;train_time&quot;</span><span class="p">:</span> <span class="n">train_time</span><span class="p">,</span>
+            <span class="s2">&quot;query_time&quot;</span><span class="p">:</span> <span class="n">acq_time</span><span class="p">,</span>
+            <span class="s2">&quot;optim&quot;</span><span class="p">:</span> <span class="n">optim_metrics</span><span class="p">,</span>
+            <span class="s2">&quot;optim_time&quot;</span><span class="p">:</span> <span class="n">optim_time</span><span class="p">,</span>
+            <span class="s2">&quot;eval&quot;</span><span class="p">:</span> <span class="n">eval_metrics</span><span class="p">,</span>
+            <span class="s2">&quot;eval_time&quot;</span><span class="p">:</span> <span class="n">eval_time</span><span class="p">,</span>
+            <span class="s2">&quot;indices_selected&quot;</span><span class="p">:</span> <span class="n">indices</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="p">}</span>
+
+
+    <span class="k">def</span> <span class="nf">__optim_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Perform parameter optimization using on a validation set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;optimize&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">has_eval_set</span><span class="p">():</span>
+            <span class="n">e_inputs</span><span class="p">,</span> <span class="n">e_targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">get_eval_split</span><span class="p">()</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">e_inputs</span><span class="p">,</span> <span class="n">e_target</span><span class="p">)</span>
+            <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+        <span class="k">return</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">duration</span>
+
+    
+    <span class="k">def</span> <span class="nf">__fit_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Fit model to the labeled data.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (tuple(dict(), float)) metrics and the time needed to fit the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;//// (START) Model fitting&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get_length_labeled</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get_labeled_data</span><span class="p">()</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="n">h</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">has_eval_set</span><span class="p">():</span>
+                <span class="n">x_eval</span><span class="p">,</span> <span class="n">y_eval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">get_eval_split</span><span class="p">()</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_eval</span><span class="p">,</span> <span class="n">y_eval</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">history</span>
+
+        <span class="k">return</span> <span class="n">history</span><span class="p">,</span> <span class="n">duration</span>
+
+
+    <span class="k">def</span> <span class="nf">__eval_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Performan an evaluation of the model.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (tuple(dict(), float)) metrics and the time needed to evaluate the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_config_for</span><span class="p">(</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
+
+        <span class="c1"># print(&quot;Config: {}&quot;.format(self.model.get_config()))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">has_test_set</span><span class="p">():</span>
+            <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">get_test_split</span><span class="p">()</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            
+            <span class="c1"># predictions = self.model(x_test, y_test, **config)</span>
+            <span class="c1"># new_metrics = self.__metrics_acc(predictions, x_test, y_test, **config)</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">)</span>
+            <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+        
+        <span class="k">return</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">duration</span>
+
+
+    <span class="c1"># -------</span>
+    <span class="c1"># Functions for diverse grades of control</span>
+    <span class="c1"># ---------------------------------</span>
+
+<div class="viewcode-block" id="ActiveLearningLoop.run"><a class="viewcode-back" href="../../api.html#tf_al.ActiveLearningLoop.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metrics_handler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Runs the active learning loop till the end.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                experiment_name (str): The name of the file to write to</span>
+<span class="sd">                metrics_handler (ExperimentSuitMetrics): Metrics handler for write/read operations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">experiment_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">experiment_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_experiment_name</span><span class="p">()</span>
+
+        <span class="c1"># Write meta information</span>
+        <span class="k">if</span> <span class="n">metrics_handler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
+        <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics_handler</span><span class="p">,</span> <span class="n">ExperimentSuitMetrics</span><span class="p">):</span>
+            <span class="n">model_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model_name</span><span class="p">()</span>
+            <span class="n">query_fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_fn_name</span><span class="p">()</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_meta_params</span><span class="p">()</span>
+            <span class="n">metrics_handler</span><span class="o">.</span><span class="n">add_experiment_meta</span><span class="p">(</span><span class="n">experiment_name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">query_fn</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="fm">__len__</span><span class="p">())</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">metrics</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                    <span class="s2">&quot;iteration&quot;</span><span class="p">:</span> <span class="n">iteration</span><span class="p">,</span>
+                    <span class="s2">&quot;labeled_pool_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get_length_labeled</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">,</span>
+                    <span class="s2">&quot;unlabeled_pool_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get_length_unlabeled</span><span class="p">()</span>
+                <span class="p">})</span>
+
+                <span class="c1"># Write metrics to file</span>
+                <span class="k">if</span> <span class="n">metrics_handler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics_handler</span><span class="p">,</span> <span class="n">ExperimentSuitMetrics</span><span class="p">):</span>
+                    <span class="n">metrics_handler</span><span class="o">.</span><span class="n">write_line</span><span class="p">(</span><span class="n">experiment_name</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ActiveLearningLoop.step"><a class="viewcode-back" href="../../api.html#tf_al.ActiveLearningLoop.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Perform a step of the active learning loop.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ActiveLearningLoop.has_next"><a class="viewcode-back" href="../../api.html#tf_al.ActiveLearningLoop.has_next">[docs]</a>    <span class="k">def</span> <span class="nf">has_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Can another step of the active learning loop be performed?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Limit reached?</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_max</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Any unlabeled data left?</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">has_unlabeled</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="c1"># ----------</span>
+    <span class="c1"># Utils</span>
+    <span class="c1"># ----------------</span>
+
+<div class="viewcode-block" id="ActiveLearningLoop.is_done"><a class="viewcode-back" href="../../api.html#tf_al.ActiveLearningLoop.is_done">[docs]</a>    <span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The active learning has executed and is done.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (bool) whether or not the loop has executed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ActiveLearningLoop.collect_meta_params"><a class="viewcode-back" href="../../api.html#tf_al.ActiveLearningLoop.collect_meta_params">[docs]</a>    <span class="k">def</span> <span class="nf">collect_meta_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Collect meta information about experiment to be written into .meta.json.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                (dict) with all meta information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">iterations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_max</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_max</span><span class="p">:</span>
+            <span class="n">iterations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_user_limit</span>
+
+        <span class="c1"># fitting_params = model.get_compile_params()</span>
+        <span class="n">initial_indices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">has_labeled</span><span class="p">():</span>
+            <span class="n">initial_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get_labeled_indices</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;iterations&quot;</span><span class="p">:</span> <span class="n">iterations</span><span class="p">,</span>
+            <span class="s2">&quot;step_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">,</span>
+            <span class="s2">&quot;initial_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_size</span><span class="p">,</span>
+            <span class="s2">&quot;initial_indices&quot;</span><span class="p">:</span> <span class="n">initial_indices</span>
+        <span class="p">}</span></div>
+
+    
+    <span class="c1"># -----------</span>
+    <span class="c1"># Initializers</span>
+    <span class="c1"># --------------------</span>
+
+    <span class="k">def</span> <span class="nf">__init_acquisition_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">functions</span><span class="p">):</span>
+
+        <span class="c1"># Single acquisition function?</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">AcquisitionFunction</span><span class="p">(</span><span class="n">functions</span><span class="p">)</span>
+
+        <span class="c1"># Already acquisition function</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span> <span class="n">AcquisitionFunction</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">functions</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Error in ActiveLearningLoop.__init_acquisition_fn(). Can&#39;t initialize one of given acquisition functions. </span><span class="se">\</span>
+<span class="s2">                Expected value of type str or AcquisitionFunction. Received </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">functions</span><span class="p">))</span>
+            <span class="p">)</span>
+    
+
+    <span class="c1"># --------</span>
+    <span class="c1"># Getters-/Setter</span>
+    <span class="c1"># ------------------</span>
+    
+    <span class="k">def</span> <span class="nf">get_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_fn_name</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_model_name</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">get_query_fn_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_fn</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span></div>
+</pre></div>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Maksim Sandybekov<br/>
+        
+            &copy; Copyright 2021, Maksim Sandybekov.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
