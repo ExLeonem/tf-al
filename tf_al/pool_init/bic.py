@@ -30,10 +30,22 @@ def __assign_to_center(centeroids, x_flattened):
             x_flattened (numpy.ndarray): The flattened data.
     """
 
+    # Assign datapoints to centeroids
+    distances = []
+    for center_idx in centeroids:
+        distances.append(__cosine_distance(x_flattened[center_idx], x_flattened))
+
+
+    # Group values into multiple array 
+    nn_indices = np.argmin(np.vstack(distances), axis=0)
+    resolved = []
+    for center_idx in centeroids:
+        selector = (nn_indices == center_idx)
+        resolved.append(nn_indices[selector])
+
+    return tuple(resolved)
+
     
-
-
-
 
 
 def __bic_estimate(centeroid_idx, centeroid, x_flattened, labels):
