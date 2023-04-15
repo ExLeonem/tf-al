@@ -1,5 +1,6 @@
 import time, gc
 from tqdm import tqdm
+import tensorflow as tf
 
 from .utils import setup_logger
 from .wrapper import Model
@@ -174,11 +175,15 @@ class ActiveLearningLoop:
         self.logger.info("//// (START) Model fitting")
         if self.pool.get_length_labeled() > 0:
             inputs, targets = self.pool.get_labeled_data()
+            inputs = tf.convert_to_tensor(inputs)
+            targets = tf.convert_to_tensor(targets)
             start = time.time()
 
             h = None
             if self.dataset.has_eval_set():
                 x_eval, y_eval = self.dataset.get_eval_split()
+                x_eval = tf.convert_to_tensor(x_eval)
+                y_eval = tf.convert_to_tensor(y_eval)
                 h = self.model.fit(inputs, targets, validation_data=(x_eval, y_eval), verbose=False)
             else:
                 h = self.model.fit(inputs, targets, verbose=False)

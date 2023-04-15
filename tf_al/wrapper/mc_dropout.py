@@ -319,3 +319,15 @@ class McDropout(Model):
         """
         predictions = self._problem.extend_binary_predictions(predictions)
         return np.std(predictions, axis=1)
+
+
+    def __copy__(self):
+        mc_model = McDropout(
+            keras.models.clone_model(self._model),
+            self._config
+        )
+
+        if self._compile_params is not None:
+            mc_model.compile(**self._compile_params)
+        
+        return mc_model

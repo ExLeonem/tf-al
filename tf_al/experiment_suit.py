@@ -1,3 +1,4 @@
+import copy
 import sys, select
 import numpy as np
 import tensorflow as tf
@@ -155,6 +156,7 @@ class ExperimentSuit:
             tf.random.set_seed(seed)
             experiment_name += "_" + str(seed)
 
+        #model = copy.copy(model)
         active_learning_loop = ActiveLearningLoop(
             model, 
             self.dataset, 
